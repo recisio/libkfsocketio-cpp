@@ -39,6 +39,8 @@ namespace sio {
 class message;
 }
 
+class KfSioClient;
+
 // Disable nothrow spec warning if needed
 #ifdef NO_VS4290_WARNING
 #pragma warning(disable : 4290)  
@@ -55,6 +57,8 @@ class message;
 #define KFSIO_MSGTYPE_NULL      7
 
 class KfSioMessage {
+    friend class KfSioClient;
+
 public:
     LIBKFSOCKETIO_SIOMESSAGE_DLL KfSioMessage();
 

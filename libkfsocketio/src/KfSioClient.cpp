@@ -26,16 +26,25 @@ SOFTWARE.
 #include "KfSioListener.h"
 #include "sio_client.h"
 
+#ifdef KFSIO_THREAD_SAFE
+#define _KFSIO_CLIENT_LOCK m_mutex.lock()
+#define _KFSIO_CLIENT_UNLOCK m_mutex.unlock()
+#else 
+#define _KFSIO_CLIENT_LOCK
+#define _KFSIO_CLIENT_UNLOCK
+#endif // KFSIO_THREAD_SAFE
+
 KfSioClient::KfSioClient() :
+#ifdef KFSIO_THREAD_SAFE
+    m_mutex(),
+#endif // KFSIO_THREAD_SAFE
     m_client(new sio::client()),
-    m_listener(new KfSioListener(m_client)),
-    m_socket(new KfSioSocket(this))
+    m_listener(new KfSioListener(m_client))
 {
 }
 
 KfSioClient::~KfSioClient()
 {
-    delete m_socket;
     delete m_listener;
     delete m_client;
 }
@@ -120,7 +129,7 @@ void KfSioClient::setReconnectDelayMax(unsigned int millis)
     m_client->set_reconnect_delay_max(millis);
 }
 
-bool KfSioClient::isOpened() const
+bool KfSioClient::isOpen() const
 {
     return m_client->opened();
 }
@@ -130,3 +139,90 @@ std::string const& KfSioClient::getSessionId() const
     return m_client->get_sessionid();
 }
 
+void KfSioClient::on(std::string const& eventName, EventListener eventListener, const std::string& socketNs)
+{
+    sio::socket::event_listener_aux fnc = [eventListener](const std::string& name, sio::message::ptr const& message, bool needAck, sio::message::list& ackMessage) {
+
+        KfSioMessageList ackList;
+        int msgSize = (int) ackMessage.size();
+        for (int i = 0; i < msgSize; ++i) {
+            ackList.push_back(KfSioMessage(ackMessage.at(i).get()));
+        }
+
+        KfSioMessage kfmessage(message.get());
+        eventListener(name, kfmessage, needAck, ackList);
+
+        int ackSize = (int) ackList.size();
+        for (int i = msgSize; i < ackSize; ++i) {
+            ackMessage.push(ackList.at(i).m_message);
+        }
+    };
+
+    _KFSIO_CLIENT_LOCK;
+    m_client->socket(socketNs)->on(eventName, fnc);
+    _KFSIO_CLIENT_UNLOCK;
+}
+
+void KfSioClient::off(std::string const& eventName, const std::string& socketNs)
+{
+    _KFSIO_CLIENT_LOCK;
+    m_client->socket(socketNs)->off(eventName);
+    _KFSIO_CLIENT_UNLOCK;
+}
+
+void KfSioClient::offAll(const std::string& socketNs)
+{
+    _KFSIO_CLIENT_LOCK;
+    m_client->socket(socketNs)->off_all();
+    _KFSIO_CLIENT_UNLOCK;
+}
+
+void KfSioClient::close(const std::string& socketNs)
+{
+    m_client->socket(socketNs)->close();
+}
+
+void KfSioClient::onError(ErrorListener listener, const std::string& socketNs)
+{
+    _KFSIO_CLIENT_LOCK;
+    m_client->socket(socketNs)->on_error([listener](const std::shared_ptr<sio::message>& message) {
+        KfSioMessage kfmsg(message.get());
+        listener(kfmsg);
+    });
+    _KFSIO_CLIENT_UNLOCK;
+}
+
+void KfSioClient::offError(const std::string& socketNs)
+{
+    _KFSIO_CLIENT_LOCK;
+    m_client->socket(socketNs)->off_error();
+    _KFSIO_CLIENT_UNLOCK;
+}
+
+void KfSioClient::emit(const std::string& name, const KfSioMessageList& msglist, const AckListener& ack, const std::string& socketNs)
+{
+    sio::message::list sioMsgList = nullptr;
+    if (!msglist.empty()) {
+        for (const KfSioMessage& msg : msglist) {
+            sioMsgList.push(msg.m_message);
+        }
+    }
+
+    std::function<void(sio::message::list const&)> ackFun = nullptr;
+    if (nullptr != ack) {
+        ackFun = [ack](sio::message::list const& ackMsgList) {
+            KfSioMessageList ackList;
+            int msgSize = (int) ackMsgList.size();
+            for (int i = 0; i < msgSize; ++i) {
+                ackList.push_back(KfSioMessage(ackMsgList.at(i).get()));
+            }
+            ack(ackList);
+        };
+    }
+
+    m_client->socket(socketNs)->emit(
+        name,
+        sioMsgList,
+        ackFun
+    );
+}

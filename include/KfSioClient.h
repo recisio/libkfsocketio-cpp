@@ -27,8 +27,11 @@ SOFTWARE.
 #include <functional>
 #include <string>
 #include <map>
+#ifdef KFSIO_THREAD_SAFE
+#include <mutex>
+#endif // KFSIO_THREAD_SAFE
 
-#include "KfSioSocket.h"
+#include "KfSioMessage.h"
 
 #ifdef LIBKFSOCKETIO_EXPORTS
 #define LIBKFSOCKETIO_SIOCLIENT_DLL __declspec(dllexport) 
@@ -46,20 +49,21 @@ class client;
 class KfSioListener;
 
 class KfSioClient {
-    friend class KfSioSocket;
 
 public:
     typedef std::function<void(void)> ConnectionListener;
     typedef std::function<void(unsigned int const& reason)> CloseListener;
     typedef std::function<void(unsigned int nAttempts, unsigned int delay)> ReconnectListener;
     typedef std::function<void(std::string const& nsp)> SocketListener;
+    typedef std::function<void(const std::string& name, const KfSioMessage& message, bool needAck, KfSioMessageList& ackMessage)> EventListener;
+    typedef std::function<void(const KfSioMessage& message)> ErrorListener;
+    typedef std::function<void(const KfSioMessageList&)> AckListener;
 
 public:
     LIBKFSOCKETIO_SIOCLIENT_DLL KfSioClient();
     LIBKFSOCKETIO_SIOCLIENT_DLL ~KfSioClient();
 
     // Client calls
-
     LIBKFSOCKETIO_SIOCLIENT_DLL void connect(const std::string& uri);
     LIBKFSOCKETIO_SIOCLIENT_DLL void connect(const std::string& uri, const std::map<std::string, std::string>& query);
     LIBKFSOCKETIO_SIOCLIENT_DLL void connect(const std::string& uri, const std::map<std::string, std::string>& query, const std::map<std::string, std::string>& http_extra_headers);
@@ -82,11 +86,27 @@ public:
     LIBKFSOCKETIO_SIOCLIENT_DLL void setReconnectDelay(unsigned int millis);
     LIBKFSOCKETIO_SIOCLIENT_DLL void setReconnectDelayMax(unsigned int millis);
 
+    // Socket calls
+    LIBKFSOCKETIO_SIOCLIENT_DLL void on(std::string const& eventName, EventListener eventListener, const std::string& socketNs = "");
+    LIBKFSOCKETIO_SIOCLIENT_DLL void off(std::string const& eventName, const std::string& socketNs = "");
+    LIBKFSOCKETIO_SIOCLIENT_DLL void offAll(const std::string& socketNs = "");
+    LIBKFSOCKETIO_SIOCLIENT_DLL void close(const std::string& socketNs = "");
+    LIBKFSOCKETIO_SIOCLIENT_DLL void onError(ErrorListener listener, const std::string& socketNs = "");
+    LIBKFSOCKETIO_SIOCLIENT_DLL void offError(const std::string& socketNs = "");
+
+    LIBKFSOCKETIO_SIOCLIENT_DLL void emit(
+        const std::string& name,
+        const KfSioMessageList& msglist = KfSioMessageList(),
+        const AckListener& ack = nullptr,
+        const std::string& socketNs = "");
+
 
 private:
+#ifdef KFSIO_THREAD_SAFE
+    std::mutex m_mutex;
+#endif // KFSIO_THREAD_SAFE
     sio::client* m_client;
     KfSioListener* m_listener;
-    KfSioSocket* m_socket;
 
 };
 

@@ -6,6 +6,8 @@ It also provides a websocket server binding.
 
 This project is made as an internal DLL binding for our own needs, it may or may not be what you're looking for.
 
+⚠️ This project is under development, all the features may not be available yet ⚠️
+
 ## Project install
 
 * Download boost http://www.boost.org/

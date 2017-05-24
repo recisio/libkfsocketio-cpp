@@ -102,20 +102,28 @@ KfSioMessage::KfSioMessage(sio::message* internal) :
             break;
         case sio::message::flag_array:
         {
-            std::vector<KfSioMessage> rVec;
+            sio::array_message::ptr apiMessage = sio::array_message::create();
+            sio::array_message* apiMessagePtr = (sio::array_message*) apiMessage.get();
+
             std::vector<std::shared_ptr<sio::message> > vec = internal->get_vector();
             for (std::shared_ptr<sio::message> message : vec) {
-                rVec.push_back(KfSioMessage(message.get()));
+                apiMessagePtr->push(message);
             }
+
+            m_message = apiMessage;
         }
         break;
         case sio::message::flag_object:
         {
-            std::map<std::string, KfSioMessage> rMap;
+            sio::object_message::ptr apiMessage = sio::object_message::create();
+            sio::object_message* apiMessagePtr = (sio::object_message*) apiMessage.get();
+
             std::map<std::string, std::shared_ptr<sio::message> > mmap = internal->get_map();
             for (std::pair<std::string, std::shared_ptr<sio::message> > message : mmap) {
-                rMap[message.first] = KfSioMessage(message.second.get());
+                apiMessagePtr->insert(message.first, message.second);
             }
+
+            m_message = apiMessage;
         }
         break;
         case sio::message::flag_boolean:

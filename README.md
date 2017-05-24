@@ -24,4 +24,5 @@ This project is made as an internal DLL binding for our own needs, it may or may
 
 ## Project configuration
 
-* KFSIO_THREAD_SAFE if defined, make internal library calls thread safe
+* **KFSIO_THREAD_SAFE** if defined, make internal library calls thread safe
+* **NO_VS4290_WARNING** if defined avoid C4290 for throw specification (see [Compiler Warning (level 3) C4290 on MSDN](https://msdn.microsoft.com/en-us/library/sa28fef8.aspx) )

@@ -39,6 +39,16 @@ namespace sio {
 class message;
 }
 
+#define KFSIO_MSGTYPE_NONE      -1
+#define KFSIO_MSGTYPE_INT       0
+#define KFSIO_MSGTYPE_DOUBLE    1
+#define KFSIO_MSGTYPE_STRING    2
+#define KFSIO_MSGTYPE_BINARY    3
+#define KFSIO_MSGTYPE_ARRAY     4
+#define KFSIO_MSGTYPE_OBJECT    5
+#define KFSIO_MSGTYPE_BOOLEAN   6
+#define KFSIO_MSGTYPE_NULL      7
+
 class KfSioMessage {
 public:
     LIBKFSOCKETIO_SIOMESSAGE_DLL KfSioMessage();
@@ -81,6 +91,25 @@ public:
     LIBKFSOCKETIO_SIOMESSAGE_DLL void create(const bool& msg);
     /// Creates a NULL-typed message
     LIBKFSOCKETIO_SIOMESSAGE_DLL void create(const nullptr_t& msg);
+
+    LIBKFSOCKETIO_SIOMESSAGE_DLL const int& getMessageType() const;
+    LIBKFSOCKETIO_SIOMESSAGE_DLL const bool& isInt() const;
+    LIBKFSOCKETIO_SIOMESSAGE_DLL const bool& isDouble() const;
+    LIBKFSOCKETIO_SIOMESSAGE_DLL const bool& isString() const;
+    LIBKFSOCKETIO_SIOMESSAGE_DLL const bool& isBinary() const;
+    LIBKFSOCKETIO_SIOMESSAGE_DLL const bool& isArray() const;
+    LIBKFSOCKETIO_SIOMESSAGE_DLL const bool& isObject() const;
+    LIBKFSOCKETIO_SIOMESSAGE_DLL const bool& isBool() const;
+    LIBKFSOCKETIO_SIOMESSAGE_DLL const bool& isNull() const;
+    LIBKFSOCKETIO_SIOMESSAGE_DLL const bool& isUndefined() const;
+
+    LIBKFSOCKETIO_SIOMESSAGE_DLL const int& getInt() const throw(std::bad_typeid);
+    LIBKFSOCKETIO_SIOMESSAGE_DLL const double& getDouble() const throw(std::bad_typeid);
+    LIBKFSOCKETIO_SIOMESSAGE_DLL const std::string& getString() const throw(std::bad_typeid);
+    LIBKFSOCKETIO_SIOMESSAGE_DLL const std::shared_ptr<const std::string>& getBinary() const throw(std::bad_typeid);
+    LIBKFSOCKETIO_SIOMESSAGE_DLL const std::vector<KfSioMessage>& getArray() const throw(std::bad_typeid);
+    LIBKFSOCKETIO_SIOMESSAGE_DLL const std::map<std::string, KfSioMessage>& getObject() const throw(std::bad_typeid);
+    LIBKFSOCKETIO_SIOMESSAGE_DLL const bool& getBool() const throw(std::bad_typeid);
 
 private:
     std::shared_ptr<sio::message> m_message;

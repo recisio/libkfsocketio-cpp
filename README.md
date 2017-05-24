@@ -1,7 +1,9 @@
-# LibKfSocketIO socket.io client DLL binding
+# LibKfSocketIO socket.io client and Websocket server DLL binding
 
 This project is meant to provide a DLL binding of the socket.io c++ client library with the minimum export.
+
 It also provides a websocket server binding.
+
 This project is made as an internal DLL binding for our own needs, it may or may not be what you're looking for.
 
 ## Project install

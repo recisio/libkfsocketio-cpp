@@ -28,6 +28,8 @@ SOFTWARE.
 #include <string>
 #include <map>
 
+#include "KfSioSocket.h"
+
 #ifdef LIBKFSOCKETIO_EXPORTS
 #define LIBKFSOCKETIO_SIOCLIENT_DLL __declspec(dllexport) 
 #else
@@ -44,6 +46,7 @@ class client;
 class KfSioListener;
 
 class KfSioClient {
+    friend class KfSioSocket;
 
 public:
     typedef std::function<void(void)> ConnectionListener;
@@ -79,11 +82,11 @@ public:
     LIBKFSOCKETIO_SIOCLIENT_DLL void setReconnectDelay(unsigned int millis);
     LIBKFSOCKETIO_SIOCLIENT_DLL void setReconnectDelayMax(unsigned int millis);
 
-    // Socket calls
 
 private:
     sio::client* m_client;
     KfSioListener* m_listener;
+    KfSioSocket* m_socket;
 
 };
 

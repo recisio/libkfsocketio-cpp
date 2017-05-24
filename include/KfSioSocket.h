@@ -31,4 +31,33 @@ SOFTWARE.
 #define LIBKFSOCKETIO_SIOSOCKET_DLL __declspec(dllimport) 
 #endif // LIBKFSOCKETIO_EXPORTS
 
+#include <string>
+
+namespace sio {
+class client;
+}
+
+class KfSioClient;
+
+class KfSioSocket {
+
+
+public:
+    LIBKFSOCKETIO_SIOSOCKET_DLL KfSioSocket(KfSioClient* client);
+    LIBKFSOCKETIO_SIOSOCKET_DLL virtual ~KfSioSocket();
+
+    LIBKFSOCKETIO_SIOSOCKET_DLL void on(std::string const& eventName, void* eventListener, const std::string& socketNs = "");
+    LIBKFSOCKETIO_SIOSOCKET_DLL void on(std::string const& eventName, void* eventListener, const std::string& socketNs = "");
+    LIBKFSOCKETIO_SIOSOCKET_DLL void off(std::string const& eventName, const std::string& socketNs = "");
+    LIBKFSOCKETIO_SIOSOCKET_DLL void offAll(const std::string& socketNs = "");
+    LIBKFSOCKETIO_SIOSOCKET_DLL void close(const std::string& socketNs = "");
+    LIBKFSOCKETIO_SIOSOCKET_DLL void onError(void* listener, const std::string& socketNs = "");
+    LIBKFSOCKETIO_SIOSOCKET_DLL void offError(const std::string& socketNs = "");
+    // LIBKFSOCKETIO_SIOSOCKET_DLL void emit(std::string const& name, message::list const& msglist = nullptr, std::function<void(message::list const&)> const& ack = nullptr, const std::string& socketNs = "");
+
+private:
+    KfSioClient* m_client;
+
+};
+
 #endif // !_KFSIOSOCKET_H

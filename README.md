@@ -18,6 +18,7 @@ This project is made as an internal DLL binding for our own needs, it may or may
 * Go to the main lib folder
 * git clone --recurse-submodules https://github.com/socketio/socket.io-client-cpp.git
 * Open project in Visual Studio and compile
+* Link your project with the DLL and add <your_libkfsocketio_path>/include/ to your project path
 
 ## Project configuration
 

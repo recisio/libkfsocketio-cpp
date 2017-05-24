@@ -165,9 +165,13 @@
     <ClCompile Include="..\lib\socket.io-client-cpp\src\sio_socket.cpp" />
     <ClCompile Include="src\KfSioClient.cpp" />
     <ClCompile Include="src\KfSioListener.cpp" />
+    <ClCompile Include="src\KfSioMessage.cpp" />
+    <ClCompile Include="src\KfSioSocket.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\KfSioClient.h" />
+    <ClInclude Include="..\include\KfSioMessage.h" />
+    <ClInclude Include="..\include\KfSioSocket.h" />
     <ClInclude Include="..\lib\socket.io-client-cpp\src\internal\sio_client_impl.h" />
     <ClInclude Include="..\lib\socket.io-client-cpp\src\internal\sio_packet.h" />
     <ClInclude Include="..\lib\socket.io-client-cpp\src\sio_client.h" />

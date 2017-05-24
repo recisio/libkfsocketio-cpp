@@ -28,12 +28,14 @@ SOFTWARE.
 
 KfSioClient::KfSioClient() :
     m_client(new sio::client()),
-    m_listener(new KfSioListener(m_client))
+    m_listener(new KfSioListener(m_client)),
+    m_socket(new KfSioSocket(this))
 {
 }
 
 KfSioClient::~KfSioClient()
 {
+    delete m_socket;
     delete m_listener;
     delete m_client;
 }

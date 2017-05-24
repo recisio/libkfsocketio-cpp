@@ -179,7 +179,9 @@ void KfSioClient::offAll(const std::string& socketNs)
 
 void KfSioClient::close(const std::string& socketNs)
 {
+    _KFSIO_CLIENT_LOCK;
     m_client->socket(socketNs)->close();
+    _KFSIO_CLIENT_UNLOCK;
 }
 
 void KfSioClient::onError(ErrorListener listener, const std::string& socketNs)
@@ -220,9 +222,11 @@ void KfSioClient::emit(const std::string& name, const KfSioMessageList& msglist,
         };
     }
 
+    _KFSIO_CLIENT_LOCK;
     m_client->socket(socketNs)->emit(
         name,
         sioMsgList,
         ackFun
     );
+    _KFSIO_CLIENT_UNLOCK;
 }

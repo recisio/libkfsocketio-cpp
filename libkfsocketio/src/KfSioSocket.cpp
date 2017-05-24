@@ -35,3 +35,38 @@ KfSioSocket::~KfSioSocket()
 {
 
 }
+
+void KfSioSocket::on(std::string const& eventName, EventListener eventListener, const std::string& socketNs)
+{
+
+}
+
+void KfSioSocket::off(std::string const& eventName, const std::string& socketNs)
+{
+
+}
+
+void KfSioSocket::offAll(const std::string& socketNs)
+{
+
+}
+
+void KfSioSocket::close(const std::string& socketNs)
+{
+
+}
+
+void KfSioSocket::onError(ErrorListener listener, const std::string& socketNs)
+{
+
+}
+
+void KfSioSocket::offError(const std::string& socketNs)
+{
+
+}
+
+void KfSioSocket::emit(std::string const& name, const KfSioMessageList& msglist, std::function<void(const KfSioMessageList&)> const& ack, const std::string& socketNs)
+{
+
+}

@@ -193,7 +193,7 @@ void KfSioMessage::create(const nullptr_t& msg)
     m_message = sio::null_message::create();
 }
 
-const int& KfSioMessage::getMessageType() const
+int KfSioMessage::getMessageType() const
 {
     if (nullptr == m_message) {
         return KFSIO_MSGTYPE_NONE;
@@ -221,52 +221,52 @@ const int& KfSioMessage::getMessageType() const
     }
 }
 
-const bool& KfSioMessage::isInt() const
+const bool KfSioMessage::isInt() const
 {
     return (nullptr != m_message && m_message->get_flag() == sio::message::flag_integer);
 }
 
-const bool& KfSioMessage::isDouble() const
+const bool KfSioMessage::isDouble() const
 {
     return (nullptr != m_message && m_message->get_flag() == sio::message::flag_double);
 }
 
-const bool& KfSioMessage::isString() const
+const bool KfSioMessage::isString() const
 {
     return (nullptr != m_message && m_message->get_flag() == sio::message::flag_string);
 }
 
-const bool& KfSioMessage::isBinary() const
+const bool KfSioMessage::isBinary() const
 {
     return (nullptr != m_message && m_message->get_flag() == sio::message::flag_binary);
 }
 
-const bool& KfSioMessage::isArray() const
+const bool KfSioMessage::isArray() const
 {
     return (nullptr != m_message && m_message->get_flag() == sio::message::flag_array);
 }
 
-const bool& KfSioMessage::isObject() const
+const bool KfSioMessage::isObject() const
 {
     return (nullptr != m_message && m_message->get_flag() == sio::message::flag_object);
 }
 
-const bool& KfSioMessage::isBool() const
+const bool KfSioMessage::isBool() const
 {
     return (nullptr != m_message && m_message->get_flag() == sio::message::flag_boolean);
 }
 
-const bool& KfSioMessage::isNull() const
+const bool KfSioMessage::isNull() const
 {
     return (nullptr != m_message && m_message->get_flag() == sio::message::flag_null);
 }
 
-const bool& KfSioMessage::isUndefined() const
+const bool KfSioMessage::isUndefined() const
 {
     return nullptr == m_message;
 }
 
-const int& KfSioMessage::getInt() const throw(std::bad_typeid)
+int KfSioMessage::getInt() const throw(std::bad_typeid)
 {
     if (!isInt()) {
         throw std::bad_typeid();
@@ -274,7 +274,7 @@ const int& KfSioMessage::getInt() const throw(std::bad_typeid)
     return (int) m_message->get_int();
 }
 
-const double& KfSioMessage::getDouble() const throw(std::bad_typeid)
+double KfSioMessage::getDouble() const throw(std::bad_typeid)
 {
     if (!isDouble()) {
         throw std::bad_typeid();
@@ -301,7 +301,7 @@ const std::shared_ptr<const std::string>& KfSioMessage::getBinary() const throw(
     return m_message->get_binary();
 }
 
-const std::vector<KfSioMessage>& KfSioMessage::getArray() const throw(std::bad_typeid)
+std::vector<KfSioMessage> KfSioMessage::getArray() const throw(std::bad_typeid)
 {
     if (!isArray()) {
         throw std::bad_typeid();
@@ -317,7 +317,7 @@ const std::vector<KfSioMessage>& KfSioMessage::getArray() const throw(std::bad_t
     return ret;
 }
 
-const std::map<std::string, KfSioMessage>& KfSioMessage::getObject() const throw(std::bad_typeid)
+std::map<std::string, KfSioMessage> KfSioMessage::getObject() const throw(std::bad_typeid)
 {
     if (!isObject()) {
         throw std::bad_typeid();
@@ -333,7 +333,7 @@ const std::map<std::string, KfSioMessage>& KfSioMessage::getObject() const throw
     return ret;
 }
 
-const bool& KfSioMessage::getBool() const throw(std::bad_typeid)
+bool KfSioMessage::getBool() const throw(std::bad_typeid)
 {
     if (!isBool()) {
         throw std::bad_typeid();

@@ -32,6 +32,9 @@ SOFTWARE.
 #endif // LIBKFSOCKETIO_EXPORTS
 
 #include <string>
+#include <functional>
+
+#include "KfSioMessage.h"
 
 namespace sio {
 class client;
@@ -41,19 +44,26 @@ class KfSioClient;
 
 class KfSioSocket {
 
+public:
+    typedef std::function<void(const std::string& name, const KfSioMessage& message, bool need_ack, KfSioMessageList& ack_message)> EventListener;
+    typedef std::function<void(const KfSioMessage& message)> ErrorListener;
 
 public:
     LIBKFSOCKETIO_SIOSOCKET_DLL KfSioSocket(KfSioClient* client);
     LIBKFSOCKETIO_SIOSOCKET_DLL virtual ~KfSioSocket();
 
-    LIBKFSOCKETIO_SIOSOCKET_DLL void on(std::string const& eventName, void* eventListener, const std::string& socketNs = "");
-    LIBKFSOCKETIO_SIOSOCKET_DLL void on(std::string const& eventName, void* eventListener, const std::string& socketNs = "");
+    LIBKFSOCKETIO_SIOSOCKET_DLL void on(std::string const& eventName, EventListener eventListener, const std::string& socketNs = "");
     LIBKFSOCKETIO_SIOSOCKET_DLL void off(std::string const& eventName, const std::string& socketNs = "");
     LIBKFSOCKETIO_SIOSOCKET_DLL void offAll(const std::string& socketNs = "");
     LIBKFSOCKETIO_SIOSOCKET_DLL void close(const std::string& socketNs = "");
-    LIBKFSOCKETIO_SIOSOCKET_DLL void onError(void* listener, const std::string& socketNs = "");
+    LIBKFSOCKETIO_SIOSOCKET_DLL void onError(ErrorListener listener, const std::string& socketNs = "");
     LIBKFSOCKETIO_SIOSOCKET_DLL void offError(const std::string& socketNs = "");
-    // LIBKFSOCKETIO_SIOSOCKET_DLL void emit(std::string const& name, message::list const& msglist = nullptr, std::function<void(message::list const&)> const& ack = nullptr, const std::string& socketNs = "");
+
+    LIBKFSOCKETIO_SIOSOCKET_DLL void emit(
+        std::string const& name,
+        const KfSioMessageList& msglist = KfSioMessageList(),
+        std::function<void(const KfSioMessageList&)> const& ack = nullptr,
+        const std::string& socketNs = "");
 
 private:
     KfSioClient* m_client;

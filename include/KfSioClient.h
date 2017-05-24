@@ -66,7 +66,7 @@ public:
     LIBKFSOCKETIO_SIOCLIENT_DLL void close();
     LIBKFSOCKETIO_SIOCLIENT_DLL void syncClose();
 
-    LIBKFSOCKETIO_SIOCLIENT_DLL bool isOpened() const;
+    LIBKFSOCKETIO_SIOCLIENT_DLL bool isOpen() const;
     LIBKFSOCKETIO_SIOCLIENT_DLL std::string const& getSessionId() const;
 
     LIBKFSOCKETIO_SIOCLIENT_DLL void setClientOpenListener(const ConnectionListener& listener);

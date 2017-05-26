@@ -83,6 +83,4 @@ private:
     SocketListener m_socketOpenListener;
     SocketListener m_socketCloseListener;
 
-
-
 };

@@ -190,12 +190,14 @@
     <ClCompile Include="src\KfSioClient.cpp" />
     <ClCompile Include="src\KfSioListener.cpp" />
     <ClCompile Include="src\KfSioMessage.cpp" />
+    <ClCompile Include="src\KfWebSocketConnection.cpp" />
     <ClCompile Include="src\KfWebSocketServer.cpp" />
     <ClCompile Include="src\KfWebSocketServerHandler.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\KfSioClient.h" />
     <ClInclude Include="..\include\KfSioMessage.h" />
+    <ClInclude Include="..\include\KfWebSocketConnection.h" />
     <ClInclude Include="..\include\KfWebSocketServer.h" />
     <ClInclude Include="..\lib\socket.io-client-cpp\src\internal\sio_client_impl.h" />
     <ClInclude Include="..\lib\socket.io-client-cpp\src\internal\sio_packet.h" />
@@ -203,6 +205,7 @@
     <ClInclude Include="..\lib\socket.io-client-cpp\src\sio_message.h" />
     <ClInclude Include="..\lib\socket.io-client-cpp\src\sio_socket.h" />
     <ClInclude Include="src\KfSioListener.h" />
+    <ClInclude Include="src\KfWebSocketConImplWrapper.h" />
     <ClInclude Include="src\KfWebSocketServerHandler.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

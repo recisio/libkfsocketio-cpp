@@ -24,18 +24,47 @@ SOFTWARE.
 */
 
 #include <string>
+#ifdef KFSIO_THREAD_SAFE
+#include <mutex>
+#endif // KFSIO_THREAD_SAFE
 
 #include "websocketpp/server.hpp"
 #include "websocketpp/connection.hpp"
 #include "websocketpp/config/asio.hpp"
 
 #include "KfWebSocketServer.h"
+#include "KfWebSocketConnection.h"
+
 
 class KfWebSocketServerHandler {
     friend class KfWebSocketServer;
 
 public:
+    typedef std::function<void(const KfWebSocketConnection&)> ConnectionListener;
+    typedef std::function<void(const KfWebSocketConnection&)> MessageListener; /// @todo MessageWrapper
+    typedef std::function<bool(const KfWebSocketConnection&, std::string)> PingListener;
+    typedef std::function<void(const KfWebSocketConnection&, std::string)> PongListener;
+
+
+public:
     KfWebSocketServerHandler();
+
+    void unbindListeners();
+
+    void setOpenListener(ConnectionListener listener);
+    void setCloseListener(ConnectionListener listener);
+    void setFailListener(ConnectionListener listener);
+    void setHttpListener(ConnectionListener listener);
+    void setInterruptListener(ConnectionListener listener);
+    void setSocketInitListener(ConnectionListener listener);
+    void setTcpInitListener(ConnectionListener listener);
+    void setTcpPostInitListener(ConnectionListener listener);
+    void setTcpPreInitListener(ConnectionListener listener);
+    void setValidateListener(ConnectionListener listener);
+    void setMessageListener(MessageListener listener);
+    void setPingListener(PingListener listener);
+    void setPongListener(PongListener listener);
+    void setPongTimeoutListener(PongListener listener);
 
 private:
     void bindHandlers();
@@ -49,13 +78,31 @@ private:
     bool onServerPing(websocketpp::connection_hdl con, std::string msg);
     void onServerPong(websocketpp::connection_hdl con, std::string msg);
     void onServerPongTimeout(websocketpp::connection_hdl con, std::string msg);
-    void onServerSocketInit(websocketpp::connection_hdl, boost::asio::ip::tcp::socket&);
-    void onServerTcpInit(websocketpp::connection_hdl);
-    void onServerTcpPostInit(websocketpp::connection_hdl);
-    void onServerTcpPreInit(websocketpp::connection_hdl);
+    void onServerSocketInit(websocketpp::connection_hdl con, boost::asio::ip::tcp::socket& sock);
+    void onServerTcpInit(websocketpp::connection_hdl con);
+    void onServerTcpPostInit(websocketpp::connection_hdl con);
+    void onServerTcpPreInit(websocketpp::connection_hdl con);
     bool onServerValidate(websocketpp::connection_hdl con);
 
 private:
+#ifdef KFSIO_THREAD_SAFE
+    std::mutex m_mutex;
+#endif // KFSIO_THREAD_SAFE
     websocketpp::server<websocketpp::config::asio> m_server;
+
+    ConnectionListener m_openListener;
+    ConnectionListener m_closeListener;
+    ConnectionListener m_failListener;
+    ConnectionListener m_httpListener;
+    ConnectionListener m_interruptListener;
+    ConnectionListener m_socketInitListener;
+    ConnectionListener m_tcpInitListener;
+    ConnectionListener m_tcpPostInitListener;
+    ConnectionListener m_tcpPreInitListener;
+    ConnectionListener m_validateListener;
+    MessageListener m_messageListener;
+    PingListener m_pingListener;
+    PongListener m_pongListener;
+    PongListener m_pongTimeoutListener;
 
 };

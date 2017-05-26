@@ -46,7 +46,6 @@ public:
     typedef std::function<bool(const KfWebSocketConnection&, std::string)> PingListener;
     typedef std::function<void(const KfWebSocketConnection&, std::string)> PongListener;
 
-
 public:
     KfWebSocketServerHandler();
 
@@ -68,8 +67,6 @@ public:
     void setPongTimeoutListener(PongListener listener);
 
 private:
-    void bindHandlers();
-
     void onServerOpen(websocketpp::connection_hdl con);
     void onServerClose(websocketpp::connection_hdl con);
     void onServerFail(websocketpp::connection_hdl con);

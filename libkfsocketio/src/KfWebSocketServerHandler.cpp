@@ -84,7 +84,6 @@ KfWebSocketServerHandler::KfWebSocketServerHandler() :
 
 void KfWebSocketServerHandler::unbindListeners()
 {
-    _KFSIO_WSSERVER_LOCK;
     m_server.set_close_handler(nullptr);
     m_server.set_fail_handler(nullptr);
     m_server.set_http_handler(nullptr);
@@ -99,6 +98,7 @@ void KfWebSocketServerHandler::unbindListeners()
     m_server.set_tcp_pre_init_handler(nullptr);
     m_server.set_validate_handler(nullptr);
 
+    _KFSIO_WSSERVER_LOCK;
     m_openListener = nullptr;
     m_closeListener = nullptr;
     m_failListener = nullptr;

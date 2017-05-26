@@ -57,7 +57,7 @@ if (nullptr != cb) { \
     KfWebSocketConnection kfCon(KfWebSocketConImplWrapper({con})); \
     cb(kfCon); \
 } \
-_KFSIO_WSSERVER_UNLOCK; 
+_KFSIO_WSSERVER_UNLOCK 
 
 KfWebSocketServerHandler::KfWebSocketServerHandler() :
 #ifdef KFSIO_THREAD_SAFE

@@ -42,8 +42,7 @@ KfWebSocketServer::~KfWebSocketServer()
 
 void KfWebSocketServer::run(const uint16_t& port) throw(std::exception)
 {
-    m_handler->m_server.listen(port);
-    m_handler->m_server.start_accept();
+    start(port);
     m_handler->m_server.run();
 }
 

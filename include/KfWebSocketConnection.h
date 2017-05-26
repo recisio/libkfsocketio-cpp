@@ -139,9 +139,8 @@ public:
     } HttpStatusCode;
 
 public:
-    KfWebSocketConnection();
-    KfWebSocketConnection(const KfWebSocketConnection& copy);
     KfWebSocketConnection(const KfWebSocketConImplWrapper& wrapper);
+    KfWebSocketConnection(const KfWebSocketConnection& copy);
     virtual ~KfWebSocketConnection();
 
     // General timeouts
@@ -167,9 +166,9 @@ public:
     void deferHttpResponse();
     void sendHttpResponse();
 
+    HttpStatusCode getHttpResponseCode() const;
     std::string getHttpOrigin() const;
     std::string getHttpRequestBody() const;
-    unsigned int getHttpResponseCode() const;
     std::string getHttpResponseMessage() const;
     std::string getHttpRequestHeader(const std::string& key) const;
     std::string getHttpResponseHeader(const std::string& key) const;
@@ -187,7 +186,6 @@ public:
 
     void setMaxMessageSize(const size_t& size);
     void addSubProtocol(const std::string& protocol);
-    // m_connection->connection->set_timer(long, websocketpp::transport::timer_handler);
 
     size_t getBufferedAmount() const;
 
@@ -204,7 +202,6 @@ public:
     std::vector<std::string> getRequestedSubProtocols() const;
     std::string getSubProtocol() const;
     std::string getUri() const;
-    std::string getMessage() const;
 
 private:
     KfWebSocketConImplWrapper* m_connection;

@@ -34,13 +34,13 @@ SOFTWARE.
 
 struct KfWebSocketConImplWrapper;
 
-class KfWebSocketConnection {
+class LIBKFSOCKETIO_WEBSOCKETCONNECTION_DLL KfWebSocketConnection {
 
 public:
-    LIBKFSOCKETIO_WEBSOCKETCONNECTION_DLL KfWebSocketConnection();
-    LIBKFSOCKETIO_WEBSOCKETCONNECTION_DLL KfWebSocketConnection(const KfWebSocketConnection& copy);
+    KfWebSocketConnection();
+    KfWebSocketConnection(const KfWebSocketConnection& copy);
     KfWebSocketConnection(const KfWebSocketConImplWrapper& wrapper);
-    LIBKFSOCKETIO_WEBSOCKETCONNECTION_DLL virtual ~KfWebSocketConnection();
+    virtual ~KfWebSocketConnection();
 
 private:
     KfWebSocketConImplWrapper* m_connection;

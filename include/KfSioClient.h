@@ -48,7 +48,7 @@ class client;
 
 class KfSioListener;
 
-class KfSioClient {
+class LIBKFSOCKETIO_SIOCLIENT_DLL KfSioClient {
 
 public:
     typedef std::function<void(void)> ConnectionListener;
@@ -60,41 +60,41 @@ public:
     typedef std::function<void(const KfSioMessageList&)> AckListener;
 
 public:
-    LIBKFSOCKETIO_SIOCLIENT_DLL KfSioClient();
-    LIBKFSOCKETIO_SIOCLIENT_DLL ~KfSioClient();
+    KfSioClient();
+    ~KfSioClient();
 
     // Client calls
-    LIBKFSOCKETIO_SIOCLIENT_DLL void connect(const std::string& uri);
-    LIBKFSOCKETIO_SIOCLIENT_DLL void connect(const std::string& uri, const std::map<std::string, std::string>& query);
-    LIBKFSOCKETIO_SIOCLIENT_DLL void connect(const std::string& uri, const std::map<std::string, std::string>& query, const std::map<std::string, std::string>& http_extra_headers);
-    LIBKFSOCKETIO_SIOCLIENT_DLL void close();
-    LIBKFSOCKETIO_SIOCLIENT_DLL void syncClose();
+    void connect(const std::string& uri);
+    void connect(const std::string& uri, const std::map<std::string, std::string>& query);
+    void connect(const std::string& uri, const std::map<std::string, std::string>& query, const std::map<std::string, std::string>& http_extra_headers);
+    void close();
+    void syncClose();
 
-    LIBKFSOCKETIO_SIOCLIENT_DLL bool isOpen() const;
-    LIBKFSOCKETIO_SIOCLIENT_DLL std::string const& getSessionId() const;
+    bool isOpen() const;
+    std::string const& getSessionId() const;
 
-    LIBKFSOCKETIO_SIOCLIENT_DLL void setClientOpenListener(const ConnectionListener& listener);
-    LIBKFSOCKETIO_SIOCLIENT_DLL void setClientCloseListener(const CloseListener& listener);
-    LIBKFSOCKETIO_SIOCLIENT_DLL void setClientFailListener(const ConnectionListener& listener);
-    LIBKFSOCKETIO_SIOCLIENT_DLL void setClientReconnectingListener(const ConnectionListener& listener);
-    LIBKFSOCKETIO_SIOCLIENT_DLL void setClientReconnectListener(const ReconnectListener& listener);
-    LIBKFSOCKETIO_SIOCLIENT_DLL void setSocketOpenListener(const SocketListener& listener);
-    LIBKFSOCKETIO_SIOCLIENT_DLL void setSocketCloseListener(const SocketListener& listener);
-    LIBKFSOCKETIO_SIOCLIENT_DLL void clearListeners();
+    void setClientOpenListener(const ConnectionListener& listener);
+    void setClientCloseListener(const CloseListener& listener);
+    void setClientFailListener(const ConnectionListener& listener);
+    void setClientReconnectingListener(const ConnectionListener& listener);
+    void setClientReconnectListener(const ReconnectListener& listener);
+    void setSocketOpenListener(const SocketListener& listener);
+    void setSocketCloseListener(const SocketListener& listener);
+    void clearListeners();
 
-    LIBKFSOCKETIO_SIOCLIENT_DLL void setReconnectAttempts(int attempts);
-    LIBKFSOCKETIO_SIOCLIENT_DLL void setReconnectDelay(unsigned int millis);
-    LIBKFSOCKETIO_SIOCLIENT_DLL void setReconnectDelayMax(unsigned int millis);
+    void setReconnectAttempts(int attempts);
+    void setReconnectDelay(unsigned int millis);
+    void setReconnectDelayMax(unsigned int millis);
 
     // Socket calls
-    LIBKFSOCKETIO_SIOCLIENT_DLL void on(std::string const& eventName, EventListener eventListener, const std::string& socketNs = "");
-    LIBKFSOCKETIO_SIOCLIENT_DLL void off(std::string const& eventName, const std::string& socketNs = "");
-    LIBKFSOCKETIO_SIOCLIENT_DLL void offAll(const std::string& socketNs = "");
-    LIBKFSOCKETIO_SIOCLIENT_DLL void close(const std::string& socketNs = "");
-    LIBKFSOCKETIO_SIOCLIENT_DLL void onError(ErrorListener listener, const std::string& socketNs = "");
-    LIBKFSOCKETIO_SIOCLIENT_DLL void offError(const std::string& socketNs = "");
+    void on(std::string const& eventName, EventListener eventListener, const std::string& socketNs = "");
+    void off(std::string const& eventName, const std::string& socketNs = "");
+    void offAll(const std::string& socketNs = "");
+    void close(const std::string& socketNs = "");
+    void onError(ErrorListener listener, const std::string& socketNs = "");
+    void offError(const std::string& socketNs = "");
 
-    LIBKFSOCKETIO_SIOCLIENT_DLL void emit(
+    void emit(
         const std::string& name,
         const KfSioMessageList& msglist = KfSioMessageList(),
         const AckListener& ack = nullptr,

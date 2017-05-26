@@ -56,69 +56,69 @@ class KfSioClient;
 #define KFSIO_MSGTYPE_BOOLEAN   6
 #define KFSIO_MSGTYPE_NULL      7
 
-class KfSioMessage {
+class LIBKFSOCKETIO_SIOMESSAGE_DLL KfSioMessage {
     friend class KfSioClient;
 
 public:
-    LIBKFSOCKETIO_SIOMESSAGE_DLL KfSioMessage();
+    KfSioMessage();
 
     /// Creates an INTEGER-typed message
-    LIBKFSOCKETIO_SIOMESSAGE_DLL KfSioMessage(const int& msg);
+    KfSioMessage(const int& msg);
     /// Creates a DOUBLE-typed message
-    LIBKFSOCKETIO_SIOMESSAGE_DLL KfSioMessage(const double& msg);
+    KfSioMessage(const double& msg);
     /// Creates a STRING-typed message
-    LIBKFSOCKETIO_SIOMESSAGE_DLL KfSioMessage(const std::string& msg);
+    KfSioMessage(const std::string& msg);
     /// Creates a BINARY-typed message
-    LIBKFSOCKETIO_SIOMESSAGE_DLL KfSioMessage(const std::shared_ptr<const std::string>& msg);
+    KfSioMessage(const std::shared_ptr<const std::string>& msg);
     /// Creates an ARRAY-typed message
-    LIBKFSOCKETIO_SIOMESSAGE_DLL KfSioMessage(const std::vector<KfSioMessage>& msg);
+    KfSioMessage(const std::vector<KfSioMessage>& msg);
     /// Creates an OBJECT-typed message
-    LIBKFSOCKETIO_SIOMESSAGE_DLL KfSioMessage(const std::map<std::string, KfSioMessage>& msg);
+    KfSioMessage(const std::map<std::string, KfSioMessage>& msg);
     /// Creates a BOOLEAN-typed message
-    LIBKFSOCKETIO_SIOMESSAGE_DLL KfSioMessage(const bool& msg);
+    KfSioMessage(const bool& msg);
     /// Creates a NULL-typed message
-    LIBKFSOCKETIO_SIOMESSAGE_DLL KfSioMessage(const nullptr_t& msg);
+    KfSioMessage(const nullptr_t& msg);
 
-    LIBKFSOCKETIO_SIOMESSAGE_DLL KfSioMessage(const KfSioMessage& copy);
+    KfSioMessage(const KfSioMessage& copy);
     KfSioMessage(sio::message* internal);
 
-    LIBKFSOCKETIO_SIOMESSAGE_DLL ~KfSioMessage();
+    ~KfSioMessage();
 
     /// Creates an INTEGER-typed message
-    LIBKFSOCKETIO_SIOMESSAGE_DLL void create(const int& msg);
+    void create(const int& msg);
     /// Creates a DOUBLE-typed message
-    LIBKFSOCKETIO_SIOMESSAGE_DLL void create(const double& msg);
+    void create(const double& msg);
     /// Creates a STRING-typed message
-    LIBKFSOCKETIO_SIOMESSAGE_DLL void create(const std::string& msg);
+    void create(const std::string& msg);
     /// Creates a BINARY-typed message
-    LIBKFSOCKETIO_SIOMESSAGE_DLL void create(const std::shared_ptr<const std::string>& msg);
+    void create(const std::shared_ptr<const std::string>& msg);
     /// Creates an ARRAY-typed message
-    LIBKFSOCKETIO_SIOMESSAGE_DLL void create(const std::vector<KfSioMessage>& msg);
+    void create(const std::vector<KfSioMessage>& msg);
     /// Creates an OBJECT-typed message
-    LIBKFSOCKETIO_SIOMESSAGE_DLL void create(const std::map<std::string, KfSioMessage>& msg);
+    void create(const std::map<std::string, KfSioMessage>& msg);
     /// Creates a BOOLEAN-typed message
-    LIBKFSOCKETIO_SIOMESSAGE_DLL void create(const bool& msg);
+    void create(const bool& msg);
     /// Creates a NULL-typed message
-    LIBKFSOCKETIO_SIOMESSAGE_DLL void create(const nullptr_t& msg);
+    void create(const nullptr_t& msg);
 
-    LIBKFSOCKETIO_SIOMESSAGE_DLL int getMessageType() const;
-    LIBKFSOCKETIO_SIOMESSAGE_DLL const bool isInt() const;
-    LIBKFSOCKETIO_SIOMESSAGE_DLL const bool isDouble() const;
-    LIBKFSOCKETIO_SIOMESSAGE_DLL const bool isString() const;
-    LIBKFSOCKETIO_SIOMESSAGE_DLL const bool isBinary() const;
-    LIBKFSOCKETIO_SIOMESSAGE_DLL const bool isArray() const;
-    LIBKFSOCKETIO_SIOMESSAGE_DLL const bool isObject() const;
-    LIBKFSOCKETIO_SIOMESSAGE_DLL const bool isBool() const;
-    LIBKFSOCKETIO_SIOMESSAGE_DLL const bool isNull() const;
-    LIBKFSOCKETIO_SIOMESSAGE_DLL const bool isUndefined() const;
+    int getMessageType() const;
+    const bool isInt() const;
+    const bool isDouble() const;
+    const bool isString() const;
+    const bool isBinary() const;
+    const bool isArray() const;
+    const bool isObject() const;
+    const bool isBool() const;
+    const bool isNull() const;
+    const bool isUndefined() const;
 
-    LIBKFSOCKETIO_SIOMESSAGE_DLL int getInt() const throw(std::bad_typeid);
-    LIBKFSOCKETIO_SIOMESSAGE_DLL double getDouble() const throw(std::bad_typeid);
-    LIBKFSOCKETIO_SIOMESSAGE_DLL const std::string& getString() const throw(std::bad_typeid);
-    LIBKFSOCKETIO_SIOMESSAGE_DLL const std::shared_ptr<const std::string>& getBinary() const throw(std::bad_typeid);
-    LIBKFSOCKETIO_SIOMESSAGE_DLL std::vector<KfSioMessage> getArray() const throw(std::bad_typeid);
-    LIBKFSOCKETIO_SIOMESSAGE_DLL std::map<std::string, KfSioMessage> getObject() const throw(std::bad_typeid);
-    LIBKFSOCKETIO_SIOMESSAGE_DLL bool getBool() const throw(std::bad_typeid);
+    int getInt() const throw(std::bad_typeid);
+    double getDouble() const throw(std::bad_typeid);
+    const std::string& getString() const throw(std::bad_typeid);
+    const std::shared_ptr<const std::string>& getBinary() const throw(std::bad_typeid);
+    std::vector<KfSioMessage> getArray() const throw(std::bad_typeid);
+    std::map<std::string, KfSioMessage> getObject() const throw(std::bad_typeid);
+    bool getBool() const throw(std::bad_typeid);
 
 private:
     std::shared_ptr<sio::message> m_message;

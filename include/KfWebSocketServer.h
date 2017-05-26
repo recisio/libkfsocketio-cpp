@@ -42,7 +42,7 @@ SOFTWARE.
 
 class KfWebSocketServerHandler;
 
-class KfWebSocketServer {
+class LIBKFSOCKETIO_WEBSOCKETSERVER_DLL KfWebSocketServer {
 
 public:
     typedef std::function<void(const KfWebSocketConnection&)> ConnectionListener;
@@ -52,41 +52,41 @@ public:
     typedef std::function<void(const KfWebSocketConnection&, std::string)> PongListener;
 
 public:
-    LIBKFSOCKETIO_WEBSOCKETSERVER_DLL KfWebSocketServer();
-    LIBKFSOCKETIO_WEBSOCKETSERVER_DLL virtual ~KfWebSocketServer();
+    KfWebSocketServer();
+    virtual ~KfWebSocketServer();
 
     /// Blocking mode
-    LIBKFSOCKETIO_WEBSOCKETSERVER_DLL void run(const uint16_t& port) throw(std::exception);
+    void run(const uint16_t& port) throw(std::exception);
 
     /// Non-blocking mode
-    LIBKFSOCKETIO_WEBSOCKETSERVER_DLL void start(const uint16_t& port) throw(std::exception);
-    LIBKFSOCKETIO_WEBSOCKETSERVER_DLL size_t poll();
-    LIBKFSOCKETIO_WEBSOCKETSERVER_DLL size_t pollOne();
+    void start(const uint16_t& port) throw(std::exception);
+    size_t poll();
+    size_t pollOne();
 
     /// Stop either one of blocking or non-blocking connections
-    LIBKFSOCKETIO_WEBSOCKETSERVER_DLL void stop();
+    void stop();
 
-    LIBKFSOCKETIO_WEBSOCKETSERVER_DLL bool isListening() const;
-    LIBKFSOCKETIO_WEBSOCKETSERVER_DLL bool isStopped() const;
-    LIBKFSOCKETIO_WEBSOCKETSERVER_DLL bool isSecure() const;
+    bool isListening() const;
+    bool isStopped() const;
+    bool isSecure() const;
 
     /// Calbacks setup
 
-    LIBKFSOCKETIO_WEBSOCKETSERVER_DLL void unbindListeners();
-    LIBKFSOCKETIO_WEBSOCKETSERVER_DLL void setOpenListener(ConnectionListener listener);
-    LIBKFSOCKETIO_WEBSOCKETSERVER_DLL void setCloseListener(ConnectionListener listener);
-    LIBKFSOCKETIO_WEBSOCKETSERVER_DLL void setFailListener(ConnectionListener listener);
-    LIBKFSOCKETIO_WEBSOCKETSERVER_DLL void setHttpListener(ConnectionListener listener);
-    LIBKFSOCKETIO_WEBSOCKETSERVER_DLL void setInterruptListener(ConnectionListener listener);
-    LIBKFSOCKETIO_WEBSOCKETSERVER_DLL void setSocketInitListener(ConnectionListener listener);
-    LIBKFSOCKETIO_WEBSOCKETSERVER_DLL void setTcpInitListener(ConnectionListener listener);
-    LIBKFSOCKETIO_WEBSOCKETSERVER_DLL void setTcpPostInitListener(ConnectionListener listener);
-    LIBKFSOCKETIO_WEBSOCKETSERVER_DLL void setTcpPreInitListener(ConnectionListener listener);
-    LIBKFSOCKETIO_WEBSOCKETSERVER_DLL void setValidateListener(ValidateListener listener);
-    LIBKFSOCKETIO_WEBSOCKETSERVER_DLL void setMessageListener(MessageListener listener);
-    LIBKFSOCKETIO_WEBSOCKETSERVER_DLL void setPingListener(PingListener listener);
-    LIBKFSOCKETIO_WEBSOCKETSERVER_DLL void setPongListener(PongListener listener);
-    LIBKFSOCKETIO_WEBSOCKETSERVER_DLL void setPongTimeoutListener(PongListener listener);
+    void unbindListeners();
+    void setOpenListener(ConnectionListener listener);
+    void setCloseListener(ConnectionListener listener);
+    void setFailListener(ConnectionListener listener);
+    void setHttpListener(ConnectionListener listener);
+    void setInterruptListener(ConnectionListener listener);
+    void setSocketInitListener(ConnectionListener listener);
+    void setTcpInitListener(ConnectionListener listener);
+    void setTcpPostInitListener(ConnectionListener listener);
+    void setTcpPreInitListener(ConnectionListener listener);
+    void setValidateListener(ValidateListener listener);
+    void setMessageListener(MessageListener listener);
+    void setPingListener(PingListener listener);
+    void setPongListener(PongListener listener);
+    void setPongTimeoutListener(PongListener listener);
 
 private:
     KfWebSocketServerHandler* m_handler;

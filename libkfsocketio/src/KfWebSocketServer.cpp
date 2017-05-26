@@ -32,12 +32,22 @@ SOFTWARE.
 KfWebSocketServer::KfWebSocketServer() :
     m_handler(new KfWebSocketServerHandler())
 {
-
+    disableWebSocketOutputLog();
 }
 
 KfWebSocketServer::~KfWebSocketServer()
 {
     delete m_handler;
+}
+
+void KfWebSocketServer::enableWebSocketOutputLog()
+{
+    m_handler->m_server.set_access_channels(websocketpp::log::alevel::all);
+}
+
+void KfWebSocketServer::disableWebSocketOutputLog()
+{
+    m_handler->m_server.clear_access_channels(websocketpp::log::alevel::all);
 }
 
 void KfWebSocketServer::run(const uint16_t& port) throw(std::exception)

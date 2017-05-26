@@ -55,6 +55,9 @@ public:
     KfWebSocketServer();
     virtual ~KfWebSocketServer();
 
+    void enableWebSocketOutputLog();
+    void disableWebSocketOutputLog(); 
+
     /// Blocking mode
     void run(const uint16_t& port) throw(std::exception);
 

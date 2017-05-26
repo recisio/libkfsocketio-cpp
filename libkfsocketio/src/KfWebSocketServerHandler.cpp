@@ -81,6 +81,10 @@ KfWebSocketServerHandler::KfWebSocketServerHandler() :
 {
     m_server.init_asio();
 }
+KfWebSocketServerHandler::~KfWebSocketServerHandler()
+{
+    unbindListeners();
+}
 
 void KfWebSocketServerHandler::unbindListeners()
 {

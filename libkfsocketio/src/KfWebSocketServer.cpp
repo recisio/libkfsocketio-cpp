@@ -35,3 +35,78 @@ KfWebSocketServer::~KfWebSocketServer()
 {
     delete m_handler;
 }
+
+void KfWebSocketServer::unbindListeners()
+{
+    m_handler->unbindListeners();
+}
+
+void KfWebSocketServer::setOpenListener(ConnectionListener listener)
+{
+    m_handler->setOpenListener(listener);
+}
+
+void KfWebSocketServer::setCloseListener(ConnectionListener listener)
+{
+    m_handler->setCloseListener(listener);
+}
+
+void KfWebSocketServer::setFailListener(ConnectionListener listener)
+{
+    m_handler->setFailListener(listener);
+}
+
+void KfWebSocketServer::setHttpListener(ConnectionListener listener)
+{
+    m_handler->setHttpListener(listener);
+}
+
+void KfWebSocketServer::setInterruptListener(ConnectionListener listener)
+{
+    m_handler->setInterruptListener(listener);
+}
+
+void KfWebSocketServer::setSocketInitListener(ConnectionListener listener)
+{
+    m_handler->setSocketInitListener(listener);
+}
+
+void KfWebSocketServer::setTcpInitListener(ConnectionListener listener)
+{
+    m_handler->setTcpInitListener(listener);
+}
+
+void KfWebSocketServer::setTcpPostInitListener(ConnectionListener listener)
+{
+    m_handler->setTcpPostInitListener(listener);
+}
+
+void KfWebSocketServer::setTcpPreInitListener(ConnectionListener listener)
+{
+    m_handler->setTcpPreInitListener(listener);
+}
+
+void KfWebSocketServer::setValidateListener(ValidateListener listener)
+{
+    m_handler->setValidateListener(listener);
+}
+
+void KfWebSocketServer::setMessageListener(MessageListener listener)
+{
+    m_handler->setMessageListener(listener);
+}
+
+void KfWebSocketServer::setPingListener(PingListener listener)
+{
+    m_handler->setPingListener(listener);
+}
+
+void KfWebSocketServer::setPongListener(PongListener listener)
+{
+    m_handler->setPongListener(listener);
+}
+
+void KfWebSocketServer::setPongTimeoutListener(PongListener listener)
+{
+    m_handler->setPongTimeoutListener(listener);
+}

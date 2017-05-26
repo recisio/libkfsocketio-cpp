@@ -48,6 +48,7 @@ public:
 
 public:
     KfWebSocketServerHandler();
+    ~KfWebSocketServerHandler();
 
     void unbindListeners();
 

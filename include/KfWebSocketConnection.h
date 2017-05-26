@@ -30,7 +30,6 @@ SOFTWARE.
 #define LIBKFSOCKETIO_WEBSOCKETCONNECTION_DLL __declspec(dllimport) 
 #endif // LIBKFSOCKETIO_EXPORTS
 
-#include <memory>
 #include <string>
 #include <vector>
 
@@ -207,7 +206,5 @@ private:
     KfWebSocketConImplWrapper* m_connection;
 
 };
-
-typedef std::shared_ptr<KfWebSocketConnection> KfWebSocketConnectionSPtr;
 
 #endif // _KFWEBSOCKETCONNECTION_H

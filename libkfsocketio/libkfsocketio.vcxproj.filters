@@ -48,6 +48,9 @@
     <ClCompile Include="src\KfWebSocketConnection.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
+    <ClCompile Include="src\KfWebSocketMessage.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\KfSioListener.h">
@@ -85,6 +88,12 @@
     </ClInclude>
     <ClInclude Include="src\KfWebSocketConImplWrapper.h">
       <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="src\KfWebSocketMessageImplWrapper.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\KfWebSocketMessage.h">
+      <Filter>Fichiers d%27en-tête\public</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

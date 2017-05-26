@@ -26,6 +26,7 @@ SOFTWARE.
 #include <functional>
 
 #include "KfWebSocketConImplWrapper.h"
+#include "KfWebSocketMessageImplWrapper.h"
 
 #ifdef KFSIO_THREAD_SAFE
 #define _KFSIO_WSSERVER_LOCK m_mutex.lock()
@@ -320,9 +321,13 @@ void KfWebSocketServerHandler::onServerInterrupt(websocketpp::connection_hdl con
 
 void KfWebSocketServerHandler::onServerMessage(websocketpp::connection_hdl con, websocketpp::connection<websocketpp::config::asio>::message_ptr msgPtr)
 {
-    /// @todo MessageWrapper
     _KFWEBSOCKET_CAST_CONNECTION_CBRETVOID(con);
     _KFSIO_WSSERVER_LOCK;
+    if (nullptr != m_messageListener) {
+        KfWebSocketMessage kfMsg(KfWebSocketMessageImplWrapper({msgPtr}));
+        KfWebSocketConnection kfCon(KfWebSocketConImplWrapper({connection}));
+        m_messageListener(kfCon, kfMsg);
+    }
     _KFSIO_WSSERVER_UNLOCK;
 }
 

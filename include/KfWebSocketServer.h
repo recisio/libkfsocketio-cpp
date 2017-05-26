@@ -39,6 +39,7 @@ SOFTWARE.
 #include <string>
 
 #include "KfWebSocketConnection.h"
+#include "KfWebSocketMessage.h"
 
 class KfWebSocketServerHandler;
 
@@ -47,7 +48,7 @@ class LIBKFSOCKETIO_WEBSOCKETSERVER_DLL KfWebSocketServer {
 public:
     typedef std::function<void(const KfWebSocketConnection&)> ConnectionListener;
     typedef std::function<bool(const KfWebSocketConnection&)> ValidateListener;
-    typedef std::function<void(const KfWebSocketConnection&)> MessageListener; /// @todo MessageWrapper
+    typedef std::function<void(const KfWebSocketConnection&, const KfWebSocketMessage&)> MessageListener;
     typedef std::function<bool(const KfWebSocketConnection&, std::string)> PingListener;
     typedef std::function<void(const KfWebSocketConnection&, std::string)> PongListener;
 

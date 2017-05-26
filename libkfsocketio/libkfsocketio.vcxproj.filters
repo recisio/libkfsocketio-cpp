@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Fichiers d%27en-tête\public">
+      <UniqueIdentifier>{b280de19-5cd2-485f-8c89-d2e6ff792ba8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\lib\socket.io-client-cpp\src\sio_client.cpp">
@@ -34,33 +37,45 @@
       <Filter>Fichiers sources</Filter>
     </ClCompile>
     <ClCompile Include="src\KfSioListener.cpp">
-      <Filter>Fichiers d%27en-tête</Filter>
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\KfWebSocketServer.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\KfWebSocketServerHandler.cpp">
+      <Filter>Fichiers sources</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\lib\socket.io-client-cpp\src\sio_client.h">
-      <Filter>Fichiers sources</Filter>
-    </ClInclude>
-    <ClInclude Include="..\lib\socket.io-client-cpp\src\sio_message.h">
-      <Filter>Fichiers sources</Filter>
-    </ClInclude>
-    <ClInclude Include="..\lib\socket.io-client-cpp\src\sio_socket.h">
-      <Filter>Fichiers sources</Filter>
-    </ClInclude>
-    <ClInclude Include="..\lib\socket.io-client-cpp\src\internal\sio_client_impl.h">
-      <Filter>Fichiers sources</Filter>
-    </ClInclude>
-    <ClInclude Include="..\lib\socket.io-client-cpp\src\internal\sio_packet.h">
-      <Filter>Fichiers sources</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\KfSioClient.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\KfSioMessage.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
     <ClInclude Include="src\KfSioListener.h">
       <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\socket.io-client-cpp\src\sio_client.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\socket.io-client-cpp\src\internal\sio_client_impl.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\socket.io-client-cpp\src\sio_message.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\socket.io-client-cpp\src\internal\sio_packet.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\socket.io-client-cpp\src\sio_socket.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="src\KfWebSocketServerHandler.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\KfSioClient.h">
+      <Filter>Fichiers d%27en-tête\public</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\KfSioMessage.h">
+      <Filter>Fichiers d%27en-tête\public</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\KfWebSocketServer.h">
+      <Filter>Fichiers d%27en-tête\public</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

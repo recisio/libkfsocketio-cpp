@@ -96,14 +96,19 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>KFSIO_THREAD_SAFE;NO_VS4290_WARNING;_WEBSOCKETPP_NOEXCEPT_TOKEN_=noexcept;WIN32;_DEBUG;_WINDOWS;_USRDLL;LIBKFSOCKETIO_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\lib\socket.io-client-cpp\src;$(SolutionDir)..\include;$(SolutionDir)..\lib\boost_1_64_0\build\include\boost-1_64;$(SolutionDir)..\lib\socket.io-client-cpp\lib\websocketpp;$(SolutionDir)..\lib\socket.io-client-cpp\lib\rapidjson\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>KFSIO_THREAD_SAFE;NO_VS4290_WARNING;_WEBSOCKETPP_CPP11_STL_;_WEBSOCKETPP_CPP11_REGEX_;_WEBSOCKETPP_NOEXCEPT_TOKEN_=noexcept;WIN32;_DEBUG;_WINDOWS;_USRDLL;LIBKFSOCKETIO_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\lib\openssl\build\include;$(SolutionDir)..\lib\socket.io-client-cpp\src;$(SolutionDir)..\include;$(SolutionDir)..\lib\boost_1_64_0\build\include\boost-1_64;$(SolutionDir)..\lib\socket.io-client-cpp\lib\websocketpp;$(SolutionDir)..\lib\socket.io-client-cpp\lib\rapidjson\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp14</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
-      <AdditionalLibraryDirectories>$(SolutionDir)..\lib\boost_1_64_0\build\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>boost.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)..\lib\boost_1_64_0\build\lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>crypt32.lib;$(SolutionDir)..\lib\openssl\build\lib\libssl.lib;$(SolutionDir)..\lib\openssl\build\lib\libcrypto.lib;boost.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreSpecificDefaultLibraries>
+      </IgnoreSpecificDefaultLibraries>
+      <IgnoreAllDefaultLibraries>
+      </IgnoreAllDefaultLibraries>
+      <ShowProgress>NotSet</ShowProgress>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -112,14 +117,19 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>KFSIO_THREAD_SAFE;NO_VS4290_WARNING;_WEBSOCKETPP_NOEXCEPT_TOKEN_=noexcept;_DEBUG;_WINDOWS;_USRDLL;LIBKFSOCKETIO_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\lib\socket.io-client-cpp\src;$(SolutionDir)..\include;$(SolutionDir)..\lib\boost_1_64_0\build\include\boost-1_64;$(SolutionDir)..\lib\socket.io-client-cpp\lib\websocketpp;$(SolutionDir)..\lib\socket.io-client-cpp\lib\rapidjson\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>KFSIO_THREAD_SAFE;NO_VS4290_WARNING;_WEBSOCKETPP_CPP11_STL_;_WEBSOCKETPP_CPP11_REGEX_;_WEBSOCKETPP_NOEXCEPT_TOKEN_=noexcept;_DEBUG;_WINDOWS;_USRDLL;LIBKFSOCKETIO_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\lib\openssl\build\include;$(SolutionDir)..\lib\socket.io-client-cpp\src;$(SolutionDir)..\include;$(SolutionDir)..\lib\boost_1_64_0\build\include\boost-1_64;$(SolutionDir)..\lib\socket.io-client-cpp\lib\websocketpp;$(SolutionDir)..\lib\socket.io-client-cpp\lib\rapidjson\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp14</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
-      <AdditionalLibraryDirectories>$(SolutionDir)..\lib\boost_1_64_0\build\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>boost.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)..\lib\boost_1_64_0\build\lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>crypt32.lib;$(SolutionDir)..\lib\openssl\build\lib\libssl.lib;$(SolutionDir)..\lib\openssl\build\lib\libcrypto.lib;boost.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreSpecificDefaultLibraries>
+      </IgnoreSpecificDefaultLibraries>
+      <IgnoreAllDefaultLibraries>
+      </IgnoreAllDefaultLibraries>
+      <ShowProgress>NotSet</ShowProgress>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -130,16 +140,21 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>KFSIO_THREAD_SAFE;NO_VS4290_WARNING;_WEBSOCKETPP_NOEXCEPT_TOKEN_=noexcept;WIN32;NDEBUG;_WINDOWS;_USRDLL;LIBKFSOCKETIO_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\lib\socket.io-client-cpp\src;$(SolutionDir)..\include;$(SolutionDir)..\lib\boost_1_64_0\build\include\boost-1_64;$(SolutionDir)..\lib\socket.io-client-cpp\lib\websocketpp;$(SolutionDir)..\lib\socket.io-client-cpp\lib\rapidjson\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>KFSIO_THREAD_SAFE;NO_VS4290_WARNING;_WEBSOCKETPP_CPP11_STL_;_WEBSOCKETPP_CPP11_REGEX_;_WEBSOCKETPP_NOEXCEPT_TOKEN_=noexcept;WIN32;NDEBUG;_WINDOWS;_USRDLL;LIBKFSOCKETIO_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\lib\openssl\build\include;$(SolutionDir)..\lib\socket.io-client-cpp\src;$(SolutionDir)..\include;$(SolutionDir)..\lib\boost_1_64_0\build\include\boost-1_64;$(SolutionDir)..\lib\socket.io-client-cpp\lib\websocketpp;$(SolutionDir)..\lib\socket.io-client-cpp\lib\rapidjson\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp14</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>$(SolutionDir)..\lib\boost_1_64_0\build\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>boost.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)..\lib\boost_1_64_0\build\lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>crypt32.lib;$(SolutionDir)..\lib\openssl\build\lib\libssl.lib;$(SolutionDir)..\lib\openssl\build\lib\libcrypto.lib;boost.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreSpecificDefaultLibraries>
+      </IgnoreSpecificDefaultLibraries>
+      <IgnoreAllDefaultLibraries>
+      </IgnoreAllDefaultLibraries>
+      <ShowProgress>NotSet</ShowProgress>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -150,16 +165,21 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>KFSIO_THREAD_SAFE;NO_VS4290_WARNING;_WEBSOCKETPP_NOEXCEPT_TOKEN_=noexcept;NDEBUG;_WINDOWS;_USRDLL;LIBKFSOCKETIO_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\lib\socket.io-client-cpp\src;$(SolutionDir)..\include;$(SolutionDir)..\lib\boost_1_64_0\build\include\boost-1_64;$(SolutionDir)..\lib\socket.io-client-cpp\lib\websocketpp;$(SolutionDir)..\lib\socket.io-client-cpp\lib\rapidjson\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>KFSIO_THREAD_SAFE;NO_VS4290_WARNING;_WEBSOCKETPP_CPP11_STL_;_WEBSOCKETPP_CPP11_REGEX_;_WEBSOCKETPP_NOEXCEPT_TOKEN_=noexcept;NDEBUG;_WINDOWS;_USRDLL;LIBKFSOCKETIO_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\lib\openssl\build\include;$(SolutionDir)..\lib\socket.io-client-cpp\src;$(SolutionDir)..\include;$(SolutionDir)..\lib\boost_1_64_0\build\include\boost-1_64;$(SolutionDir)..\lib\socket.io-client-cpp\lib\websocketpp;$(SolutionDir)..\lib\socket.io-client-cpp\lib\rapidjson\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp14</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>$(SolutionDir)..\lib\boost_1_64_0\build\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>boost.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)..\lib\boost_1_64_0\build\lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>crypt32.lib;$(SolutionDir)..\lib\openssl\build\lib\libssl.lib;$(SolutionDir)..\lib\openssl\build\lib\libcrypto.lib;boost.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreSpecificDefaultLibraries>
+      </IgnoreSpecificDefaultLibraries>
+      <IgnoreAllDefaultLibraries>
+      </IgnoreAllDefaultLibraries>
+      <ShowProgress>NotSet</ShowProgress>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -170,16 +190,20 @@
     <ClCompile Include="src\KfSioClient.cpp" />
     <ClCompile Include="src\KfSioListener.cpp" />
     <ClCompile Include="src\KfSioMessage.cpp" />
+    <ClCompile Include="src\KfWebSocketServer.cpp" />
+    <ClCompile Include="src\KfWebSocketServerHandler.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\KfSioClient.h" />
     <ClInclude Include="..\include\KfSioMessage.h" />
+    <ClInclude Include="..\include\KfWebSocketServer.h" />
     <ClInclude Include="..\lib\socket.io-client-cpp\src\internal\sio_client_impl.h" />
     <ClInclude Include="..\lib\socket.io-client-cpp\src\internal\sio_packet.h" />
     <ClInclude Include="..\lib\socket.io-client-cpp\src\sio_client.h" />
     <ClInclude Include="..\lib\socket.io-client-cpp\src\sio_message.h" />
     <ClInclude Include="..\lib\socket.io-client-cpp\src\sio_socket.h" />
     <ClInclude Include="src\KfSioListener.h" />
+    <ClInclude Include="src\KfWebSocketServerHandler.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

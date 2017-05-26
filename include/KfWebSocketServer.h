@@ -30,6 +30,11 @@ SOFTWARE.
 #define LIBKFSOCKETIO_WEBSOCKETSERVER_DLL __declspec(dllimport) 
 #endif // LIBKFSOCKETIO_EXPORTS
 
+// Disable nothrow spec warning if needed
+#ifdef NO_VS4290_WARNING
+#pragma warning(disable : 4290)  
+#endif
+
 #include <functional>
 #include <string>
 
@@ -50,8 +55,24 @@ public:
     LIBKFSOCKETIO_WEBSOCKETSERVER_DLL KfWebSocketServer();
     LIBKFSOCKETIO_WEBSOCKETSERVER_DLL virtual ~KfWebSocketServer();
 
-    LIBKFSOCKETIO_WEBSOCKETSERVER_DLL void unbindListeners();
+    /// Blocking mode
+    LIBKFSOCKETIO_WEBSOCKETSERVER_DLL void run(const uint16_t& port) throw(std::exception);
 
+    /// Non-blocking mode
+    LIBKFSOCKETIO_WEBSOCKETSERVER_DLL void start(const uint16_t& port) throw(std::exception);
+    LIBKFSOCKETIO_WEBSOCKETSERVER_DLL size_t poll();
+    LIBKFSOCKETIO_WEBSOCKETSERVER_DLL size_t pollOne();
+
+    /// Stop either one of blocking or non-blocking connections
+    LIBKFSOCKETIO_WEBSOCKETSERVER_DLL void stop();
+
+    LIBKFSOCKETIO_WEBSOCKETSERVER_DLL bool isListening() const;
+    LIBKFSOCKETIO_WEBSOCKETSERVER_DLL bool isStopped() const;
+    LIBKFSOCKETIO_WEBSOCKETSERVER_DLL bool isSecure() const;
+
+    /// Calbacks setup
+
+    LIBKFSOCKETIO_WEBSOCKETSERVER_DLL void unbindListeners();
     LIBKFSOCKETIO_WEBSOCKETSERVER_DLL void setOpenListener(ConnectionListener listener);
     LIBKFSOCKETIO_WEBSOCKETSERVER_DLL void setCloseListener(ConnectionListener listener);
     LIBKFSOCKETIO_WEBSOCKETSERVER_DLL void setFailListener(ConnectionListener listener);

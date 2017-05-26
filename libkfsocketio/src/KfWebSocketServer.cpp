@@ -25,6 +25,10 @@ SOFTWARE.
 
 #include "KfWebSocketServerHandler.h"
 
+#include "websocketpp/server.hpp"
+#include "websocketpp/connection.hpp"
+#include "websocketpp/config/asio.hpp"
+
 KfWebSocketServer::KfWebSocketServer() :
     m_handler(new KfWebSocketServerHandler())
 {
@@ -34,6 +38,50 @@ KfWebSocketServer::KfWebSocketServer() :
 KfWebSocketServer::~KfWebSocketServer()
 {
     delete m_handler;
+}
+
+void KfWebSocketServer::run(const uint16_t& port) throw(std::exception)
+{
+    m_handler->m_server.listen(port);
+    m_handler->m_server.start_accept();
+    m_handler->m_server.run();
+}
+
+void KfWebSocketServer::start(const uint16_t& port) throw(std::exception)
+{
+    m_handler->m_server.listen(port);
+    m_handler->m_server.start_accept();
+}
+
+size_t KfWebSocketServer::poll()
+{
+    return m_handler->m_server.poll();
+}
+
+size_t KfWebSocketServer::pollOne()
+{
+    return m_handler->m_server.poll_one();
+}
+
+void KfWebSocketServer::stop()
+{
+    m_handler->m_server.stop_listening();
+    m_handler->m_server.stop();
+}
+
+bool KfWebSocketServer::isListening() const
+{
+    return m_handler->m_server.is_listening();
+}
+
+bool KfWebSocketServer::isStopped() const
+{
+    return m_handler->m_server.stopped();
+}
+
+bool KfWebSocketServer::isSecure() const
+{
+    return m_handler->m_server.is_secure();
 }
 
 void KfWebSocketServer::unbindListeners()

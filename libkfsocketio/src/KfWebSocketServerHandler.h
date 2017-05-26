@@ -41,11 +41,11 @@ class KfWebSocketServerHandler {
     friend class KfWebSocketServer;
 
 public:
-    typedef std::function<void(const KfWebSocketConnection&)> ConnectionListener;
-    typedef std::function<bool(const KfWebSocketConnection&)> ValidateListener;
-    typedef std::function<void(const KfWebSocketConnection&, const KfWebSocketMessage&)> MessageListener;
-    typedef std::function<bool(const KfWebSocketConnection&, std::string)> PingListener;
-    typedef std::function<void(const KfWebSocketConnection&, std::string)> PongListener;
+    typedef std::function<void(KfWebSocketConnection&)> ConnectionListener;
+    typedef std::function<bool(KfWebSocketConnection&)> ValidateListener;
+    typedef std::function<void(KfWebSocketConnection&, KfWebSocketMessage&)> MessageListener;
+    typedef std::function<bool(KfWebSocketConnection&, std::string)> PingListener;
+    typedef std::function<void(KfWebSocketConnection&, std::string)> PongListener;
 
 public:
     KfWebSocketServerHandler();

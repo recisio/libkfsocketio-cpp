@@ -41,6 +41,7 @@ class KfWebSocketServerHandler {
 
 public:
     typedef std::function<void(const KfWebSocketConnection&)> ConnectionListener;
+    typedef std::function<bool(const KfWebSocketConnection&)> ValidateListener;
     typedef std::function<void(const KfWebSocketConnection&)> MessageListener; /// @todo MessageWrapper
     typedef std::function<bool(const KfWebSocketConnection&, std::string)> PingListener;
     typedef std::function<void(const KfWebSocketConnection&, std::string)> PongListener;
@@ -60,7 +61,7 @@ public:
     void setTcpInitListener(ConnectionListener listener);
     void setTcpPostInitListener(ConnectionListener listener);
     void setTcpPreInitListener(ConnectionListener listener);
-    void setValidateListener(ConnectionListener listener);
+    void setValidateListener(ValidateListener listener);
     void setMessageListener(MessageListener listener);
     void setPingListener(PingListener listener);
     void setPongListener(PongListener listener);
@@ -99,7 +100,7 @@ private:
     ConnectionListener m_tcpInitListener;
     ConnectionListener m_tcpPostInitListener;
     ConnectionListener m_tcpPreInitListener;
-    ConnectionListener m_validateListener;
+    ValidateListener m_validateListener;
     MessageListener m_messageListener;
     PingListener m_pingListener;
     PongListener m_pongListener;

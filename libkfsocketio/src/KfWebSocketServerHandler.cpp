@@ -176,7 +176,7 @@ void KfWebSocketServerHandler::setTcpPreInitListener(ConnectionListener listener
     _KFSIO_WSSERVER_UNLOCK;
 }
 
-void KfWebSocketServerHandler::setValidateListener(ConnectionListener listener)
+void KfWebSocketServerHandler::setValidateListener(ValidateListener listener)
 {
     _KFSIO_WSSERVER_LOCK;
     m_validateListener = listener;
@@ -243,6 +243,7 @@ void KfWebSocketServerHandler::onServerInterrupt(websocketpp::connection_hdl con
 
 void KfWebSocketServerHandler::onServerMessage(websocketpp::connection_hdl con, websocketpp::connection<websocketpp::config::asio>::message_ptr msgPtr)
 {
+    /// @todo MessageWrapper
     _KFWEBSOCKET_CAST_CONNECTION_CBRETVOID(con);
     _KFSIO_WSSERVER_LOCK;
     _KFSIO_WSSERVER_UNLOCK;
@@ -251,15 +252,24 @@ void KfWebSocketServerHandler::onServerMessage(websocketpp::connection_hdl con, 
 bool KfWebSocketServerHandler::onServerPing(websocketpp::connection_hdl con, std::string msg)
 {
     _KFWEBSOCKET_CAST_CONNECTION_CBRETBOOL(con);
+    bool ret = true;
     _KFSIO_WSSERVER_LOCK;
+    if (nullptr != m_pingListener) {
+        KfWebSocketConnection kfCon(KfWebSocketConImplWrapper({connection}));
+        ret = m_pingListener(kfCon, msg);
+    }
     _KFSIO_WSSERVER_UNLOCK;
-    return true;
+    return ret;
 }
 
 void KfWebSocketServerHandler::onServerPong(websocketpp::connection_hdl con, std::string msg)
 {
     _KFWEBSOCKET_CAST_CONNECTION_CBRETVOID(con);
     _KFSIO_WSSERVER_LOCK;
+    if (nullptr != m_pongListener) {
+        KfWebSocketConnection kfCon(KfWebSocketConImplWrapper({connection}));
+        m_pongListener(kfCon, msg);
+    }
     _KFSIO_WSSERVER_UNLOCK;
 }
 
@@ -267,14 +277,18 @@ void KfWebSocketServerHandler::onServerPongTimeout(websocketpp::connection_hdl c
 {
     _KFWEBSOCKET_CAST_CONNECTION_CBRETVOID(con);
     _KFSIO_WSSERVER_LOCK;
+    if (nullptr != m_pongTimeoutListener) {
+        KfWebSocketConnection kfCon(KfWebSocketConImplWrapper({connection}));
+        m_pongTimeoutListener(kfCon, msg);
+    }
     _KFSIO_WSSERVER_UNLOCK;
 }
 
-void KfWebSocketServerHandler::onServerSocketInit(websocketpp::connection_hdl con, boost::asio::ip::tcp::socket& sock)
+void KfWebSocketServerHandler::onServerSocketInit(websocketpp::connection_hdl con, boost::asio::ip::tcp::socket&)
 {
+    /// @todo Check if passing the socket is useful
     _KFWEBSOCKET_CAST_CONNECTION_CBRETVOID(con);
-    _KFSIO_WSSERVER_LOCK;
-    _KFSIO_WSSERVER_UNLOCK;
+    _KFWEBSOCKET_SIMPLE_CONCB(m_socketInitListener, connection);
 }
 
 void KfWebSocketServerHandler::onServerTcpInit(websocketpp::connection_hdl con)
@@ -298,7 +312,12 @@ void KfWebSocketServerHandler::onServerTcpPreInit(websocketpp::connection_hdl co
 bool KfWebSocketServerHandler::onServerValidate(websocketpp::connection_hdl con)
 {
     _KFWEBSOCKET_CAST_CONNECTION_CBRETBOOL(con);
+    bool ret = true;
     _KFSIO_WSSERVER_LOCK;
+    if (nullptr != m_validateListener) {
+        KfWebSocketConnection kfCon(KfWebSocketConImplWrapper({connection}));
+        ret = m_validateListener(kfCon);
+    }
     _KFSIO_WSSERVER_UNLOCK;
-    return true;
+    return ret;
 }

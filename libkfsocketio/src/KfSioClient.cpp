@@ -26,21 +26,15 @@ SOFTWARE.
 #include "KfSioListener.h"
 #include "sio_client.h"
 
-#ifdef KFSIO_THREAD_SAFE
 #define _KFSIO_CLIENT_LOCK m_mutex.lock()
 #define _KFSIO_CLIENT_UNLOCK m_mutex.unlock()
-#else 
-#define _KFSIO_CLIENT_LOCK
-#define _KFSIO_CLIENT_UNLOCK
-#endif // KFSIO_THREAD_SAFE
 
 KfSioClient::KfSioClient() :
-#ifdef KFSIO_THREAD_SAFE
     m_mutex(),
-#endif // KFSIO_THREAD_SAFE
     m_client(new sio::client()),
-    m_listener(new KfSioListener(m_client))
+    m_listener(nullptr)
 {
+    m_listener = new KfSioListener(m_client);
 }
 
 KfSioClient::~KfSioClient()

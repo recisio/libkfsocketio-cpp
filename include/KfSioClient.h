@@ -27,9 +27,7 @@ SOFTWARE.
 #include <functional>
 #include <string>
 #include <map>
-#ifdef KFSIO_THREAD_SAFE
 #include <mutex>
-#endif // KFSIO_THREAD_SAFE
 
 #include "KfSioMessage.h"
 
@@ -102,9 +100,7 @@ public:
 
 
 private:
-#ifdef KFSIO_THREAD_SAFE
     std::mutex m_mutex;
-#endif // KFSIO_THREAD_SAFE
     sio::client* m_client;
     KfSioListener* m_listener;
 

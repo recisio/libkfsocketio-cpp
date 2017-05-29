@@ -28,13 +28,8 @@ SOFTWARE.
 #include "KfWebSocketConImplWrapper.h"
 #include "KfWebSocketMessageImplWrapper.h"
 
-#ifdef KFSIO_THREAD_SAFE
 #define _KFSIO_WSSERVER_LOCK m_mutex.lock()
 #define _KFSIO_WSSERVER_UNLOCK m_mutex.unlock()
-#else 
-#define _KFSIO_WSSERVER_LOCK
-#define _KFSIO_WSSERVER_UNLOCK
-#endif // KFSIO_THREAD_SAFE
 
 #define _KFWEBSOCKET_CAST_CONNECTION_CB(con) \
 websocketpp::server<websocketpp::config::asio>::connection_ptr connection; \
@@ -61,9 +56,7 @@ if (nullptr != cb) { \
 _KFSIO_WSSERVER_UNLOCK 
 
 KfWebSocketServerHandler::KfWebSocketServerHandler() :
-#ifdef KFSIO_THREAD_SAFE
     m_mutex(),
-#endif // KFSIO_THREAD_SAFE
     m_server(),
     m_openListener(nullptr),
     m_closeListener(nullptr),

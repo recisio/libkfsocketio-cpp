@@ -24,9 +24,7 @@ SOFTWARE.
 */
 
 #include <string>
-#ifdef KFSIO_THREAD_SAFE
 #include <mutex>
-#endif // KFSIO_THREAD_SAFE
 
 #include "websocketpp/server.hpp"
 #include "websocketpp/connection.hpp"
@@ -85,9 +83,7 @@ private:
     bool onServerValidate(websocketpp::connection_hdl con);
 
 private:
-#ifdef KFSIO_THREAD_SAFE
     std::mutex m_mutex;
-#endif // KFSIO_THREAD_SAFE
     websocketpp::server<websocketpp::config::asio> m_server;
 
     ConnectionListener m_openListener;

@@ -23,18 +23,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#ifdef KFSIO_THREAD_SAFE
 #define _KFSIO_LISTENER_LOCK m_mutex.lock()
 #define _KFSIO_LISTENER_UNLOCK m_mutex.unlock()
-#else 
-#define _KFSIO_LISTENER_LOCK
-#define _KFSIO_LISTENER_UNLOCK
-#endif // KFSIO_THREAD_SAFE
 
 KfSioListener::KfSioListener(sio::client* client) :
-#ifdef KFSIO_THREAD_SAFE
     m_mutex(),
-#endif // KFSIO_THREAD_SAFE
     m_client(client),
     m_clientOpenListener(nullptr),
     m_clientFailListener(nullptr),
@@ -44,23 +37,11 @@ KfSioListener::KfSioListener(sio::client* client) :
     m_socketOpenListener(nullptr),
     m_socketCloseListener(nullptr)
 {
-    bindClient();
 }
 
 KfSioListener::~KfSioListener()
 {
     unbindClient();
-}
-
-void KfSioListener::bindClient()
-{
-    m_client->set_close_listener(std::bind(&KfSioListener::onClientClose, this, std::placeholders::_1));
-    m_client->set_fail_listener(std::bind(&KfSioListener::onClientFail, this));
-    m_client->set_open_listener(std::bind(&KfSioListener::onClientOpen, this));
-    m_client->set_reconnecting_listener(std::bind(&KfSioListener::onClientReconnecting, this));
-    m_client->set_reconnect_listener(std::bind(&KfSioListener::onClientReconnect, this, std::placeholders::_1, std::placeholders::_2));
-    m_client->set_socket_close_listener(std::bind(&KfSioListener::onSocketClose, this, std::placeholders::_1));
-    m_client->set_socket_open_listener(std::bind(&KfSioListener::onSocketOpen, this, std::placeholders::_1));
 }
 
 void KfSioListener::unbindClient()
@@ -87,6 +68,11 @@ void KfSioListener::setClientOpenListener(const ConnectionListener& listener)
 {
     _KFSIO_LISTENER_LOCK;
     m_clientOpenListener = listener;
+    if (nullptr != listener) {
+        m_client->set_open_listener(std::bind(&KfSioListener::onClientOpen, this));
+    } else {
+        m_client->set_open_listener(nullptr);
+    }
     _KFSIO_LISTENER_UNLOCK;
 }
 
@@ -94,6 +80,11 @@ void KfSioListener::setClientCloseListener(const CloseListener& listener)
 {
     _KFSIO_LISTENER_LOCK;
     m_clientCloseListener = listener;
+    if (nullptr != listener) {
+        m_client->set_close_listener(std::bind(&KfSioListener::onClientClose, this, std::placeholders::_1));
+    } else {
+        m_client->set_close_listener(nullptr);
+    }
     _KFSIO_LISTENER_UNLOCK;
 }
 
@@ -101,6 +92,11 @@ void KfSioListener::setClientFailListener(const ConnectionListener& listener)
 {
     _KFSIO_LISTENER_LOCK;
     m_clientFailListener = listener;
+    if (nullptr != m_clientFailListener) {
+        m_client->set_fail_listener(std::bind(&KfSioListener::onClientFail, this));
+    } else {
+        m_client->set_fail_listener(nullptr);
+    }
     _KFSIO_LISTENER_UNLOCK;
 }
 
@@ -108,6 +104,11 @@ void KfSioListener::setClientReconnectingListener(const ConnectionListener& list
 {
     _KFSIO_LISTENER_LOCK;
     m_clientReconnectingListener = listener;
+    if (nullptr != listener) {
+        m_client->set_reconnecting_listener(std::bind(&KfSioListener::onClientReconnecting, this));
+    } else {
+        m_client->set_reconnecting_listener(nullptr);
+    }
     _KFSIO_LISTENER_UNLOCK;
 }
 
@@ -115,6 +116,11 @@ void KfSioListener::setClientReconnectListener(const ReconnectListener& listener
 {
     _KFSIO_LISTENER_LOCK;
     m_clientReconnectListener = listener;
+    if (nullptr != listener) {
+        m_client->set_reconnect_listener(std::bind(&KfSioListener::onClientReconnect, this, std::placeholders::_1, std::placeholders::_2));
+    } else {
+        m_client->set_reconnect_listener(nullptr);
+    }
     _KFSIO_LISTENER_UNLOCK;
 }
 
@@ -122,6 +128,11 @@ void KfSioListener::setSocketOpenListener(const SocketListener& listener)
 {
     _KFSIO_LISTENER_LOCK;
     m_socketOpenListener = listener;
+    if (nullptr != listener) {
+        m_client->set_socket_open_listener(std::bind(&KfSioListener::onSocketOpen, this, std::placeholders::_1));
+    } else {
+        m_client->set_socket_open_listener(nullptr);
+    }
     _KFSIO_LISTENER_UNLOCK;
 }
 
@@ -129,6 +140,11 @@ void KfSioListener::setSocketCloseListener(const SocketListener& listener)
 {
     _KFSIO_LISTENER_LOCK;
     m_socketCloseListener = listener;
+    if (nullptr != listener) {
+        m_client->set_socket_close_listener(std::bind(&KfSioListener::onSocketClose, this, std::placeholders::_1));
+    } else {
+        m_client->set_socket_close_listener(nullptr);
+    }
     _KFSIO_LISTENER_UNLOCK;
 }
 

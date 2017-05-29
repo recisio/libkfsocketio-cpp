@@ -26,9 +26,7 @@ SOFTWARE.
 #include "sio_client.h"
 #include <functional>
 
-#ifdef KFSIO_THREAD_SAFE
 #include <mutex>
-#endif // KFSIO_THREAD_SAFE
 
 class KfSioListener {
 
@@ -58,7 +56,6 @@ public:
     void setSocketCloseListener(const SocketListener& listener);
 
 private:
-    void bindClient();
     void unbindClient();
 
     void onClientClose(sio::client::close_reason const& reason);
@@ -70,9 +67,7 @@ private:
     void onSocketOpen(std::string const& nsp);
 
 private:
-#ifdef KFSIO_THREAD_SAFE
     std::mutex m_mutex;
-#endif // KFSIO_THREAD_SAFE
     sio::client* m_client;
 
     ConnectionListener m_clientOpenListener;

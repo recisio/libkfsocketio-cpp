@@ -137,6 +137,13 @@ public:
         HTTP_STATUS_NETWORK_AUTH_REQUIRED = 511
     } HttpStatusCode;
 
+    typedef enum {
+        STATE_CONNECTING = 0,
+        STATE_OPEN = 1,
+        STATE_CLOSING = 2,
+        STATE_CLOSED = 3
+    } ConnectionState;
+
 public:
     KfWebSocketConnection(const KfWebSocketConImplWrapper& wrapper);
     KfWebSocketConnection(const KfWebSocketConnection& copy);
@@ -203,6 +210,8 @@ public:
     std::vector<std::string> getRequestedSubProtocols() const;
     std::string getSubProtocol() const;
     std::string getUri() const;
+
+    ConnectionState getState() const;
 
 private:
     KfWebSocketConImplWrapper* m_connection;

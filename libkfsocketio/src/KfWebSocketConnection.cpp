@@ -241,3 +241,11 @@ std::string KfWebSocketConnection::getUri() const
     return uri->str();
 }
 
+KfWebSocketConnection::ConnectionState KfWebSocketConnection::getState() const
+{
+    if (nullptr == m_connection->connection) {
+        return STATE_CLOSED;
+    }
+    return (ConnectionState) m_connection->connection->get_state();
+}
+

@@ -42,7 +42,7 @@ KfWebSocketConnection::~KfWebSocketConnection()
     delete m_connection;
 }
 
-bool KfWebSocketConnection::operator==(const KfWebSocketConnection& con)
+bool KfWebSocketConnection::operator==(const KfWebSocketConnection& con)  const
 {
     return con.m_connection->connection == m_connection->connection;
 }

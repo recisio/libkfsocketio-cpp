@@ -98,6 +98,12 @@ public:
         const AckListener& ack = nullptr,
         const std::string& socketNs = "");
 
+    void emit(
+        const std::string& name,
+        const std::string& message,
+        const AckListener& ack = nullptr,
+        const std::string& socketNs = "");
+
 
 private:
     std::mutex m_mutex;

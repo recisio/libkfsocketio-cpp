@@ -271,6 +271,7 @@ int KfSioMessage::getInt() const throw(std::bad_typeid)
     if (!isInt()) {
         throw std::bad_typeid();
     }
+
     return (int) m_message->get_int();
 }
 

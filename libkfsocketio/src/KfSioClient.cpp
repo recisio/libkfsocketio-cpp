@@ -195,6 +195,13 @@ void KfSioClient::offError(const std::string& socketNs)
     _KFSIO_CLIENT_UNLOCK;
 }
 
+void KfSioClient::emit(const std::string& name, const std::string& message, const AckListener& ack, const std::string& socketNs)
+{
+    KfSioMessageList msgList;
+    msgList.push_back(KfSioMessage(message));
+    emit(name, msgList, ack, socketNs);
+}
+
 void KfSioClient::emit(const std::string& name, const KfSioMessageList& msglist, const AckListener& ack, const std::string& socketNs)
 {
     sio::message::list sioMsgList = nullptr;

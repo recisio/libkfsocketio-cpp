@@ -42,6 +42,11 @@ KfWebSocketConnection::~KfWebSocketConnection()
     delete m_connection;
 }
 
+bool KfWebSocketConnection::operator==(const KfWebSocketConnection& con)
+{
+    return con.m_connection->connection == m_connection->connection;
+}
+
 void KfWebSocketConnection::setOpenHandshakeTimeout(const long& timeout)
 {
     m_connection->connection->set_open_handshake_timeout(timeout);

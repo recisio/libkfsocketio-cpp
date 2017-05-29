@@ -142,6 +142,8 @@ public:
     KfWebSocketConnection(const KfWebSocketConnection& copy);
     virtual ~KfWebSocketConnection();
 
+    bool operator==(const KfWebSocketConnection& con);
+
     // General timeouts
 
     void setOpenHandshakeTimeout(const long& timeout);

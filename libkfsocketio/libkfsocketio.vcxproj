@@ -74,11 +74,13 @@
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)..\build\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)..\build\$(Configuration)\</IntDir>
+    <TargetName>$(ProjectName)-dbg</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)..\build\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)..\build\$(Configuration)\</IntDir>
+    <TargetName>$(ProjectName)-dbg</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -103,7 +105,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <AdditionalLibraryDirectories>$(SolutionDir)..\lib\boost_1_64_0\build\lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>crypt32.lib;$(SolutionDir)..\lib\openssl\build\lib\libssl.lib;$(SolutionDir)..\lib\openssl\build\lib\libcrypto.lib;boost.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>crypt32.lib;$(SolutionDir)..\lib\openssl\build\lib\libssl.lib;$(SolutionDir)..\lib\openssl\build\lib\libcrypto.lib;boost-dbg.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>
       </IgnoreSpecificDefaultLibraries>
       <IgnoreAllDefaultLibraries>
@@ -124,7 +126,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <AdditionalLibraryDirectories>$(SolutionDir)..\lib\boost_1_64_0\build\lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>crypt32.lib;$(SolutionDir)..\lib\openssl\build\lib\libssl.lib;$(SolutionDir)..\lib\openssl\build\lib\libcrypto.lib;boost.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>crypt32.lib;$(SolutionDir)..\lib\openssl\build\lib\libssl.lib;$(SolutionDir)..\lib\openssl\build\lib\libcrypto.lib;boost-dbg.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>
       </IgnoreSpecificDefaultLibraries>
       <IgnoreAllDefaultLibraries>

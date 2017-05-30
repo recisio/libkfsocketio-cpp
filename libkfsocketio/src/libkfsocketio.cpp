@@ -2,6 +2,7 @@
 
 #include "KfSioClient.h"
 #include "KfWebSocketServer.h"
+#include "KfSioMessage.h"
 
 IKfSioClient* __stdcall KfSioClientFactory()
 {
@@ -11,4 +12,9 @@ IKfSioClient* __stdcall KfSioClientFactory()
 IKfWebSocketServer* __stdcall KfWebSocketServerFactory()
 {
     return new KfWebSocketServer();
+}
+
+IKfSioMessage* __stdcall KfSioMessageFactory()
+{
+    return new KfSioMessage();
 }

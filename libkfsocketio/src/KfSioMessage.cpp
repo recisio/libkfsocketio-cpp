@@ -229,47 +229,47 @@ int KfSioMessage::getMessageType() const
     }
 }
 
-const bool KfSioMessage::isInt() const
+bool KfSioMessage::isInt() const
 {
     return (nullptr != m_message && m_message->get_flag() == sio::message::flag_integer);
 }
 
-const bool KfSioMessage::isDouble() const
+bool KfSioMessage::isDouble() const
 {
     return (nullptr != m_message && m_message->get_flag() == sio::message::flag_double);
 }
 
-const bool KfSioMessage::isString() const
+bool KfSioMessage::isString() const
 {
     return (nullptr != m_message && m_message->get_flag() == sio::message::flag_string);
 }
 
-const bool KfSioMessage::isBinary() const
+bool KfSioMessage::isBinary() const
 {
     return (nullptr != m_message && m_message->get_flag() == sio::message::flag_binary);
 }
 
-const bool KfSioMessage::isArray() const
+bool KfSioMessage::isArray() const
 {
     return (nullptr != m_message && m_message->get_flag() == sio::message::flag_array);
 }
 
-const bool KfSioMessage::isObject() const
+bool KfSioMessage::isObject() const
 {
     return (nullptr != m_message && m_message->get_flag() == sio::message::flag_object);
 }
 
-const bool KfSioMessage::isBool() const
+bool KfSioMessage::isBool() const
 {
     return (nullptr != m_message && m_message->get_flag() == sio::message::flag_boolean);
 }
 
-const bool KfSioMessage::isNull() const
+bool KfSioMessage::isNull() const
 {
     return (nullptr != m_message && m_message->get_flag() == sio::message::flag_null);
 }
 
-const bool KfSioMessage::isUndefined() const
+bool KfSioMessage::isUndefined() const
 {
     return nullptr == m_message;
 }
@@ -320,7 +320,7 @@ std::vector<KfSioMessagePtr> KfSioMessage::getArray() const
     const std::vector<std::shared_ptr<sio::message> >& vVec = m_message->get_vector();
 
     for (const std::shared_ptr<sio::message>& ptr : vVec) {
-        ret.push_back(std::make_shared<KfSioMessage>(new KfSioMessage(ptr.get())));
+        ret.push_back(std::make_shared<KfSioMessage>(ptr.get()));
     }
 
     return ret;
@@ -336,7 +336,7 @@ std::map<std::string, KfSioMessagePtr> KfSioMessage::getObject() const
     const std::map<std::string, std::shared_ptr<sio::message> >& vMap = m_message->get_map();
 
     for (const std::pair<std::string, std::shared_ptr<sio::message> >& vPair : vMap) {
-        ret[vPair.first] = std::make_shared<KfSioMessage>(new KfSioMessage(vPair.second.get()));
+        ret[vPair.first] = std::make_shared<KfSioMessage>(vPair.second.get());
     }
 
     return ret;

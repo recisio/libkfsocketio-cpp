@@ -34,9 +34,11 @@ SOFTWARE.
 
 #include "IKfSioClient.h"
 #include "IKfWebSocketServer.h"
+#include "IKfSioMessage.h"
 
 extern "C" LIBKFSOCKETIO_ABSTRACT_DLL IKfSioClient* __stdcall KfSioClientFactory();
 extern "C" LIBKFSOCKETIO_ABSTRACT_DLL IKfWebSocketServer* __stdcall KfWebSocketServerFactory();
+extern "C" LIBKFSOCKETIO_ABSTRACT_DLL IKfSioMessage* __stdcall KfSioMessageFactory();
 
 
 #endif // _LIBKFSOCKETIO_H

@@ -140,10 +140,10 @@ void KfSioClient::on(std::string const& eventName, EventListener eventListener, 
         KfSioMessageList ackList;
         int msgSize = (int) ackMessage.size();
         for (int i = 0; i < msgSize; ++i) {
-            ackList.push_back(std::make_shared<KfSioMessage>(new KfSioMessage(ackMessage.at(i).get())));
+            ackList.push_back(std::make_shared<KfSioMessage>(ackMessage.at(i).get()));
         }
 
-        KfSioMessagePtr kfmessage = std::make_shared<KfSioMessage>(new KfSioMessage(message.get()));
+        KfSioMessagePtr kfmessage = std::make_shared<KfSioMessage>(message.get());
         eventListener(name, kfmessage, needAck, ackList);
 
         int ackSize = (int) ackList.size();
@@ -186,7 +186,7 @@ void KfSioClient::onError(ErrorListener listener, const std::string& socketNs)
 {
     _KFSIO_CLIENT_LOCK;
     m_client->socket(socketNs)->on_error([listener](const std::shared_ptr<sio::message>& message) {
-        KfSioMessagePtr kfmsg = std::make_shared<KfSioMessage>(new KfSioMessage(message.get()));
+        KfSioMessagePtr kfmsg = std::make_shared<KfSioMessage>(message.get());
         listener(kfmsg);
     });
     _KFSIO_CLIENT_UNLOCK;
@@ -202,7 +202,7 @@ void KfSioClient::offError(const std::string& socketNs)
 void KfSioClient::emit(const std::string& name, const std::string& message, const AckListener& ack, const std::string& socketNs)
 {
     KfSioMessageList msgList;
-    msgList.push_back(std::make_shared<KfSioMessage>(new KfSioMessage(message)));
+    msgList.push_back(std::make_shared<KfSioMessage>(message));
     emit(name, msgList, ack, socketNs);
 }
 
@@ -225,7 +225,7 @@ void KfSioClient::emit(const std::string& name, const KfSioMessageList& msglist,
             KfSioMessageList ackList;
             int msgSize = (int) ackMsgList.size();
             for (int i = 0; i < msgSize; ++i) {
-                ackList.push_back(std::make_shared<KfSioMessage>(new KfSioMessage(ackMsgList.at(i).get())));
+                ackList.push_back(std::make_shared<KfSioMessage>(ackMsgList.at(i).get()));
             }
             ack(ackList);
         };

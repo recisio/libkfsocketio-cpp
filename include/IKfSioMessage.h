@@ -55,15 +55,15 @@ public:
     virtual void create(const nullptr_t& msg) = 0;
 
     virtual int getMessageType() const = 0;
-    virtual const bool isInt() const = 0;
-    virtual const bool isDouble() const = 0;
-    virtual const bool isString() const = 0;
-    virtual const bool isBinary() const = 0;
-    virtual const bool isArray() const = 0;
-    virtual const bool isObject() const = 0;
-    virtual const bool isBool() const = 0;
-    virtual const bool isNull() const = 0;
-    virtual const bool isUndefined() const = 0;
+    virtual bool isInt() const = 0;
+    virtual bool isDouble() const = 0;
+    virtual bool isString() const = 0;
+    virtual bool isBinary() const = 0;
+    virtual bool isArray() const = 0;
+    virtual bool isObject() const = 0;
+    virtual bool isBool() const = 0;
+    virtual bool isNull() const = 0;
+    virtual bool isUndefined() const = 0;
 
     virtual int getInt() const = 0;
     virtual double getDouble() const = 0;

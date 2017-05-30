@@ -26,6 +26,11 @@ SOFTWARE.
 
 #include <string>
 #include <vector>
+#include <memory>
+
+class IKfWebSocketConnection;
+
+typedef std::shared_ptr<IKfWebSocketConnection> KfWebSocketConnectionPtr;
 
 class IKfWebSocketConnection {
 

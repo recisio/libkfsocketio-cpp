@@ -52,8 +52,7 @@ _KFWEBSOCKET_CAST_CONNECTION_CB(con)\
 #define _KFWEBSOCKET_SIMPLE_CONCB(cb, con) \
 _KFSIO_WSSERVER_LOCK; \
 if (nullptr != cb) { \
-    KfWebSocketConnection kfCon(con); \
-    cb(kfCon); \
+    cb(std::make_shared<KfWebSocketConnection>(con)); \
 } \
 _KFSIO_WSSERVER_UNLOCK 
 
@@ -379,9 +378,7 @@ void KfWebSocketServer::onServerMessage(websocketpp::connection_hdl con, websock
     _KFWEBSOCKET_CAST_CONNECTION_CBRETVOID(con);
     _KFSIO_WSSERVER_LOCK;
     if (nullptr != m_messageListener) {
-        KfWebSocketMessage kfMsg(msgPtr);
-        KfWebSocketConnection kfCon(connection);
-        m_messageListener(kfCon, kfMsg);
+        m_messageListener(std::make_shared<KfWebSocketConnection>(connection), std::make_shared<KfWebSocketMessage>(msgPtr));
     }
     _KFSIO_WSSERVER_UNLOCK;
 }
@@ -392,8 +389,7 @@ bool KfWebSocketServer::onServerPing(websocketpp::connection_hdl con, std::strin
     bool ret = true;
     _KFSIO_WSSERVER_LOCK;
     if (nullptr != m_pingListener) {
-        KfWebSocketConnection kfCon(connection);
-        ret = m_pingListener(kfCon, msg);
+        ret = m_pingListener(std::make_shared<KfWebSocketConnection>(connection), msg);
     }
     _KFSIO_WSSERVER_UNLOCK;
     return ret;
@@ -404,8 +400,7 @@ void KfWebSocketServer::onServerPong(websocketpp::connection_hdl con, std::strin
     _KFWEBSOCKET_CAST_CONNECTION_CBRETVOID(con);
     _KFSIO_WSSERVER_LOCK;
     if (nullptr != m_pongListener) {
-        KfWebSocketConnection kfCon(connection);
-        m_pongListener(kfCon, msg);
+        m_pongListener(std::make_shared<KfWebSocketConnection>(connection), msg);
     }
     _KFSIO_WSSERVER_UNLOCK;
 }
@@ -415,8 +410,7 @@ void KfWebSocketServer::onServerPongTimeout(websocketpp::connection_hdl con, std
     _KFWEBSOCKET_CAST_CONNECTION_CBRETVOID(con);
     _KFSIO_WSSERVER_LOCK;
     if (nullptr != m_pongTimeoutListener) {
-        KfWebSocketConnection kfCon(connection);
-        m_pongTimeoutListener(kfCon, msg);
+        m_pongTimeoutListener(std::make_shared<KfWebSocketConnection>(connection), msg);
     }
     _KFSIO_WSSERVER_UNLOCK;
 }
@@ -452,8 +446,7 @@ bool KfWebSocketServer::onServerValidate(websocketpp::connection_hdl con)
     bool ret = true;
     _KFSIO_WSSERVER_LOCK;
     if (nullptr != m_validateListener) {
-        KfWebSocketConnection kfCon(connection);
-        ret = m_validateListener(kfCon);
+        ret = m_validateListener(std::make_shared<KfWebSocketConnection>(connection));
     }
     _KFSIO_WSSERVER_UNLOCK;
     return ret;

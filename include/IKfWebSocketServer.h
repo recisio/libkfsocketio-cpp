@@ -33,11 +33,11 @@ SOFTWARE.
 class IKfWebSocketServer {
 
 public:
-    typedef std::function<void(IKfWebSocketConnection&)> ConnectionListener;
-    typedef std::function<bool(IKfWebSocketConnection&)> ValidateListener;
-    typedef std::function<void(IKfWebSocketConnection&, IKfWebSocketMessage&)> MessageListener;
-    typedef std::function<bool(IKfWebSocketConnection&, std::string)> PingListener;
-    typedef std::function<void(IKfWebSocketConnection&, std::string)> PongListener;
+    typedef std::function<void(KfWebSocketConnectionPtr)> ConnectionListener;
+    typedef std::function<bool(KfWebSocketConnectionPtr)> ValidateListener;
+    typedef std::function<void(KfWebSocketConnectionPtr, KfWebSocketMessagePtr)> MessageListener;
+    typedef std::function<bool(KfWebSocketConnectionPtr, std::string)> PingListener;
+    typedef std::function<void(KfWebSocketConnectionPtr, std::string)> PongListener;
 
 public:
     virtual void enableWebSocketOutputLog() = 0;

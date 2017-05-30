@@ -25,8 +25,13 @@ SOFTWARE.
 */
 
 #include <string>
+#include <memory>
 
 #include "IKfWebSocketConnection.h"
+
+class IKfWebSocketMessage;
+
+typedef std::shared_ptr<IKfWebSocketMessage> KfWebSocketMessagePtr;
 
 class IKfWebSocketMessage {
 

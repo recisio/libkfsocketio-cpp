@@ -9,17 +9,17 @@ int main()
 {
     IKfWebSocketServer* server = KfWebSocketServerFactory();
 
-    server->setOpenListener([](IKfWebSocketConnection& con) {
+    server->setOpenListener([](KfWebSocketConnectionPtr con) {
         std::cout << "New connection!" << std::endl;
-        con.send("Welcome to the KfWebSocket echo server test!", IKfWebSocketConnection::OpCode::OPCODE_TEXT);
+        con->send("Welcome to the KfWebSocket echo server test!", IKfWebSocketConnection::OpCode::OPCODE_TEXT);
     });
 
-    server->setMessageListener([](IKfWebSocketConnection& con, IKfWebSocketMessage& message) {
-        std::cout << message.getPayload() << std::endl;
-        con.send(message.getPayload(), message.getOpcode());
+    server->setMessageListener([](KfWebSocketConnectionPtr con, KfWebSocketMessagePtr message) {
+        std::cout << message->getPayload() << std::endl;
+        con->send(message->getPayload(), message->getOpcode());
     });
 
-    server->setCloseListener([](IKfWebSocketConnection& con) {
+    server->setCloseListener([](KfWebSocketConnectionPtr con) {
         std::cout << "Connection lost" << std::endl;
     });
 

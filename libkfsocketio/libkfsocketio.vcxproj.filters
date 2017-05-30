@@ -42,13 +42,13 @@
     <ClCompile Include="src\KfWebSocketServer.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="src\KfWebSocketServerHandler.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
     <ClCompile Include="src\KfWebSocketConnection.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
     <ClCompile Include="src\KfWebSocketMessage.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\libkfsocketio.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
   </ItemGroup>
@@ -71,28 +71,37 @@
     <ClInclude Include="..\lib\socket.io-client-cpp\src\sio_socket.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="src\KfWebSocketServerHandler.h">
+    <ClInclude Include="..\include\IKfSioClient.h">
+      <Filter>Fichiers d%27en-tête\public</Filter>
+    </ClInclude>
+    <ClInclude Include="src\KfSioClient.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\KfSioClient.h">
-      <Filter>Fichiers d%27en-tête\public</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\KfSioMessage.h">
-      <Filter>Fichiers d%27en-tête\public</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\KfWebSocketServer.h">
-      <Filter>Fichiers d%27en-tête\public</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\KfWebSocketConnection.h">
-      <Filter>Fichiers d%27en-tête\public</Filter>
-    </ClInclude>
-    <ClInclude Include="src\KfWebSocketConImplWrapper.h">
+    <ClInclude Include="src\KfSioMessage.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="src\KfWebSocketMessageImplWrapper.h">
+    <ClInclude Include="src\KfWebSocketConnection.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\KfWebSocketMessage.h">
+    <ClInclude Include="src\KfWebSocketMessage.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="src\KfWebSocketServer.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\libkfsocketio.h">
+      <Filter>Fichiers d%27en-tête\public</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\IKfSioMessage.h">
+      <Filter>Fichiers d%27en-tête\public</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\IKfWebSocketConnection.h">
+      <Filter>Fichiers d%27en-tête\public</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\IKfWebSocketMessage.h">
+      <Filter>Fichiers d%27en-tête\public</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\IKfWebSocketServer.h">
       <Filter>Fichiers d%27en-tête\public</Filter>
     </ClInclude>
   </ItemGroup>

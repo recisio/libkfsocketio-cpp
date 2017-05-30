@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _IKFWEBSOCKETMESSAGE_H
+#define _IKFWEBSOCKETMESSAGE_H
 
 /*
 MIT License
@@ -23,11 +24,29 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include <memory>
+#include <string>
 
-#include "websocketpp/connection.hpp"
-#include "websocketpp/config/asio.hpp"
+#include "IKfWebSocketConnection.h"
 
-struct KfWebSocketConImplWrapper {
-    std::shared_ptr<websocketpp::connection<websocketpp::config::asio>> connection;
+class IKfWebSocketMessage {
+
+public:
+    virtual void setCompressed(const bool& isCompressed) = 0;
+    virtual void setFin(const bool& isFin) = 0;
+    virtual void setHeader(const std::string& header) = 0;
+    virtual void setOpcode(const IKfWebSocketConnection::OpCode& opcode) = 0;
+    virtual void setPayload(const std::string& payload) = 0;
+    virtual void appendPayload(const std::string& payload) = 0;
+
+    virtual bool isCompressed() const = 0;
+    virtual bool isFin() const = 0;
+    virtual bool isPrepared() const = 0;
+    virtual std::string getExtensionData() const = 0;
+    virtual std::string getHeader() const = 0;
+    virtual std::string getPayload() const = 0;
+    virtual std::string getRawPayload() const = 0;
+    virtual IKfWebSocketConnection::OpCode getOpcode() const = 0;
+
 };
+
+#endif // !_IKFWEBSOCKETMESSAGE_H

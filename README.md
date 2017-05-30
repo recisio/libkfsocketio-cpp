@@ -35,10 +35,6 @@ This project is made as an internal DLL binding for our own needs, it may or may
 * Open project in Visual Studio and compile
 * Link your project with the DLL and add <your_libkfsocketio_path>/include/ to your project path
 
-## Project configuration
-
-* **NO_VS4290_WARNING** if defined avoid C4290 for throw specification (see [Compiler Warning (level 3) C4290 on MSDN](https://msdn.microsoft.com/en-us/library/sa28fef8.aspx) )
-
 ## TLS with websocket++
 
 If the fix for [websocketpp#599](https://github.com/zaphoyd/websocketpp/issues/599) is not yet in the master branch, apply this patch to enable TLS for websockets :

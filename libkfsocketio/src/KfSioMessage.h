@@ -24,11 +24,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#ifdef LIBKFSOCKETIO_EXPORTS
-#define LIBKFSOCKETIO_SIOMESSAGE_DLL __declspec(dllexport) 
-#else
-#define LIBKFSOCKETIO_SIOMESSAGE_DLL __declspec(dllimport) 
-#endif // LIBKFSOCKETIO_EXPORTS
+#include "IKfSioMessage.h"
 
 #include <memory>
 #include <string>
@@ -41,11 +37,6 @@ class message;
 
 class KfSioClient;
 
-// Disable nothrow spec warning if needed
-#ifdef NO_VS4290_WARNING
-#pragma warning(disable : 4290)  
-#endif
-
 #define KFSIO_MSGTYPE_NONE      -1
 #define KFSIO_MSGTYPE_INT       0
 #define KFSIO_MSGTYPE_DOUBLE    1
@@ -56,7 +47,7 @@ class KfSioClient;
 #define KFSIO_MSGTYPE_BOOLEAN   6
 #define KFSIO_MSGTYPE_NULL      7
 
-class LIBKFSOCKETIO_SIOMESSAGE_DLL KfSioMessage {
+class KfSioMessage : public IKfSioMessage {
     friend class KfSioClient;
 
 public:
@@ -71,9 +62,9 @@ public:
     /// Creates a BINARY-typed message
     KfSioMessage(const std::shared_ptr<const std::string>& msg);
     /// Creates an ARRAY-typed message
-    KfSioMessage(const std::vector<KfSioMessage>& msg);
+    KfSioMessage(const std::vector<KfSioMessagePtr>& msg);
     /// Creates an OBJECT-typed message
-    KfSioMessage(const std::map<std::string, KfSioMessage>& msg);
+    KfSioMessage(const std::map<std::string, KfSioMessagePtr>& msg);
     /// Creates a BOOLEAN-typed message
     KfSioMessage(const bool& msg);
     /// Creates a NULL-typed message
@@ -85,46 +76,44 @@ public:
     ~KfSioMessage();
 
     /// Creates an INTEGER-typed message
-    void create(const int& msg);
+    virtual void create(const int& msg);
     /// Creates a DOUBLE-typed message
-    void create(const double& msg);
+    virtual void create(const double& msg);
     /// Creates a STRING-typed message
-    void create(const std::string& msg);
+    virtual void create(const std::string& msg);
     /// Creates a BINARY-typed message
-    void create(const std::shared_ptr<const std::string>& msg);
+    virtual void create(const std::shared_ptr<const std::string>& msg);
     /// Creates an ARRAY-typed message
-    void create(const std::vector<KfSioMessage>& msg);
+    virtual void create(const std::vector<KfSioMessagePtr>& msg);
     /// Creates an OBJECT-typed message
-    void create(const std::map<std::string, KfSioMessage>& msg);
+    virtual void create(const std::map<std::string, KfSioMessagePtr>& msg);
     /// Creates a BOOLEAN-typed message
-    void create(const bool& msg);
+    virtual void create(const bool& msg);
     /// Creates a NULL-typed message
-    void create(const nullptr_t& msg);
+    virtual void create(const nullptr_t& msg);
 
-    int getMessageType() const;
-    const bool isInt() const;
-    const bool isDouble() const;
-    const bool isString() const;
-    const bool isBinary() const;
-    const bool isArray() const;
-    const bool isObject() const;
-    const bool isBool() const;
-    const bool isNull() const;
-    const bool isUndefined() const;
+    virtual int getMessageType() const;
+    virtual const bool isInt() const;
+    virtual const bool isDouble() const;
+    virtual const bool isString() const;
+    virtual const bool isBinary() const;
+    virtual const bool isArray() const;
+    virtual const bool isObject() const;
+    virtual const bool isBool() const;
+    virtual const bool isNull() const;
+    virtual const bool isUndefined() const;
 
-    int getInt() const throw(std::bad_typeid);
-    double getDouble() const throw(std::bad_typeid);
-    const std::string& getString() const throw(std::bad_typeid);
-    const std::shared_ptr<const std::string>& getBinary() const throw(std::bad_typeid);
-    std::vector<KfSioMessage> getArray() const throw(std::bad_typeid);
-    std::map<std::string, KfSioMessage> getObject() const throw(std::bad_typeid);
-    bool getBool() const throw(std::bad_typeid);
+    virtual int getInt() const;
+    virtual double getDouble() const;
+    virtual const std::string& getString() const;
+    virtual const std::shared_ptr<const std::string>& getBinary() const;
+    virtual std::vector<KfSioMessagePtr> getArray() const;
+    virtual std::map<std::string, KfSioMessagePtr> getObject() const;
+    virtual bool getBool() const;
 
 private:
     std::shared_ptr<sio::message> m_message;
 
 };
-
-typedef std::vector<KfSioMessage> KfSioMessageList;
 
 #endif // _KFSIOMESSAGE_H

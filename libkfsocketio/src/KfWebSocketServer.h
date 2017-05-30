@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _KFWEBSOCKETSERVER_H
+#define _KFWEBSOCKETSERVER_H
 
 /*
 MIT License
@@ -23,6 +24,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+
+#include <functional>
 #include <string>
 #include <mutex>
 
@@ -30,41 +33,49 @@ SOFTWARE.
 #include "websocketpp/connection.hpp"
 #include "websocketpp/config/asio.hpp"
 
-#include "KfWebSocketServer.h"
-#include "KfWebSocketConnection.h"
-#include "KfWebSocketMessage.h"
+#include "IKfWebSocketServer.h"
 
-
-class KfWebSocketServerHandler {
-    friend class KfWebSocketServer;
+class KfWebSocketServer : public IKfWebSocketServer {
 
 public:
-    typedef std::function<void(KfWebSocketConnection&)> ConnectionListener;
-    typedef std::function<bool(KfWebSocketConnection&)> ValidateListener;
-    typedef std::function<void(KfWebSocketConnection&, KfWebSocketMessage&)> MessageListener;
-    typedef std::function<bool(KfWebSocketConnection&, std::string)> PingListener;
-    typedef std::function<void(KfWebSocketConnection&, std::string)> PongListener;
+    KfWebSocketServer();
+    ~KfWebSocketServer();
 
-public:
-    KfWebSocketServerHandler();
-    ~KfWebSocketServerHandler();
+    virtual void enableWebSocketOutputLog();
+    virtual void disableWebSocketOutputLog();
 
-    void unbindListeners();
+    /// Blocking mode
+    virtual void run(const uint16_t& port);
 
-    void setOpenListener(ConnectionListener listener);
-    void setCloseListener(ConnectionListener listener);
-    void setFailListener(ConnectionListener listener);
-    void setHttpListener(ConnectionListener listener);
-    void setInterruptListener(ConnectionListener listener);
-    void setSocketInitListener(ConnectionListener listener);
-    void setTcpInitListener(ConnectionListener listener);
-    void setTcpPostInitListener(ConnectionListener listener);
-    void setTcpPreInitListener(ConnectionListener listener);
-    void setValidateListener(ValidateListener listener);
-    void setMessageListener(MessageListener listener);
-    void setPingListener(PingListener listener);
-    void setPongListener(PongListener listener);
-    void setPongTimeoutListener(PongListener listener);
+    /// Non-blocking mode
+    virtual void start(const uint16_t& port);
+    virtual size_t poll();
+    virtual size_t pollOne();
+
+    /// Stop either one of blocking or non-blocking connections
+    virtual void stop();
+
+    virtual bool isListening() const;
+    virtual bool isStopped() const;
+    virtual bool isSecure() const;
+
+    /// Calbacks setup
+
+    virtual void unbindListeners();
+    virtual void setOpenListener(ConnectionListener listener);
+    virtual void setCloseListener(ConnectionListener listener);
+    virtual void setFailListener(ConnectionListener listener);
+    virtual void setHttpListener(ConnectionListener listener);
+    virtual void setInterruptListener(ConnectionListener listener);
+    virtual void setSocketInitListener(ConnectionListener listener);
+    virtual void setTcpInitListener(ConnectionListener listener);
+    virtual void setTcpPostInitListener(ConnectionListener listener);
+    virtual void setTcpPreInitListener(ConnectionListener listener);
+    virtual void setValidateListener(ValidateListener listener);
+    virtual void setMessageListener(MessageListener listener);
+    virtual void setPingListener(PingListener listener);
+    virtual void setPongListener(PongListener listener);
+    virtual void setPongTimeoutListener(PongListener listener);
 
 private:
     void onServerOpen(websocketpp::connection_hdl con);
@@ -102,3 +113,5 @@ private:
     PongListener m_pongTimeoutListener;
 
 };
+
+#endif // _KFWEBSOCKETSERVER_H

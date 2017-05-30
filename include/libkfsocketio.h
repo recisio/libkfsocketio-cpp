@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _LIBKFSOCKETIO_H
+#define _LIBKFSOCKETIO_H
 
 /*
 MIT License
@@ -23,9 +24,19 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "websocketpp/connection.hpp"
-#include "websocketpp/config/asio.hpp"
+#ifdef LIBKFSOCKETIO_EXPORTS
+#define LIBKFSOCKETIO_ABSTRACT_DLL __declspec(dllexport) 
+#else
+#define LIBKFSOCKETIO_ABSTRACT_DLL __declspec(dllimport) 
+#endif // LIBKFSOCKETIO_EXPORTS
 
-struct KfWebSocketMessageImplWrapper {
-    websocketpp::connection<websocketpp::config::asio>::message_ptr message;
-};
+#include <memory>
+
+#include "IKfSioClient.h"
+#include "IKfWebSocketServer.h"
+
+extern "C" LIBKFSOCKETIO_ABSTRACT_DLL IKfSioClient* __stdcall KfSioClientFactory();
+extern "C" LIBKFSOCKETIO_ABSTRACT_DLL IKfWebSocketServer* __stdcall KfWebSocketServerFactory();
+
+
+#endif // _LIBKFSOCKETIO_H

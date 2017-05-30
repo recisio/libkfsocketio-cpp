@@ -1,5 +1,5 @@
-#ifndef _KFWEBSOCKETCONNECTION_H
-#define _KFWEBSOCKETCONNECTION_H
+#ifndef _IKFWEBSOCKETCONNECTION_H
+#define _IKFWEBSOCKETCONNECTION_H
 
 /*
 MIT License
@@ -24,18 +24,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#ifdef LIBKFSOCKETIO_EXPORTS
-#define LIBKFSOCKETIO_WEBSOCKETCONNECTION_DLL __declspec(dllexport) 
-#else
-#define LIBKFSOCKETIO_WEBSOCKETCONNECTION_DLL __declspec(dllimport) 
-#endif // LIBKFSOCKETIO_EXPORTS
-
 #include <string>
 #include <vector>
 
-struct KfWebSocketConImplWrapper;
-
-class LIBKFSOCKETIO_WEBSOCKETCONNECTION_DLL KfWebSocketConnection {
+class IKfWebSocketConnection {
 
 public:
     typedef enum {
@@ -145,77 +137,68 @@ public:
     } ConnectionState;
 
 public:
-    KfWebSocketConnection(const KfWebSocketConImplWrapper& wrapper);
-    KfWebSocketConnection(const KfWebSocketConnection& copy);
-    virtual ~KfWebSocketConnection();
-
-    bool operator==(const KfWebSocketConnection& con) const;
+    virtual bool operator==(const IKfWebSocketConnection& con) const = 0;
 
     // General timeouts
-
-    void setOpenHandshakeTimeout(const long& timeout);
-    void setCloseHandshakeTimeout(const long& timeout);
+    virtual void setOpenHandshakeTimeout(const long& timeout) = 0;
+    virtual void setCloseHandshakeTimeout(const long& timeout) = 0;
 
     // Proxy 
 
-    void setProxyTimeout(const long& timeout);
-    void setProxy(const std::string& proxy);
-    void setProxyBasicAuth(const std::string& username, const std::string& passwd);
-
-    std::string getProxy() const;
+    virtual void setProxyTimeout(const long& timeout) = 0;
+    virtual void setProxy(const std::string& proxy) = 0;
+    virtual void setProxyBasicAuth(const std::string& username, const std::string& passwd) = 0;
+    virtual std::string getProxy() const = 0;
 
     // Http
 
-    void setMaxHttpBodySize(const size_t& size);
-    void setHttpBody(const std::string& body);
-    void setHttpStatus(const HttpStatusCode& status, const std::string& message);
-    void appendHttpHeader(const std::string& key, const std::string& value);
+    virtual void setMaxHttpBodySize(const size_t& size) = 0;
+    virtual void setHttpBody(const std::string& body) = 0;
+    virtual void setHttpStatus(const HttpStatusCode& status, const std::string& message) = 0;
+    virtual void appendHttpHeader(const std::string& key, const std::string& value) = 0;
+     
+    virtual void deferHttpResponse() = 0;
+    virtual void sendHttpResponse() = 0;
 
-    void deferHttpResponse();
-    void sendHttpResponse();
+    virtual HttpStatusCode getHttpResponseCode() const = 0;
+    virtual std::string getHttpOrigin() const = 0;
+    virtual std::string getHttpRequestBody() const = 0;
+    virtual std::string getHttpResponseMessage() const = 0;
+    virtual std::string getHttpRequestHeader(const std::string& key) const = 0;
+    virtual std::string getHttpResponseHeader(const std::string& key) const = 0;
 
-    HttpStatusCode getHttpResponseCode() const;
-    std::string getHttpOrigin() const;
-    std::string getHttpRequestBody() const;
-    std::string getHttpResponseMessage() const;
-    std::string getHttpRequestHeader(const std::string& key) const;
-    std::string getHttpResponseHeader(const std::string& key) const;
-
-    void removeHttpHeader(const std::string& key);
-    void replaceHttpHeader(const std::string& key, const std::string& value);
+    virtual void removeHttpHeader(const std::string& key) = 0;
+    virtual void replaceHttpHeader(const std::string& key, const std::string& value) = 0;
 
     // Ping/Pong
 
-    void setPongTimeout(const long& timeout);
-    void ping(const std::string& payload);
-    void pong(const std::string& payload);
+    virtual void setPongTimeout(const long& timeout) = 0;
+    virtual void ping(const std::string& payload) = 0;
+    virtual void pong(const std::string& payload) = 0;
 
     // Misc. 
 
-    void setMaxMessageSize(const size_t& size);
-    void addSubProtocol(const std::string& protocol);
+    virtual void setMaxMessageSize(const size_t& size) = 0;
+    virtual void addSubProtocol(const std::string& protocol) = 0;
 
-    size_t getBufferedAmount() const;
+    virtual size_t getBufferedAmount() const = 0;
 
-    void readFrame();
-    void writeFrame();
-    void send(const std::string& payload, const OpCode& opcode);
-    void close(const CloseStatus& status = CLOSESTATUS_NORMAL, const std::string& reason = "");
+    virtual void readFrame() = 0;
+    virtual void writeFrame() = 0;
+    virtual void send(const std::string& payload, const OpCode& opcode) = 0;
+    virtual void close(const CloseStatus& status = CLOSESTATUS_NORMAL, const std::string& reason = "") = 0;
 
-    uint16_t getPort() const;
-    int getErrorCode() const;
-    std::string getErrorMessage() const;
-    std::string getHost() const;
-    std::string getRemoteEndpoint() const;
-    std::vector<std::string> getRequestedSubProtocols() const;
-    std::string getSubProtocol() const;
-    std::string getUri() const;
+    virtual uint16_t getPort() const = 0;
+    virtual int getErrorCode() const = 0;
+    virtual std::string getErrorMessage() const = 0;
+    virtual std::string getHost() const = 0;
+    virtual std::string getRemoteEndpoint() const = 0;
+    virtual std::vector<std::string> getRequestedSubProtocols() const = 0;
+    virtual std::string getSubProtocol() const = 0;
+    virtual std::string getUri() const = 0;
 
-    ConnectionState getState() const;
-
-private:
-    KfWebSocketConImplWrapper* m_connection;
+    virtual ConnectionState getState() const = 0;
 
 };
 
-#endif // _KFWEBSOCKETCONNECTION_H
+#endif // _IKFWEBSOCKETCONNECTION_H

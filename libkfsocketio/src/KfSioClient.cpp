@@ -140,15 +140,19 @@ void KfSioClient::on(std::string const& eventName, EventListener eventListener, 
         KfSioMessageList ackList;
         int msgSize = (int) ackMessage.size();
         for (int i = 0; i < msgSize; ++i) {
-            ackList.push_back(KfSioMessage(ackMessage.at(i).get()));
+            ackList.push_back(std::make_shared<KfSioMessage>(new KfSioMessage(ackMessage.at(i).get())));
         }
 
-        KfSioMessage kfmessage(message.get());
+        KfSioMessagePtr kfmessage = std::make_shared<KfSioMessage>(new KfSioMessage(message.get()));
         eventListener(name, kfmessage, needAck, ackList);
 
         int ackSize = (int) ackList.size();
         for (int i = msgSize; i < ackSize; ++i) {
-            ackMessage.push(ackList.at(i).m_message);
+            KfSioMessage* cMsg = dynamic_cast<KfSioMessage*>(ackList.at(i).get());
+            if (nullptr == cMsg) {
+                continue;
+            }
+            ackMessage.push(cMsg->m_message);
         }
     };
 
@@ -182,7 +186,7 @@ void KfSioClient::onError(ErrorListener listener, const std::string& socketNs)
 {
     _KFSIO_CLIENT_LOCK;
     m_client->socket(socketNs)->on_error([listener](const std::shared_ptr<sio::message>& message) {
-        KfSioMessage kfmsg(message.get());
+        KfSioMessagePtr kfmsg = std::make_shared<KfSioMessage>(new KfSioMessage(message.get()));
         listener(kfmsg);
     });
     _KFSIO_CLIENT_UNLOCK;
@@ -198,7 +202,7 @@ void KfSioClient::offError(const std::string& socketNs)
 void KfSioClient::emit(const std::string& name, const std::string& message, const AckListener& ack, const std::string& socketNs)
 {
     KfSioMessageList msgList;
-    msgList.push_back(KfSioMessage(message));
+    msgList.push_back(std::make_shared<KfSioMessage>(new KfSioMessage(message)));
     emit(name, msgList, ack, socketNs);
 }
 
@@ -206,8 +210,12 @@ void KfSioClient::emit(const std::string& name, const KfSioMessageList& msglist,
 {
     sio::message::list sioMsgList = nullptr;
     if (!msglist.empty()) {
-        for (const KfSioMessage& msg : msglist) {
-            sioMsgList.push(msg.m_message);
+        for (const KfSioMessagePtr& msg : msglist) {
+            KfSioMessage* cMsg = dynamic_cast<KfSioMessage*>(msg.get());
+            if (nullptr == cMsg) {
+                continue;
+            }
+            sioMsgList.push(cMsg->m_message);
         }
     }
 
@@ -217,7 +225,7 @@ void KfSioClient::emit(const std::string& name, const KfSioMessageList& msglist,
             KfSioMessageList ackList;
             int msgSize = (int) ackMsgList.size();
             for (int i = 0; i < msgSize; ++i) {
-                ackList.push_back(KfSioMessage(ackMsgList.at(i).get()));
+                ackList.push_back(std::make_shared<KfSioMessage>(new KfSioMessage(ackMsgList.at(i).get())));
             }
             ack(ackList);
         };

@@ -24,43 +24,39 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#ifdef LIBKFSOCKETIO_EXPORTS
-#define LIBKFSOCKETIO_WEBSOCKETMESSAGE_DLL __declspec(dllexport) 
-#else
-#define LIBKFSOCKETIO_WEBSOCKETMESSAGE_DLL __declspec(dllimport) 
-#endif // LIBKFSOCKETIO_EXPORTS
-
 #include <string>
 
-#include "KfWebSocketConnection.h"
+#include "IKfWebSocketMessage.h"
 
-struct KfWebSocketMessageImplWrapper;
+#include "websocketpp/connection.hpp"
+#include "websocketpp/config/asio.hpp"
 
-class LIBKFSOCKETIO_WEBSOCKETMESSAGE_DLL KfWebSocketMessage {
+typedef websocketpp::connection<websocketpp::config::asio>::message_ptr WSMessagePtr;
+
+class KfWebSocketMessage : public IKfWebSocketMessage {
 
 public:
-    KfWebSocketMessage(const KfWebSocketMessageImplWrapper& message);
+    KfWebSocketMessage(const WSMessagePtr& message);
     KfWebSocketMessage(const KfWebSocketMessage& copy);
-    ~KfWebSocketMessage();
 
-    void setCompressed(const bool& isCompressed);
-    void setFin(const bool& isFin);
-    void setHeader(const std::string& header);
-    void setOpcode(const KfWebSocketConnection::OpCode& opcode);
-    void setPayload(const std::string& payload);
-    void appendPayload(const std::string& payload);
+    virtual void setCompressed(const bool& isCompressed);
+    virtual void setFin(const bool& isFin);
+    virtual void setHeader(const std::string& header);
+    virtual void setOpcode(const IKfWebSocketConnection::OpCode& opcode);
+    virtual void setPayload(const std::string& payload);
+    virtual void appendPayload(const std::string& payload);
 
-    bool isCompressed() const;
-    bool isFin() const;
-    bool isPrepared() const;
-    std::string getExtensionData() const;
-    std::string getHeader() const;
-    std::string getPayload() const;
-    std::string getRawPayload() const;
-    KfWebSocketConnection::OpCode getOpcode() const;
+    virtual bool isCompressed() const;
+    virtual bool isFin() const;
+    virtual bool isPrepared() const;
+    virtual std::string getExtensionData() const;
+    virtual std::string getHeader() const;
+    virtual std::string getPayload() const;
+    virtual std::string getRawPayload() const;
+    virtual IKfWebSocketConnection::OpCode getOpcode() const;
 
 private:
-    KfWebSocketMessageImplWrapper* m_message;
+    WSMessagePtr m_message;
 
 };
 

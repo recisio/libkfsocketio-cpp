@@ -9,10 +9,6 @@ int main()
 {
     IKfWebSocketServer* server = KfWebSocketServerFactory();
 
-    if (!server->isListening()) {
-        std::cout << "ok" << std::endl;
-    }
-
     server->setOpenListener([](KfWebSocketConnectionPtr con) {
         std::cout << "New connection!" << std::endl;
         con->send("Welcome to the KfWebSocket echo server test!", IKfWebSocketConnection::OpCode::OPCODE_TEXT);

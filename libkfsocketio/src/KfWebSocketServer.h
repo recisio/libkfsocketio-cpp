@@ -39,7 +39,7 @@ class KfWebSocketServer : public IKfWebSocketServer {
 
 public:
     KfWebSocketServer();
-    ~KfWebSocketServer();
+    virtual ~KfWebSocketServer();
 
     virtual void enableWebSocketOutputLog();
     virtual void disableWebSocketOutputLog();

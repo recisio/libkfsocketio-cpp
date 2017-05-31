@@ -42,6 +42,7 @@ public:
     typedef std::function<void(const KfSioMessageList&)> AckListener;
 
 public:
+    virtual ~IKfSioClient() {}
 
     // Client calls
     virtual void connect(const std::string& uri) = 0;

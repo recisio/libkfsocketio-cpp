@@ -4,17 +4,18 @@
 #include "KfWebSocketServer.h"
 #include "KfSioMessage.h"
 
-IKfSioClient* __stdcall KfSioClientFactory()
+IKfSioClient* APICALL KfSioClientFactory()
 {
     return new KfSioClient();
 }
 
-IKfWebSocketServer* __stdcall KfWebSocketServerFactory()
+IKfWebSocketServer* APICALL KfWebSocketServerFactory()
 {
     return new KfWebSocketServer();
 }
 
-IKfSioMessage* __stdcall KfSioMessageFactory()
+IKfSioMessage* APICALL KfSioMessageFactory()
 {
+    _crt_signal_t c;
     return new KfSioMessage();
 }

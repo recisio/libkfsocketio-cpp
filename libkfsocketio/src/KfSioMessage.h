@@ -68,7 +68,7 @@ public:
     /// Creates a BOOLEAN-typed message
     KfSioMessage(const bool& msg);
     /// Creates a NULL-typed message
-    KfSioMessage(const nullptr_t& msg);
+    KfSioMessage(const KFSIO_NULLTYPE& msg);
 
     KfSioMessage(const KfSioMessage& copy);
     KfSioMessage(sio::message* internal);
@@ -90,7 +90,7 @@ public:
     /// Creates a BOOLEAN-typed message
     virtual void create(const bool& msg);
     /// Creates a NULL-typed message
-    virtual void create(const nullptr_t& msg);
+    virtual void create(const KFSIO_NULLTYPE& msg);
 
     virtual int getMessageType() const;
     virtual bool isInt() const;

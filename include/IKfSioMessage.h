@@ -29,6 +29,12 @@ SOFTWARE.
 #include <memory>
 #include <map>
 
+#ifdef __BORLANDC__
+#define KFSIO_NULLTYPE std::nullptr_t
+#else
+#define KFSIO_NULLTYPE nullptr_t
+#endif
+
 class IKfSioMessage;
 
 typedef std::shared_ptr<IKfSioMessage> KfSioMessagePtr;
@@ -52,7 +58,7 @@ public:
     /// Creates a BOOLEAN-typed message
     virtual void create(const bool& msg) = 0;
     /// Creates a NULL-typed message
-    virtual void create(const nullptr_t& msg) = 0;
+    virtual void create(const KFSIO_NULLTYPE&) = 0;
 
     virtual int getMessageType() const = 0;
     virtual bool isInt() const = 0;

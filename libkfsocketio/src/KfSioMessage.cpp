@@ -73,7 +73,7 @@ KfSioMessage::KfSioMessage(const bool& msg) :
     create(msg);
 }
 
-KfSioMessage::KfSioMessage(const nullptr_t& msg) :
+KfSioMessage::KfSioMessage(const KFSIO_NULLTYPE& msg) :
     KfSioMessage()
 {
     create(msg);
@@ -196,7 +196,7 @@ void KfSioMessage::create(const bool& msg)
     m_message = sio::bool_message::create(msg);
 }
 
-void KfSioMessage::create(const nullptr_t& msg)
+void KfSioMessage::create(const KFSIO_NULLTYPE&)
 {
     m_message = sio::null_message::create();
 }

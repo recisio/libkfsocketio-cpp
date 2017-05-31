@@ -45,7 +45,7 @@ class KfSioClient : public IKfSioClient {
 
 public:
     KfSioClient();
-    ~KfSioClient();
+    virtual ~KfSioClient();
 
     // Client calls
     virtual void connect(const std::string& uri);

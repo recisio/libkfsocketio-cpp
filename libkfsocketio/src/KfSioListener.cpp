@@ -152,11 +152,11 @@ void KfSioListener::onClientClose(sio::client::close_reason const& reason)
 {
     _KFSIO_LISTENER_LOCK;
     if (nullptr != m_clientCloseListener) {
-        CloseReason reason = CLOSE_REASON_NORMAL;
+        CloseReason cReason = CLOSE_REASON_NORMAL;
         if (reason != sio::client::close_reason_normal) {
-            reason = CLOSE_REASON_DROP;
+            cReason = CLOSE_REASON_DROP;
         }
-        m_clientCloseListener((unsigned int) reason);
+        m_clientCloseListener((unsigned int) cReason);
     }
     _KFSIO_LISTENER_UNLOCK;
 }

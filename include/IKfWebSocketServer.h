@@ -40,6 +40,7 @@ public:
     typedef std::function<void(KfWebSocketConnectionPtr, std::string)> PongListener;
 
 public:
+    virtual ~IKfWebSocketServer() {}
     virtual void enableWebSocketOutputLog() = 0;
     virtual void disableWebSocketOutputLog() = 0;
 

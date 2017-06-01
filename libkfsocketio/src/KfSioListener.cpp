@@ -201,7 +201,7 @@ void KfSioListener::onSocketClose(std::string const& nsp)
 {
     _KFSIO_LISTENER_LOCK;
     if (nullptr != m_socketCloseListener) {
-        m_socketCloseListener(nsp);
+        m_socketCloseListener(nsp.c_str());
     }
     _KFSIO_LISTENER_UNLOCK;
 }
@@ -210,7 +210,7 @@ void KfSioListener::onSocketOpen(std::string const& nsp)
 {
     _KFSIO_LISTENER_LOCK;
     if (nullptr != m_socketOpenListener) {
-        m_socketOpenListener(nsp);
+        m_socketOpenListener(nsp.c_str());
     }
     _KFSIO_LISTENER_UNLOCK;
 }

@@ -30,17 +30,25 @@ SOFTWARE.
 #define LIBKFSOCKETIO_ABSTRACT_DLL __declspec(dllimport) 
 #endif // LIBKFSOCKETIO_EXPORTS
 
-#define APICALL __cdecl
+#ifndef KF_CALLCONV
+#define KF_CALLCONV __cdecl
+#endif // KF_CALLCONV
 
-#include <memory>
+#define APICALL KF_CALLCONV
 
 #include "IKfSioClient.h"
 #include "IKfWebSocketServer.h"
 #include "IKfSioMessage.h"
 
-extern "C" LIBKFSOCKETIO_ABSTRACT_DLL IKfSioClient* APICALL KfSioClientFactory();
-extern "C" LIBKFSOCKETIO_ABSTRACT_DLL IKfWebSocketServer* APICALL KfWebSocketServerFactory();
-extern "C" LIBKFSOCKETIO_ABSTRACT_DLL IKfSioMessage* APICALL KfSioMessageFactory();
+extern "C" {
+    LIBKFSOCKETIO_ABSTRACT_DLL IKfSioClient* APICALL KfSioClientFactory();
+    LIBKFSOCKETIO_ABSTRACT_DLL void APICALL KfSioClientDispose(IKfSioClient*);
 
+    LIBKFSOCKETIO_ABSTRACT_DLL IKfWebSocketServer* APICALL KfWebSocketServerFactory();
+    LIBKFSOCKETIO_ABSTRACT_DLL void APICALL KfWebSocketServerDispose(IKfWebSocketServer*);
+
+    LIBKFSOCKETIO_ABSTRACT_DLL IKfSioMessage* APICALL KfSioMessageFactory();
+    LIBKFSOCKETIO_ABSTRACT_DLL void APICALL KfSioMessageDispose(IKfSioMessage*);
+}
 
 #endif // _LIBKFSOCKETIO_H

@@ -39,21 +39,21 @@ public:
     KfWebSocketMessage(const WSMessagePtr& message);
     KfWebSocketMessage(const KfWebSocketMessage& copy);
 
-    virtual void setCompressed(const bool& isCompressed);
-    virtual void setFin(const bool& isFin);
-    virtual void setHeader(const std::string& header);
-    virtual void setOpcode(const IKfWebSocketConnection::OpCode& opcode);
-    virtual void setPayload(const std::string& payload);
-    virtual void appendPayload(const std::string& payload);
+    virtual void KF_CALLCONV setCompressed(const bool& isCompressed);
+    virtual void KF_CALLCONV setFin(const bool& isFin);
+    virtual void KF_CALLCONV setHeader(const char* header);
+    virtual void KF_CALLCONV setOpcode(const IKfWebSocketConnection::OpCode& opcode);
+    virtual void KF_CALLCONV setPayload(const char* payload);
+    virtual void KF_CALLCONV appendPayload(const char* payload);
 
-    virtual bool isCompressed() const;
-    virtual bool isFin() const;
-    virtual bool isPrepared() const;
-    virtual std::string getExtensionData() const;
-    virtual std::string getHeader() const;
-    virtual std::string getPayload() const;
-    virtual std::string getRawPayload() const;
-    virtual IKfWebSocketConnection::OpCode getOpcode() const;
+    virtual bool KF_CALLCONV isCompressed() const;
+    virtual bool KF_CALLCONV isFin() const;
+    virtual bool KF_CALLCONV isPrepared() const;
+    virtual const char* KF_CALLCONV getExtensionData() const;
+    virtual const char* KF_CALLCONV getHeader() const;
+    virtual const char* KF_CALLCONV getPayload() const;
+    virtual const char* KF_CALLCONV getRawPayload() const;
+    virtual IKfWebSocketConnection::OpCode KF_CALLCONV getOpcode() const;
 
 private:
     WSMessagePtr m_message;

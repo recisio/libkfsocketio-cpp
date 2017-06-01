@@ -33,206 +33,201 @@ KfWebSocketConnection::KfWebSocketConnection(const KfWebSocketConnection& copy) 
 {
 }
 
-bool KfWebSocketConnection::operator==(const IKfWebSocketConnection& con)  const
+bool KF_CALLCONV KfWebSocketConnection::operator==(const IKfWebSocketConnection& con)  const
 {
     return ((const KfWebSocketConnection&) con).m_connection == m_connection;
 }
 
-void KfWebSocketConnection::setOpenHandshakeTimeout(const long& timeout)
+void KF_CALLCONV KfWebSocketConnection::setOpenHandshakeTimeout(const long& timeout)
 {
     m_connection->set_open_handshake_timeout(timeout);
 }
 
-void KfWebSocketConnection::setCloseHandshakeTimeout(const long& timeout)
+void KF_CALLCONV KfWebSocketConnection::setCloseHandshakeTimeout(const long& timeout)
 {
     m_connection->set_close_handshake_timeout(timeout);
 }
 
-void KfWebSocketConnection::setProxyTimeout(const long& timeout)
+void KF_CALLCONV KfWebSocketConnection::setProxyTimeout(const long& timeout)
 {
     m_connection->set_proxy_timeout(timeout);
 }
 
-void KfWebSocketConnection::setProxy(const std::string& proxy)
+void KF_CALLCONV KfWebSocketConnection::setProxy(const char* proxy)
 {
     m_connection->set_proxy(proxy);
 }
 
-void KfWebSocketConnection::setProxyBasicAuth(const std::string& username, const std::string& passwd)
+void KF_CALLCONV KfWebSocketConnection::setProxyBasicAuth(const char* username, const char* passwd)
 {
     m_connection->set_proxy_basic_auth(username, passwd);
 }
 
-std::string KfWebSocketConnection::getProxy() const
+const char* KF_CALLCONV KfWebSocketConnection::getProxy() const
 {
-    return m_connection->get_proxy();
+    return m_connection->get_proxy().c_str();
 }
 
-void KfWebSocketConnection::setMaxHttpBodySize(const size_t& size)
+void KF_CALLCONV KfWebSocketConnection::setMaxHttpBodySize(const size_t& size)
 {
     m_connection->set_max_http_body_size(size);
 }
 
-void KfWebSocketConnection::setHttpBody(const std::string& body)
+void KF_CALLCONV KfWebSocketConnection::setHttpBody(const char* body)
 {
     m_connection->set_body(body);
 }
 
-void KfWebSocketConnection::setHttpStatus(const HttpStatusCode& status, const std::string& message)
+void KF_CALLCONV KfWebSocketConnection::setHttpStatus(const HttpStatusCode& status, const char* message)
 {
     m_connection->set_status((websocketpp::http::status_code::value) status, message);
 }
 
-void KfWebSocketConnection::appendHttpHeader(const std::string& key, const std::string& value)
+void KF_CALLCONV KfWebSocketConnection::appendHttpHeader(const char* key, const char* value)
 {
     m_connection->append_header(key, value);
 }
 
-void KfWebSocketConnection::deferHttpResponse()
+void KF_CALLCONV KfWebSocketConnection::deferHttpResponse()
 {
     m_connection->defer_http_response();
 }
 
-void KfWebSocketConnection::sendHttpResponse()
+void KF_CALLCONV KfWebSocketConnection::sendHttpResponse()
 {
     m_connection->send_http_response();
 }
 
-std::string KfWebSocketConnection::getHttpOrigin() const
+const char* KF_CALLCONV KfWebSocketConnection::getHttpOrigin() const
 {
-    return m_connection->get_origin();
+    return m_connection->get_origin().c_str();
 }
 
-std::string KfWebSocketConnection::getHttpRequestBody() const
+const char* KF_CALLCONV KfWebSocketConnection::getHttpRequestBody() const
 {
-    return m_connection->get_request_body();
+    return m_connection->get_request_body().c_str();
 }
 
-KfWebSocketConnection::HttpStatusCode KfWebSocketConnection::getHttpResponseCode() const
+KfWebSocketConnection::HttpStatusCode KF_CALLCONV KfWebSocketConnection::getHttpResponseCode() const
 {
     return (HttpStatusCode) m_connection->get_response_code();
 }
 
-std::string KfWebSocketConnection::getHttpResponseMessage() const
+const char* KF_CALLCONV KfWebSocketConnection::getHttpResponseMessage() const
 {
-    return m_connection->get_response_msg();
+    return m_connection->get_response_msg().c_str();
 }
 
-std::string KfWebSocketConnection::getHttpRequestHeader(const std::string& key) const
+const char* KF_CALLCONV KfWebSocketConnection::getHttpRequestHeader(const char* key) const
 {
-    return m_connection->get_request_header(key);
+    return m_connection->get_request_header(key).c_str();
 }
 
-std::string KfWebSocketConnection::getHttpResponseHeader(const std::string& key) const
+const char* KF_CALLCONV KfWebSocketConnection::getHttpResponseHeader(const char* key) const
 {
-    return m_connection->get_response_header(key);
+    return m_connection->get_response_header(key).c_str();
 }
 
-void KfWebSocketConnection::removeHttpHeader(const std::string& key)
+void KF_CALLCONV KfWebSocketConnection::removeHttpHeader(const char* key)
 {
     m_connection->remove_header(key);
 }
 
-void KfWebSocketConnection::replaceHttpHeader(const std::string& key, const std::string& value)
+void KF_CALLCONV KfWebSocketConnection::replaceHttpHeader(const char* key, const char* value)
 {
     m_connection->replace_header(key, value);
 }
 
-void KfWebSocketConnection::setPongTimeout(const long& timeout)
+void KF_CALLCONV KfWebSocketConnection::setPongTimeout(const long& timeout)
 {
     m_connection->set_pong_timeout(timeout);
 }
 
-void KfWebSocketConnection::ping(const std::string& payload)
+void KF_CALLCONV KfWebSocketConnection::ping(const char* payload)
 {
     m_connection->ping(payload);
 }
 
-void KfWebSocketConnection::pong(const std::string& payload)
+void KF_CALLCONV KfWebSocketConnection::pong(const char* payload)
 {
     m_connection->pong(payload);
 }
 
-void KfWebSocketConnection::setMaxMessageSize(const size_t& size)
+void KF_CALLCONV KfWebSocketConnection::setMaxMessageSize(const size_t& size)
 {
     m_connection->set_max_message_size(size);
 }
 
-void KfWebSocketConnection::addSubProtocol(const std::string& protocol)
+void KF_CALLCONV KfWebSocketConnection::addSubProtocol(const char* protocol)
 {
     m_connection->add_subprotocol(protocol);
 }
 
-size_t KfWebSocketConnection::getBufferedAmount() const
+size_t KF_CALLCONV KfWebSocketConnection::getBufferedAmount() const
 {
     return m_connection->get_buffered_amount();
 }
 
-void KfWebSocketConnection::readFrame()
+void KF_CALLCONV KfWebSocketConnection::readFrame()
 {
     m_connection->read_frame();
 }
 
-void KfWebSocketConnection::writeFrame()
+void KF_CALLCONV KfWebSocketConnection::writeFrame()
 {
     m_connection->write_frame();
 }
 
-void KfWebSocketConnection::send(const std::string& payload, const OpCode& opcode)
+void KF_CALLCONV KfWebSocketConnection::send(const char* payload, const OpCode& opcode)
 {
-    m_connection->send(payload, (websocketpp::frame::opcode::value) opcode);
+    m_connection->send(std::string(payload), (websocketpp::frame::opcode::value) opcode);
 }
 
-void KfWebSocketConnection::close(const CloseStatus& status, const std::string& reason)
+void KF_CALLCONV KfWebSocketConnection::close(const CloseStatus& status, const char* reason)
 {
     m_connection->close((websocketpp::close::status::value) status, reason);
 }
 
-uint16_t KfWebSocketConnection::getPort() const
+uint16_t KF_CALLCONV KfWebSocketConnection::getPort() const
 {
     return m_connection->get_port();
 }
 
-int KfWebSocketConnection::getErrorCode() const
+int KF_CALLCONV KfWebSocketConnection::getErrorCode() const
 {
     return m_connection->get_ec().value();
 }
 
-std::string KfWebSocketConnection::getErrorMessage() const
+const char* KF_CALLCONV KfWebSocketConnection::getErrorMessage() const
 {
-    return m_connection->get_ec().message();
+    return m_connection->get_ec().message().c_str();
 }
 
-std::string KfWebSocketConnection::getHost() const
+const char* KF_CALLCONV KfWebSocketConnection::getHost() const
 {
-    return m_connection->get_host();
+    return m_connection->get_host().c_str();
 }
 
-std::string KfWebSocketConnection::getRemoteEndpoint() const
+const char* KF_CALLCONV KfWebSocketConnection::getRemoteEndpoint() const
 {
-    return m_connection->get_remote_endpoint();
+    return m_connection->get_remote_endpoint().c_str();
 }
 
-std::vector<std::string> KfWebSocketConnection::getRequestedSubProtocols() const
+const char* KF_CALLCONV KfWebSocketConnection::getSubProtocol() const
 {
-    return m_connection->get_requested_subprotocols();
+    return m_connection->get_subprotocol().c_str();
 }
 
-std::string KfWebSocketConnection::getSubProtocol() const
-{
-    return m_connection->get_subprotocol();
-}
-
-std::string KfWebSocketConnection::getUri() const
+const char* KF_CALLCONV KfWebSocketConnection::getUri() const
 {
     auto uri = m_connection->get_uri();
     if (nullptr == uri) {
         return "";
     }
-    return uri->str();
+    return uri->str().c_str();
 }
 
-KfWebSocketConnection::ConnectionState KfWebSocketConnection::getState() const
+KfWebSocketConnection::ConnectionState KF_CALLCONV KfWebSocketConnection::getState() const
 {
     if (nullptr == m_connection) {
         return STATE_CLOSED;

@@ -37,7 +37,6 @@ class message;
 
 class KfSioClient;
 
-#define KFSIO_MSGTYPE_NONE      -1
 #define KFSIO_MSGTYPE_INT       0
 #define KFSIO_MSGTYPE_DOUBLE    1
 #define KFSIO_MSGTYPE_STRING    2
@@ -58,17 +57,13 @@ public:
     /// Creates a DOUBLE-typed message
     KfSioMessage(const double& msg);
     /// Creates a STRING-typed message
-    KfSioMessage(const std::string& msg);
+    KfSioMessage(const char* msg);
     /// Creates a BINARY-typed message
     KfSioMessage(const std::shared_ptr<const std::string>& msg);
     /// Creates an ARRAY-typed message
-    KfSioMessage(const std::vector<KfSioMessagePtr>& msg);
-    /// Creates an OBJECT-typed message
-    KfSioMessage(const std::map<std::string, KfSioMessagePtr>& msg);
+    KfSioMessage(KfSioMessageList msg);
     /// Creates a BOOLEAN-typed message
     KfSioMessage(const bool& msg);
-    /// Creates a NULL-typed message
-    KfSioMessage(const KFSIO_NULLTYPE& msg);
 
     KfSioMessage(const KfSioMessage& copy);
     KfSioMessage(sio::message* internal);
@@ -76,40 +71,36 @@ public:
     ~KfSioMessage();
 
     /// Creates an INTEGER-typed message
-    virtual void create(const int& msg);
+    virtual void KF_CALLCONV create(const int& msg);
     /// Creates a DOUBLE-typed message
-    virtual void create(const double& msg);
+    virtual void KF_CALLCONV create(const double& msg);
     /// Creates a STRING-typed message
-    virtual void create(const std::string& msg);
+    virtual void KF_CALLCONV create(const char* msg);
     /// Creates a BINARY-typed message
-    virtual void create(const std::shared_ptr<const std::string>& msg);
+    virtual void KF_CALLCONV create(const std::shared_ptr<const std::string>& msg);
     /// Creates an ARRAY-typed message
-    virtual void create(const std::vector<KfSioMessagePtr>& msg);
-    /// Creates an OBJECT-typed message
-    virtual void create(const std::map<std::string, KfSioMessagePtr>& msg);
+    virtual void KF_CALLCONV create(KfSioMessageList msg);
     /// Creates a BOOLEAN-typed message
-    virtual void create(const bool& msg);
-    /// Creates a NULL-typed message
-    virtual void create(const KFSIO_NULLTYPE& msg);
+    virtual void KF_CALLCONV create(const bool& msg);
 
-    virtual int getMessageType() const;
-    virtual bool isInt() const;
-    virtual bool isDouble() const;
-    virtual bool isString() const;
-    virtual bool isBinary() const;
-    virtual bool isArray() const;
-    virtual bool isObject() const;
-    virtual bool isBool() const;
-    virtual bool isNull() const;
-    virtual bool isUndefined() const;
+    virtual int KF_CALLCONV getMessageType() const;
+    virtual bool KF_CALLCONV isInt() const;
+    virtual bool KF_CALLCONV isDouble() const;
+    virtual bool KF_CALLCONV isString() const;
+    virtual bool KF_CALLCONV isBinary() const;
+    virtual bool KF_CALLCONV isArray() const;
+    virtual bool KF_CALLCONV isObject() const;
+    virtual bool KF_CALLCONV isBool() const;
+    virtual bool KF_CALLCONV isNull() const;
 
-    virtual int getInt() const;
-    virtual double getDouble() const;
-    virtual const std::string& getString() const;
-    virtual const std::shared_ptr<const std::string>& getBinary() const;
-    virtual std::vector<KfSioMessagePtr> getArray() const;
-    virtual std::map<std::string, KfSioMessagePtr> getObject() const;
-    virtual bool getBool() const;
+    virtual int KF_CALLCONV getInt() const;
+    virtual double KF_CALLCONV getDouble() const;
+    virtual const char* KF_CALLCONV getString() const;
+    virtual const std::shared_ptr<const std::string>& KF_CALLCONV getBinary() const;
+    virtual KfSioMessageList KF_CALLCONV getArray() const;
+    virtual bool KF_CALLCONV getBool() const;
+
+    virtual void KF_CALLCONV releaseArray(KfSioMessageList) const;
 
 private:
     std::shared_ptr<sio::message> m_message;

@@ -10,72 +10,72 @@ KfWebSocketMessage::KfWebSocketMessage(const KfWebSocketMessage& copy) :
 {
 }
 
-void KfWebSocketMessage::setCompressed(const bool& isCompressed)
+void KF_CALLCONV KfWebSocketMessage::setCompressed(const bool& isCompressed)
 {
     m_message->set_compressed(isCompressed);
 }
 
-void KfWebSocketMessage::setFin(const bool& isFin)
+void KF_CALLCONV KfWebSocketMessage::setFin(const bool& isFin)
 {
     m_message->set_fin(isFin);
 }
 
-void KfWebSocketMessage::setHeader(const std::string& header)
+void KF_CALLCONV KfWebSocketMessage::setHeader(const char* header)
 {
     m_message->set_header(header);
 }
 
-void KfWebSocketMessage::setOpcode(const IKfWebSocketConnection::OpCode& opcode)
+void KF_CALLCONV KfWebSocketMessage::setOpcode(const IKfWebSocketConnection::OpCode& opcode)
 {
     m_message->set_opcode((websocketpp::frame::opcode::value) opcode);
 }
 
-void KfWebSocketMessage::setPayload(const std::string& payload)
+void KF_CALLCONV KfWebSocketMessage::setPayload(const char* payload)
 {
     m_message->set_payload(payload);
 }
 
-void KfWebSocketMessage::appendPayload(const std::string& payload)
+void KF_CALLCONV KfWebSocketMessage::appendPayload(const char* payload)
 {
     m_message->append_payload(payload);
 }
 
-bool KfWebSocketMessage::isCompressed() const
+bool KF_CALLCONV KfWebSocketMessage::isCompressed() const
 {
     return m_message->get_compressed();
 }
 
-bool KfWebSocketMessage::isFin() const
+bool KF_CALLCONV KfWebSocketMessage::isFin() const
 {
     return m_message->get_fin();
 }
 
-bool KfWebSocketMessage::isPrepared() const
+bool KF_CALLCONV KfWebSocketMessage::isPrepared() const
 {
     return m_message->get_prepared();
 }
 
-std::string KfWebSocketMessage::getExtensionData() const
+const char* KF_CALLCONV KfWebSocketMessage::getExtensionData() const
 {
-    return m_message->get_extension_data();
+    return m_message->get_extension_data().c_str();
 }
 
-std::string KfWebSocketMessage::getHeader() const
+const char* KF_CALLCONV KfWebSocketMessage::getHeader() const
 {
-    return m_message->get_header();
+    return m_message->get_header().c_str();
 }
 
-std::string KfWebSocketMessage::getPayload() const
+const char* KF_CALLCONV KfWebSocketMessage::getPayload() const
 {
-    return m_message->get_payload();
+    return m_message->get_payload().c_str();
 }
 
-std::string KfWebSocketMessage::getRawPayload() const
+const char* KF_CALLCONV KfWebSocketMessage::getRawPayload() const
 {
-    return m_message->get_raw_payload();
+    return m_message->get_raw_payload().c_str();
 }
 
-IKfWebSocketConnection::OpCode KfWebSocketMessage::getOpcode() const
+IKfWebSocketConnection::OpCode KF_CALLCONV KfWebSocketMessage::getOpcode() const
 {
     return (IKfWebSocketConnection::OpCode) m_message->get_opcode();
 }

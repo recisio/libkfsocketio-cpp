@@ -24,33 +24,30 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include <string>
-#include <memory>
-
 #include "IKfWebSocketConnection.h"
 
 class IKfWebSocketMessage;
 
-typedef std::shared_ptr<IKfWebSocketMessage> KfWebSocketMessagePtr;
+typedef IKfWebSocketMessage* KfWebSocketMessagePtr;
 
 class IKfWebSocketMessage {
 
 public:
-    virtual void setCompressed(const bool& isCompressed) = 0;
-    virtual void setFin(const bool& isFin) = 0;
-    virtual void setHeader(const std::string& header) = 0;
-    virtual void setOpcode(const IKfWebSocketConnection::OpCode& opcode) = 0;
-    virtual void setPayload(const std::string& payload) = 0;
-    virtual void appendPayload(const std::string& payload) = 0;
+    virtual void KF_CALLCONV setCompressed(const bool& isCompressed) = 0;
+    virtual void KF_CALLCONV setFin(const bool& isFin) = 0;
+    virtual void KF_CALLCONV setHeader(const char* header) = 0;
+    virtual void KF_CALLCONV setOpcode(const IKfWebSocketConnection::OpCode& opcode) = 0;
+    virtual void KF_CALLCONV setPayload(const char* payload) = 0;
+    virtual void KF_CALLCONV appendPayload(const char* payload) = 0;
 
-    virtual bool isCompressed() const = 0;
-    virtual bool isFin() const = 0;
-    virtual bool isPrepared() const = 0;
-    virtual std::string getExtensionData() const = 0;
-    virtual std::string getHeader() const = 0;
-    virtual std::string getPayload() const = 0;
-    virtual std::string getRawPayload() const = 0;
-    virtual IKfWebSocketConnection::OpCode getOpcode() const = 0;
+    virtual bool KF_CALLCONV isCompressed() const = 0;
+    virtual bool KF_CALLCONV isFin() const = 0;
+    virtual bool KF_CALLCONV isPrepared() const = 0;
+    virtual const char* KF_CALLCONV getExtensionData() const = 0;
+    virtual const char* KF_CALLCONV getHeader() const = 0;
+    virtual const char* KF_CALLCONV getPayload() const = 0;
+    virtual const char* KF_CALLCONV getRawPayload() const = 0;
+    virtual IKfWebSocketConnection::OpCode KF_CALLCONV getOpcode() const = 0;
 
 };
 

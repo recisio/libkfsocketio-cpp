@@ -16,6 +16,20 @@ IKfWebSocketServer* APICALL KfWebSocketServerFactory()
 
 IKfSioMessage* APICALL KfSioMessageFactory()
 {
-    _crt_signal_t c;
     return new KfSioMessage();
+}
+
+void APICALL KfSioClientDispose(IKfSioClient* client)
+{
+    delete (KfSioClient*) client;
+}
+
+void APICALL KfWebSocketServerDispose(IKfWebSocketServer* server)
+{
+    delete (KfWebSocketServer*) server;
+}
+
+void APICALL KfSioMessageDispose(IKfSioMessage* message)
+{
+    delete (KfSioMessage*) message;
 }

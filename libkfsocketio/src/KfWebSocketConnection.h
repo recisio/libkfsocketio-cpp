@@ -41,69 +41,68 @@ public:
     KfWebSocketConnection(const WSConPtr& wrapper);
     KfWebSocketConnection(const KfWebSocketConnection& copy);
 
-    virtual bool operator==(const IKfWebSocketConnection& con) const;
+    virtual bool KF_CALLCONV operator==(const IKfWebSocketConnection& con) const;
 
     // General timeouts
 
-    virtual void setOpenHandshakeTimeout(const long& timeout);
-    virtual void setCloseHandshakeTimeout(const long& timeout);
+    virtual void KF_CALLCONV setOpenHandshakeTimeout(const long& timeout);
+    virtual void KF_CALLCONV setCloseHandshakeTimeout(const long& timeout);
 
     // Proxy 
 
-    virtual void setProxyTimeout(const long& timeout);
-    virtual void setProxy(const std::string& proxy);
-    virtual void setProxyBasicAuth(const std::string& username, const std::string& passwd);
+    virtual void KF_CALLCONV setProxyTimeout(const long& timeout);
+    virtual void KF_CALLCONV setProxy(const char* proxy);
+    virtual void KF_CALLCONV setProxyBasicAuth(const char* username, const char* passwd);
      
-    virtual std::string getProxy() const;
+    virtual const char* KF_CALLCONV getProxy() const;
 
     // Http
 
-    virtual void setMaxHttpBodySize(const size_t& size);
-    virtual void setHttpBody(const std::string& body);
-    virtual void setHttpStatus(const HttpStatusCode& status, const std::string& message);
-    virtual void appendHttpHeader(const std::string& key, const std::string& value);
+    virtual void KF_CALLCONV setMaxHttpBodySize(const size_t& size);
+    virtual void KF_CALLCONV setHttpBody(const char* body);
+    virtual void KF_CALLCONV setHttpStatus(const HttpStatusCode& status, const char* message);
+    virtual void KF_CALLCONV appendHttpHeader(const char* key, const char* value);
 
-    virtual void deferHttpResponse();
-    virtual void sendHttpResponse();
+    virtual void KF_CALLCONV deferHttpResponse();
+    virtual void KF_CALLCONV sendHttpResponse();
 
-    virtual HttpStatusCode getHttpResponseCode() const;
-    virtual std::string getHttpOrigin() const;
-    virtual std::string getHttpRequestBody() const;
-    virtual std::string getHttpResponseMessage() const;
-    virtual std::string getHttpRequestHeader(const std::string& key) const;
-    virtual std::string getHttpResponseHeader(const std::string& key) const;
+    virtual HttpStatusCode KF_CALLCONV getHttpResponseCode() const;
+    virtual const char* KF_CALLCONV getHttpOrigin() const;
+    virtual const char* KF_CALLCONV getHttpRequestBody() const;
+    virtual const char* KF_CALLCONV getHttpResponseMessage() const;
+    virtual const char* KF_CALLCONV getHttpRequestHeader(const char* key) const;
+    virtual const char* KF_CALLCONV getHttpResponseHeader(const char* key) const;
 
-    virtual void removeHttpHeader(const std::string& key);
-    virtual void replaceHttpHeader(const std::string& key, const std::string& value);
+    virtual void KF_CALLCONV removeHttpHeader(const char* key);
+    virtual void KF_CALLCONV replaceHttpHeader(const char* key, const char* value);
 
     // Ping/Pong
 
-    virtual void setPongTimeout(const long& timeout);
-    virtual void ping(const std::string& payload);
-    virtual void pong(const std::string& payload);
+    virtual void KF_CALLCONV setPongTimeout(const long& timeout);
+    virtual void KF_CALLCONV ping(const char* payload);
+    virtual void KF_CALLCONV pong(const char* payload);
 
     // Misc. 
 
-    virtual void setMaxMessageSize(const size_t& size);
-    virtual void addSubProtocol(const std::string& protocol);
+    virtual void KF_CALLCONV setMaxMessageSize(const size_t& size);
+    virtual void KF_CALLCONV addSubProtocol(const char* protocol);
 
-    virtual size_t getBufferedAmount() const;
+    virtual size_t KF_CALLCONV getBufferedAmount() const;
 
-    virtual void readFrame();
-    virtual void writeFrame();
-    virtual void send(const std::string& payload, const OpCode& opcode);
-    virtual void close(const CloseStatus& status = CLOSESTATUS_NORMAL, const std::string& reason = "");
+    virtual void KF_CALLCONV readFrame();
+    virtual void KF_CALLCONV writeFrame();
+    virtual void KF_CALLCONV send(const char* payload, const OpCode& opcode);
+    virtual void KF_CALLCONV close(const CloseStatus& status = CLOSESTATUS_NORMAL, const char* reason = "");
 
-    virtual uint16_t getPort() const;
-    virtual int getErrorCode() const;
-    virtual std::string getErrorMessage() const;
-    virtual std::string getHost() const;
-    virtual std::string getRemoteEndpoint() const;
-    virtual std::vector<std::string> getRequestedSubProtocols() const;
-    virtual std::string getSubProtocol() const;
-    virtual std::string getUri() const;
+    virtual uint16_t KF_CALLCONV getPort() const;
+    virtual int KF_CALLCONV getErrorCode() const;
+    virtual const char* KF_CALLCONV getErrorMessage() const;
+    virtual const char* KF_CALLCONV getHost() const;
+    virtual const char* KF_CALLCONV getRemoteEndpoint() const;
+    virtual const char* KF_CALLCONV getSubProtocol() const;
+    virtual const char* KF_CALLCONV getUri() const;
 
-    virtual ConnectionState getState() const;
+    virtual ConnectionState KF_CALLCONV getState() const;
 
 private:
     WSConPtr m_connection;

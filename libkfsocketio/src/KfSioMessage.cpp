@@ -43,7 +43,7 @@ KfSioMessage::KfSioMessage(const double& msg) :
     create(msg);
 }
 
-KfSioMessage::KfSioMessage(const std::string& msg) :
+KfSioMessage::KfSioMessage(const char* msg) :
     KfSioMessage()
 {
     create(msg);
@@ -55,25 +55,13 @@ KfSioMessage::KfSioMessage(const std::shared_ptr<const std::string>& msg) :
     create(msg);
 }
 
-KfSioMessage::KfSioMessage(const std::vector<KfSioMessagePtr>& msg) :
-    KfSioMessage()
-{
-    create(msg);
-}
-
-KfSioMessage::KfSioMessage(const std::map<std::string, KfSioMessagePtr>& msg) :
+KfSioMessage::KfSioMessage(KfSioMessageList msg) :
     KfSioMessage()
 {
     create(msg);
 }
 
 KfSioMessage::KfSioMessage(const bool& msg) :
-    KfSioMessage()
-{
-    create(msg);
-}
-
-KfSioMessage::KfSioMessage(const KFSIO_NULLTYPE& msg) :
     KfSioMessage()
 {
     create(msg);
@@ -95,7 +83,7 @@ KfSioMessage::KfSioMessage(sio::message* internal) :
             create(internal->get_double());
             break;
         case sio::message::flag_string:
-            create(internal->get_string());
+            create(internal->get_string().c_str());
             break;
         case sio::message::flag_binary:
             create(internal->get_binary());
@@ -113,25 +101,12 @@ KfSioMessage::KfSioMessage(sio::message* internal) :
             m_message = apiMessage;
         }
         break;
-        case sio::message::flag_object:
-        {
-            sio::object_message::ptr apiMessage = sio::object_message::create();
-            sio::object_message* apiMessagePtr = (sio::object_message*) apiMessage.get();
-
-            std::map<std::string, std::shared_ptr<sio::message> > mmap = internal->get_map();
-            for (std::pair<std::string, std::shared_ptr<sio::message> > message : mmap) {
-                apiMessagePtr->insert(message.first, message.second);
-            }
-
-            m_message = apiMessage;
-        }
-        break;
         case sio::message::flag_boolean:
             create(internal->get_bool());
             break;
         case sio::message::flag_null:
         default:
-            create(nullptr);
+            m_message = nullptr;
     }
 }
 
@@ -139,33 +114,36 @@ KfSioMessage::~KfSioMessage()
 {
 }
 
-void KfSioMessage::create(const int& msg)
+void KF_CALLCONV KfSioMessage::create(const int& msg)
 {
     m_message = sio::int_message::create((int64_t) msg);
 }
 
-void KfSioMessage::create(const double& msg)
+void KF_CALLCONV KfSioMessage::create(const double& msg)
 {
     m_message = sio::double_message::create(msg);
 }
 
-void KfSioMessage::create(const std::string& msg)
+void KF_CALLCONV KfSioMessage::create(const char* msg)
 {
     m_message = sio::string_message::create(msg);
 }
 
-void KfSioMessage::create(const std::shared_ptr<const std::string>& msg)
+void KF_CALLCONV KfSioMessage::create(const std::shared_ptr<const std::string>& msg)
 {
     m_message = sio::binary_message::create(msg);
 }
 
-void KfSioMessage::create(const std::vector<KfSioMessagePtr>& msg)
+void KF_CALLCONV KfSioMessage::create(KfSioMessageList msg)
 {
     sio::array_message::ptr apiMessage = sio::array_message::create();
     sio::array_message* apiMessagePtr = (sio::array_message*) apiMessage.get();
 
-    for (const KfSioMessagePtr& message : msg) {
-        KfSioMessage* cMsg = dynamic_cast<KfSioMessage*>(message.get());
+    while (nullptr != msg) {
+        KfSioMessageListItem* current = msg;
+        msg = current->next;
+
+        KfSioMessage* cMsg = dynamic_cast<KfSioMessage*>(current->item);
         if (nullptr == cMsg) {
             continue;
         }
@@ -175,36 +153,15 @@ void KfSioMessage::create(const std::vector<KfSioMessagePtr>& msg)
     m_message = apiMessage;
 }
 
-void KfSioMessage::create(const std::map<std::string, KfSioMessagePtr>& msg)
-{
-    sio::object_message::ptr apiMessage = sio::object_message::create();
-    sio::object_message* apiMessagePtr = (sio::object_message*) apiMessage.get();
-
-    for (const std::pair<std::string, KfSioMessagePtr> message : msg) {
-        KfSioMessage* cMsg = dynamic_cast<KfSioMessage*>(message.second.get());
-        if (nullptr == cMsg) {
-            continue;
-        }
-        apiMessagePtr->insert(message.first, cMsg->m_message);
-    }
-
-    m_message = apiMessage;
-}
-
-void KfSioMessage::create(const bool& msg)
+void KF_CALLCONV KfSioMessage::create(const bool& msg)
 {
     m_message = sio::bool_message::create(msg);
 }
 
-void KfSioMessage::create(const KFSIO_NULLTYPE&)
-{
-    m_message = sio::null_message::create();
-}
-
-int KfSioMessage::getMessageType() const
+int KF_CALLCONV KfSioMessage::getMessageType() const
 {
     if (nullptr == m_message) {
-        return KFSIO_MSGTYPE_NONE;
+        return KFSIO_MSGTYPE_NULL;
     }
 
     switch (m_message->get_flag()) {
@@ -223,58 +180,52 @@ int KfSioMessage::getMessageType() const
         case sio::message::flag_boolean:
             return KFSIO_MSGTYPE_BOOLEAN;
         case sio::message::flag_null:
-            return KFSIO_MSGTYPE_NULL;
         default:
-            return KFSIO_MSGTYPE_NONE;
+            return KFSIO_MSGTYPE_NULL;
     }
 }
 
-bool KfSioMessage::isInt() const
+bool KF_CALLCONV KfSioMessage::isInt() const
 {
     return (nullptr != m_message && m_message->get_flag() == sio::message::flag_integer);
 }
 
-bool KfSioMessage::isDouble() const
+bool KF_CALLCONV KfSioMessage::isDouble() const
 {
     return (nullptr != m_message && m_message->get_flag() == sio::message::flag_double);
 }
 
-bool KfSioMessage::isString() const
+bool KF_CALLCONV KfSioMessage::isString() const
 {
     return (nullptr != m_message && m_message->get_flag() == sio::message::flag_string);
 }
 
-bool KfSioMessage::isBinary() const
+bool KF_CALLCONV KfSioMessage::isBinary() const
 {
     return (nullptr != m_message && m_message->get_flag() == sio::message::flag_binary);
 }
 
-bool KfSioMessage::isArray() const
+bool KF_CALLCONV KfSioMessage::isArray() const
 {
     return (nullptr != m_message && m_message->get_flag() == sio::message::flag_array);
 }
 
-bool KfSioMessage::isObject() const
+bool KF_CALLCONV KfSioMessage::isObject() const
 {
     return (nullptr != m_message && m_message->get_flag() == sio::message::flag_object);
 }
 
-bool KfSioMessage::isBool() const
+bool KF_CALLCONV KfSioMessage::isBool() const
 {
     return (nullptr != m_message && m_message->get_flag() == sio::message::flag_boolean);
 }
 
-bool KfSioMessage::isNull() const
+bool KF_CALLCONV KfSioMessage::isNull() const
 {
-    return (nullptr != m_message && m_message->get_flag() == sio::message::flag_null);
+    return (nullptr == m_message || m_message->get_flag() == sio::message::flag_null);
 }
 
-bool KfSioMessage::isUndefined() const
-{
-    return nullptr == m_message;
-}
-
-int KfSioMessage::getInt() const
+int KF_CALLCONV KfSioMessage::getInt() const
 {
     if (!isInt()) {
         throw std::bad_typeid();
@@ -283,7 +234,7 @@ int KfSioMessage::getInt() const
     return (int) m_message->get_int();
 }
 
-double KfSioMessage::getDouble() const
+double KF_CALLCONV KfSioMessage::getDouble() const
 {
     if (!isDouble()) {
         throw std::bad_typeid();
@@ -292,16 +243,16 @@ double KfSioMessage::getDouble() const
     return m_message->get_double();
 }
 
-const std::string& KfSioMessage::getString() const
+const char* KF_CALLCONV KfSioMessage::getString() const
 {
     if (!isString()) {
         throw std::bad_typeid();
     }
 
-    return m_message->get_string();
+    return m_message->get_string().c_str();
 }
 
-const std::shared_ptr<const std::string>& KfSioMessage::getBinary() const
+const std::shared_ptr<const std::string>& KF_CALLCONV KfSioMessage::getBinary() const
 {
     if (!isBinary()) {
         throw std::bad_typeid();
@@ -310,39 +261,47 @@ const std::shared_ptr<const std::string>& KfSioMessage::getBinary() const
     return m_message->get_binary();
 }
 
-std::vector<KfSioMessagePtr> KfSioMessage::getArray() const
+KfSioMessageList KF_CALLCONV KfSioMessage::getArray() const
 {
     if (!isArray()) {
         throw std::bad_typeid();
     }
 
-    std::vector<KfSioMessagePtr> ret;
+    KfSioMessageList ar = nullptr;
     const std::vector<std::shared_ptr<sio::message> >& vVec = m_message->get_vector();
 
+    KfSioMessageListItem* previous = nullptr;
     for (const std::shared_ptr<sio::message>& ptr : vVec) {
-        ret.push_back(std::make_shared<KfSioMessage>(ptr.get()));
+        KfSioMessageListItem* current = new KfSioMessageListItem();
+        if (nullptr == previous) {
+            ar = current;
+        } else {
+            previous->next = current;
+        }
+
+        current->item = new KfSioMessage(ptr.get());
+        previous = current;
     }
 
-    return ret;
+    return ar;
 }
 
-std::map<std::string, KfSioMessagePtr> KfSioMessage::getObject() const
+void KF_CALLCONV KfSioMessage::releaseArray(KfSioMessageList arr) const
 {
-    if (!isObject()) {
-        throw std::bad_typeid();
+    while (arr != nullptr) {
+        KfSioMessageListItem* current = arr;
+        arr = current->next;
+
+        KfSioMessage* item = dynamic_cast<KfSioMessage*>(current->item);
+        if (nullptr != item) {
+            delete item;
+        }
+
+        delete current;
     }
-
-    std::map<std::string, KfSioMessagePtr> ret;
-    const std::map<std::string, std::shared_ptr<sio::message> >& vMap = m_message->get_map();
-
-    for (const std::pair<std::string, std::shared_ptr<sio::message> >& vPair : vMap) {
-        ret[vPair.first] = std::make_shared<KfSioMessage>(vPair.second.get());
-    }
-
-    return ret;
 }
 
-bool KfSioMessage::getBool() const
+bool KF_CALLCONV KfSioMessage::getBool() const
 {
     if (!isBool()) {
         throw std::bad_typeid();
@@ -350,3 +309,4 @@ bool KfSioMessage::getBool() const
 
     return m_message->get_bool();
 }
+

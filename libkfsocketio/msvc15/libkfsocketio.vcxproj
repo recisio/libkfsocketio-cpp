@@ -98,11 +98,12 @@
       </PrecompiledHeader>
       <WarningLevel>Level2</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>SIO_TLS;_WEBSOCKETPP_CPP11_STL_;_WEBSOCKETPP_CPP11_REGEX_;_WEBSOCKETPP_NOEXCEPT_TOKEN_=noexcept;WIN32;_DEBUG;_WINDOWS;_USRDLL;LIBKFSOCKETIO_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>SIO_TLS;KF_CALLCONV=__cdecl;_WEBSOCKETPP_CPP11_STL_;_WEBSOCKETPP_CPP11_REGEX_;_WEBSOCKETPP_NOEXCEPT_TOKEN_=noexcept;WIN32;_DEBUG;_WINDOWS;_USRDLL;LIBKFSOCKETIO_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(SolutionDir)..\..\lib\openssl\build\include;$(SolutionDir)..\..\lib\socket.io-client-cpp\src;$(SolutionDir)..\..\include;$(SolutionDir)..\..\lib\boost_1_64_0\build\include\boost-1_64;$(SolutionDir)..\..\lib\socket.io-client-cpp\lib\websocketpp;$(SolutionDir)..\..\lib\socket.io-client-cpp\lib\rapidjson\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp14</LanguageStandard>
       <AssemblerOutput>NoListing</AssemblerOutput>
       <CallingConvention>Cdecl</CallingConvention>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -121,11 +122,12 @@
       </PrecompiledHeader>
       <WarningLevel>Level2</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>SIO_TLS;_WEBSOCKETPP_CPP11_STL_;_WEBSOCKETPP_CPP11_REGEX_;_WEBSOCKETPP_NOEXCEPT_TOKEN_=noexcept;_DEBUG;_WINDOWS;_USRDLL;LIBKFSOCKETIO_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>SIO_TLS;KF_CALLCONV=__cdecl;_WEBSOCKETPP_CPP11_STL_;_WEBSOCKETPP_CPP11_REGEX_;_WEBSOCKETPP_NOEXCEPT_TOKEN_=noexcept;_DEBUG;_WINDOWS;_USRDLL;LIBKFSOCKETIO_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(SolutionDir)..\..\lib\openssl\build\include;$(SolutionDir)..\..\lib\socket.io-client-cpp\src;$(SolutionDir)..\..\include;$(SolutionDir)..\..\lib\boost_1_64_0\build\include\boost-1_64;$(SolutionDir)..\..\lib\socket.io-client-cpp\lib\websocketpp;$(SolutionDir)..\..\lib\socket.io-client-cpp\lib\rapidjson\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp14</LanguageStandard>
       <AssemblerOutput>NoListing</AssemblerOutput>
       <CallingConvention>Cdecl</CallingConvention>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -143,14 +145,15 @@
       <WarningLevel>Level2</WarningLevel>
       <PrecompiledHeader>
       </PrecompiledHeader>
-      <Optimization>MaxSpeed</Optimization>
+      <Optimization>Disabled</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>SIO_TLS;_WEBSOCKETPP_CPP11_STL_;_WEBSOCKETPP_CPP11_REGEX_;_WEBSOCKETPP_NOEXCEPT_TOKEN_=noexcept;WIN32;NDEBUG;_WINDOWS;_USRDLL;LIBKFSOCKETIO_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>SIO_TLS;KF_CALLCONV=__cdecl;_WEBSOCKETPP_CPP11_STL_;_WEBSOCKETPP_CPP11_REGEX_;_WEBSOCKETPP_NOEXCEPT_TOKEN_=noexcept;WIN32;NDEBUG;_WINDOWS;_USRDLL;LIBKFSOCKETIO_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(SolutionDir)..\..\lib\openssl\build\include;$(SolutionDir)..\..\lib\socket.io-client-cpp\src;$(SolutionDir)..\..\include;$(SolutionDir)..\..\lib\boost_1_64_0\build\include\boost-1_64;$(SolutionDir)..\..\lib\socket.io-client-cpp\lib\websocketpp;$(SolutionDir)..\..\lib\socket.io-client-cpp\lib\rapidjson\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp14</LanguageStandard>
       <AssemblerOutput>NoListing</AssemblerOutput>
       <CallingConvention>Cdecl</CallingConvention>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -170,14 +173,15 @@
       <WarningLevel>Level2</WarningLevel>
       <PrecompiledHeader>
       </PrecompiledHeader>
-      <Optimization>MaxSpeed</Optimization>
+      <Optimization>Disabled</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>SIO_TLS;_WEBSOCKETPP_CPP11_STL_;_WEBSOCKETPP_CPP11_REGEX_;_WEBSOCKETPP_NOEXCEPT_TOKEN_=noexcept;NDEBUG;_WINDOWS;_USRDLL;LIBKFSOCKETIO_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>SIO_TLS;KF_CALLCONV=__cdecl;_WEBSOCKETPP_CPP11_STL_;_WEBSOCKETPP_CPP11_REGEX_;_WEBSOCKETPP_NOEXCEPT_TOKEN_=noexcept;NDEBUG;_WINDOWS;_USRDLL;LIBKFSOCKETIO_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(SolutionDir)..\..\lib\openssl\build\include;$(SolutionDir)..\..\lib\socket.io-client-cpp\src;$(SolutionDir)..\..\include;$(SolutionDir)..\..\lib\boost_1_64_0\build\include\boost-1_64;$(SolutionDir)..\..\lib\socket.io-client-cpp\lib\websocketpp;$(SolutionDir)..\..\lib\socket.io-client-cpp\lib\rapidjson\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp14</LanguageStandard>
       <AssemblerOutput>NoListing</AssemblerOutput>
       <CallingConvention>Cdecl</CallingConvention>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

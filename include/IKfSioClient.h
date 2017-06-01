@@ -24,68 +24,89 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+#ifdef KFSIO_USE_STDFUNCB
 #include <functional>
-#include <string>
-#include <map>
+#endif // KFSIO_USE_STDFUNCB
 
 #include "IKfSioMessage.h"
+
+typedef struct {
+    const char* key;
+    const char* value;
+} KfSioClientQueryParam;
 
 class IKfSioClient {
 
 public:
+
+#ifdef KFSIO_USE_STDFUNCB
     typedef std::function<void(void)> ConnectionListener;
     typedef std::function<void(unsigned int const& reason)> CloseListener;
     typedef std::function<void(unsigned int nAttempts, unsigned int delay)> ReconnectListener;
-    typedef std::function<void(std::string const& nsp)> SocketListener;
-    typedef std::function<void(const std::string& name, const KfSioMessagePtr& message, bool needAck, KfSioMessageList& ackMessage)> EventListener;
-    typedef std::function<void(const KfSioMessagePtr& message)> ErrorListener;
-    typedef std::function<void(const KfSioMessageList&)> AckListener;
+    typedef std::function<void(const char* nsp)> SocketListener;
+    typedef std::function<void(const char* name, KfSioMessagePtr message, bool needAck, KfSioMessageList ackMessage)> EventListener;
+    typedef std::function<void(KfSioMessagePtr message)> ErrorListener;
+    typedef std::function<void(KfSioMessageList)> AckListener;
+#else
+    typedef void (KF_CALLCONV *ConnectionListener)(void);
+    typedef void (KF_CALLCONV *CloseListener)(unsigned int const& reason);
+    typedef void (KF_CALLCONV *ReconnectListener)(unsigned int nAttempts, unsigned int delay);
+    typedef void (KF_CALLCONV *SocketListener)(const char* nsp);
+    typedef void (KF_CALLCONV *EventListener)(const char* name, KfSioMessagePtr message, bool needAck, KfSioMessageList ackMessage);
+    typedef void (KF_CALLCONV *ErrorListener)(KfSioMessagePtr message);
+    typedef void (KF_CALLCONV *AckListener)(KfSioMessageList);
+#endif // KFSIO_USE_STDFUN
 
 public:
     virtual ~IKfSioClient() {}
 
     // Client calls
-    virtual void connect(const std::string& uri) = 0;
-    virtual void connect(const std::string& uri, const std::map<std::string, std::string>& query) = 0;
-    virtual void connect(const std::string& uri, const std::map<std::string, std::string>& query, const std::map<std::string, std::string>& http_extra_headers) = 0;
-    virtual void close() = 0;
-    virtual void syncClose() = 0;
+    virtual void KF_CALLCONV connect(const char* uri) = 0;
+    virtual void KF_CALLCONV connect(const char* uri, const KfSioClientQueryParam* query, const unsigned int& queryCount) = 0;
+    virtual void KF_CALLCONV connect(
+        const char* uri, 
+        const KfSioClientQueryParam* query, 
+        const unsigned int& queryCount, 
+        const KfSioClientQueryParam* http_extra_headers, 
+        const unsigned int& extraHeaderCount) = 0;
+    virtual void KF_CALLCONV close() = 0;
+    virtual void KF_CALLCONV syncClose() = 0;
 
-    virtual bool isOpen() const = 0;
-    virtual std::string const& getSessionId() const = 0;
+    virtual bool KF_CALLCONV isOpen() const = 0;
+    virtual const char* KF_CALLCONV getSessionId() const = 0;
 
-    virtual void setClientOpenListener(const ConnectionListener& listener) = 0;
-    virtual void setClientCloseListener(const CloseListener& listener) = 0;
-    virtual void setClientFailListener(const ConnectionListener& listener) = 0;
-    virtual void setClientReconnectingListener(const ConnectionListener& listener) = 0;
-    virtual void setClientReconnectListener(const ReconnectListener& listener) = 0;
-    virtual void setSocketOpenListener(const SocketListener& listener) = 0;
-    virtual void setSocketCloseListener(const SocketListener& listener) = 0;
-    virtual void clearListeners() = 0;
+    virtual void KF_CALLCONV setClientOpenListener(const ConnectionListener& listener) = 0;
+    virtual void KF_CALLCONV setClientCloseListener(const CloseListener& listener) = 0;
+    virtual void KF_CALLCONV setClientFailListener(const ConnectionListener& listener) = 0;
+    virtual void KF_CALLCONV setClientReconnectingListener(const ConnectionListener& listener) = 0;
+    virtual void KF_CALLCONV setClientReconnectListener(const ReconnectListener& listener) = 0;
+    virtual void KF_CALLCONV setSocketOpenListener(const SocketListener& listener) = 0;
+    virtual void KF_CALLCONV setSocketCloseListener(const SocketListener& listener) = 0;
+    virtual void KF_CALLCONV clearListeners() = 0;
 
-    virtual void setReconnectAttempts(int attempts) = 0;
-    virtual void setReconnectDelay(unsigned int millis) = 0;
-    virtual void setReconnectDelayMax(unsigned int millis) = 0;
+    virtual void KF_CALLCONV setReconnectAttempts(int attempts) = 0;
+    virtual void KF_CALLCONV setReconnectDelay(unsigned int millis) = 0;
+    virtual void KF_CALLCONV setReconnectDelayMax(unsigned int millis) = 0;
 
     // Socket calls
-    virtual void on(std::string const& eventName, EventListener eventListener, const std::string& socketNs = "") = 0;
-    virtual void off(std::string const& eventName, const std::string& socketNs = "") = 0;
-    virtual void offAll(const std::string& socketNs = "") = 0;
-    virtual void close(const std::string& socketNs = "") = 0;
-    virtual void onError(ErrorListener listener, const std::string& socketNs = "") = 0;
-    virtual void offError(const std::string& socketNs = "") = 0;
+    virtual void KF_CALLCONV on(const char* eventName, EventListener eventListener, const char* socketNs = "") = 0;
+    virtual void KF_CALLCONV off(const char* eventName, const char* socketNs = "") = 0;
+    virtual void KF_CALLCONV offAll(const char* socketNs = "") = 0;
+    virtual void KF_CALLCONV close(const char* socketNs = "") = 0;
+    virtual void KF_CALLCONV onError(ErrorListener listener, const char* socketNs = "") = 0;
+    virtual void KF_CALLCONV offError(const char* socketNs = "") = 0;
 
-    virtual void emit(
-        const std::string& name,
-        const KfSioMessageList& msglist = KfSioMessageList(),
+    virtual void KF_CALLCONV emit(
+        const char* name,
+        KfSioMessageList msglist = nullptr,
         const AckListener& ack = nullptr,
-        const std::string& socketNs = "") = 0;
+        const char* socketNs = "") = 0;
 
-    virtual void emit(
-        const std::string& name,
-        const std::string& message,
+    virtual void KF_CALLCONV emit(
+        const char* name,
+        const char* message,
         const AckListener& ack = nullptr,
-        const std::string& socketNs = "") = 0;
+        const char* socketNs = "") = 0;
 
 };
 

@@ -29,7 +29,7 @@ SOFTWARE.
 
 class IKfWebSocketConnection;
 
-typedef std::shared_ptr<IKfWebSocketConnection> KfWebSocketConnectionPtr;
+typedef IKfWebSocketConnection* KfWebSocketConnectionPtr;
 
 class IKfWebSocketConnection {
 

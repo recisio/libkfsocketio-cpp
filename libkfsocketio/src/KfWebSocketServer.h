@@ -34,6 +34,7 @@ SOFTWARE.
 #include "websocketpp/config/asio.hpp"
 
 #include "IKfWebSocketServer.h"
+#include "KfWebSocketConnection.h"
 
 class KfWebSocketServer : public IKfWebSocketServer {
 
@@ -93,9 +94,12 @@ private:
     void KF_CALLCONV onServerTcpPreInit(websocketpp::connection_hdl con);
     bool KF_CALLCONV onServerValidate(websocketpp::connection_hdl con);
 
+    KfWebSocketConnectionSPtr KF_CALLCONV findConnection(websocketpp::server<websocketpp::config::asio>::connection_ptr con);
+
 private:
     std::mutex m_mutex;
     websocketpp::server<websocketpp::config::asio>* m_server;
+    std::vector<KfWebSocketConnectionSPtr> m_connections;
 
     ConnectionListener m_openListener;
     ConnectionListener m_closeListener;

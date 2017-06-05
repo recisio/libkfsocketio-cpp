@@ -32,8 +32,10 @@ SOFTWARE.
 #include "websocketpp/config/asio.hpp"
 #include "IKfWebSocketConnection.h"
 
-typedef std::shared_ptr<websocketpp::connection<websocketpp::config::asio>> WSConPtr;
+class KfWebSocketConnection;
 
+typedef std::shared_ptr<websocketpp::connection<websocketpp::config::asio>> WSConPtr;
+typedef std::shared_ptr<KfWebSocketConnection> KfWebSocketConnectionSPtr;
 
 class KfWebSocketConnection : public IKfWebSocketConnection {
 
@@ -42,6 +44,7 @@ public:
     KfWebSocketConnection(const KfWebSocketConnection& copy);
 
     virtual bool KF_CALLCONV operator==(const IKfWebSocketConnection& con) const;
+    bool KF_CALLCONV operator==(const WSConPtr& con) const;
 
     // General timeouts
 

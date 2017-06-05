@@ -38,6 +38,11 @@ bool KF_CALLCONV KfWebSocketConnection::operator==(const IKfWebSocketConnection&
     return ((const KfWebSocketConnection&) con).m_connection == m_connection;
 }
 
+bool KF_CALLCONV KfWebSocketConnection::operator==(const WSConPtr& con) const
+{
+    return m_connection == con;
+}
+
 void KF_CALLCONV KfWebSocketConnection::setOpenHandshakeTimeout(const long& timeout)
 {
     m_connection->set_open_handshake_timeout(timeout);

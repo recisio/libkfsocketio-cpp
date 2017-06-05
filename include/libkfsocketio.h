@@ -24,10 +24,16 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#ifdef LIBKFSOCKETIO_EXPORTS
-#define LIBKFSOCKETIO_ABSTRACT_DLL __declspec(dllexport) 
+#ifdef __cplusplus
+#define CEXT extern "C"
 #else
-#define LIBKFSOCKETIO_ABSTRACT_DLL __declspec(dllimport) 
+#define CEXT
+#endif // __cplusplus
+
+#ifdef LIBKFSOCKETIO_EXPORTS
+#define LIBKFSOCKETIO_ABSTRACT_DLL CEXT __declspec(dllexport) 
+#else
+#define LIBKFSOCKETIO_ABSTRACT_DLL CEXT __declspec(dllimport) 
 #endif // LIBKFSOCKETIO_EXPORTS
 
 #ifndef KF_CALLCONV
@@ -40,15 +46,14 @@ SOFTWARE.
 #include "IKfWebSocketServer.h"
 #include "IKfSioMessage.h"
 
-extern "C" {
-    LIBKFSOCKETIO_ABSTRACT_DLL IKfSioClient* APICALL KfSioClientFactory();
-    LIBKFSOCKETIO_ABSTRACT_DLL void APICALL KfSioClientDispose(IKfSioClient*);
+LIBKFSOCKETIO_ABSTRACT_DLL IKfSioClient* APICALL KfSioClientFactory();
+LIBKFSOCKETIO_ABSTRACT_DLL void APICALL KfSioClientDispose(IKfSioClient*);
 
-    LIBKFSOCKETIO_ABSTRACT_DLL IKfWebSocketServer* APICALL KfWebSocketServerFactory();
-    LIBKFSOCKETIO_ABSTRACT_DLL void APICALL KfWebSocketServerDispose(IKfWebSocketServer*);
+LIBKFSOCKETIO_ABSTRACT_DLL IKfWebSocketServer* APICALL KfWebSocketServerFactory();
+LIBKFSOCKETIO_ABSTRACT_DLL void APICALL KfWebSocketServerDispose(IKfWebSocketServer*);
 
-    LIBKFSOCKETIO_ABSTRACT_DLL IKfSioMessage* APICALL KfSioMessageFactory();
-    LIBKFSOCKETIO_ABSTRACT_DLL void APICALL KfSioMessageDispose(IKfSioMessage*);
-}
+LIBKFSOCKETIO_ABSTRACT_DLL IKfSioMessage* APICALL KfSioMessageFactory();
+LIBKFSOCKETIO_ABSTRACT_DLL void APICALL KfSioMessageDispose(IKfSioMessage*);
+
 
 #endif // _LIBKFSOCKETIO_H

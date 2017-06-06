@@ -39,7 +39,6 @@ SOFTWARE.
 class KfWebSocketServer : public IKfWebSocketServer {
 
 public:
-    KfWebSocketServer();
     virtual ~KfWebSocketServer();
 
     virtual void KF_CALLCONV enableWebSocketOutputLog();
@@ -77,6 +76,9 @@ public:
     virtual void KF_CALLCONV setPingListener(PingListener listener);
     virtual void KF_CALLCONV setPongListener(PongListener listener);
     virtual void KF_CALLCONV setPongTimeoutListener(PongListener listener);
+
+public:
+    KfWebSocketServer();
 
 private:
     void KF_CALLCONV onServerOpen(websocketpp::connection_hdl con);

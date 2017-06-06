@@ -24,9 +24,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#ifdef KFSIO_USE_STDFUNCB
 #include <functional>
-#endif // KFSIO_USE_STDFUN
 
 #include <cstdint>
 
@@ -36,19 +34,12 @@ SOFTWARE.
 class IKfWebSocketServer {
 
 public:
-#ifdef KFSIO_USE_STDFUNCB
     typedef std::function<void(KfWebSocketConnectionPtr)> ConnectionListener;
     typedef std::function<bool(KfWebSocketConnectionPtr)> ValidateListener;
     typedef std::function<void(KfWebSocketConnectionPtr, KfWebSocketMessagePtr)> MessageListener;
     typedef std::function<bool(KfWebSocketConnectionPtr, const char*)> PingListener;
     typedef std::function<void(KfWebSocketConnectionPtr, const char*)> PongListener;
-#else
-    typedef void (KF_CALLCONV *ConnectionListener)(KfWebSocketConnectionPtr);
-    typedef bool (KF_CALLCONV *ValidateListener)(KfWebSocketConnectionPtr);
-    typedef void (KF_CALLCONV *MessageListener)(KfWebSocketConnectionPtr, KfWebSocketMessagePtr);
-    typedef bool (KF_CALLCONV *PingListener)(KfWebSocketConnectionPtr, const char*);
-    typedef void (KF_CALLCONV *PongListener)(KfWebSocketConnectionPtr, const char*);
-#endif // KFSIO_USE_STDFUN
+
 
 public:
     virtual ~IKfWebSocketServer() {}

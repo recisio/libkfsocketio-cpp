@@ -71,9 +71,6 @@
     <ClInclude Include="..\..\lib\socket.io-client-cpp\src\sio_socket.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\IKfSioClient.h">
-      <Filter>Fichiers d%27en-tête\public</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\KfSioClient.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
@@ -92,17 +89,20 @@
     <ClInclude Include="..\..\include\libkfsocketio.h">
       <Filter>Fichiers d%27en-tête\public</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\IKfSioMessage.h">
-      <Filter>Fichiers d%27en-tête\public</Filter>
+    <ClInclude Include="..\src\IKfSioClient.h">
+      <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\IKfWebSocketConnection.h">
-      <Filter>Fichiers d%27en-tête\public</Filter>
+    <ClInclude Include="..\src\IKfSioMessage.h">
+      <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\IKfWebSocketMessage.h">
-      <Filter>Fichiers d%27en-tête\public</Filter>
+    <ClInclude Include="..\src\IKfWebSocketConnection.h">
+      <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\IKfWebSocketServer.h">
-      <Filter>Fichiers d%27en-tête\public</Filter>
+    <ClInclude Include="..\src\IKfWebSocketMessage.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\IKfWebSocketServer.h">
+      <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

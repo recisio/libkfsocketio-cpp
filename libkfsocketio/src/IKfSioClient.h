@@ -24,9 +24,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#ifdef KFSIO_USE_STDFUNCB
 #include <functional>
-#endif // KFSIO_USE_STDFUNCB
 
 #include "IKfSioMessage.h"
 
@@ -39,7 +37,6 @@ class IKfSioClient {
 
 public:
 
-#ifdef KFSIO_USE_STDFUNCB
     typedef std::function<void(void)> ConnectionListener;
     typedef std::function<void(unsigned int const& reason)> CloseListener;
     typedef std::function<void(unsigned int nAttempts, unsigned int delay)> ReconnectListener;
@@ -47,15 +44,6 @@ public:
     typedef std::function<void(const char* name, KfSioMessagePtr message, bool needAck, KfSioMessageList ackMessage)> EventListener;
     typedef std::function<void(KfSioMessagePtr message)> ErrorListener;
     typedef std::function<void(KfSioMessageList)> AckListener;
-#else
-    typedef void (KF_CALLCONV *ConnectionListener)(void);
-    typedef void (KF_CALLCONV *CloseListener)(unsigned int const& reason);
-    typedef void (KF_CALLCONV *ReconnectListener)(unsigned int nAttempts, unsigned int delay);
-    typedef void (KF_CALLCONV *SocketListener)(const char* nsp);
-    typedef void (KF_CALLCONV *EventListener)(const char* name, KfSioMessagePtr message, bool needAck, KfSioMessageList ackMessage);
-    typedef void (KF_CALLCONV *ErrorListener)(KfSioMessagePtr message);
-    typedef void (KF_CALLCONV *AckListener)(KfSioMessageList);
-#endif // KFSIO_USE_STDFUN
 
 public:
     virtual ~IKfSioClient() {}

@@ -36,17 +36,10 @@ public:
         CLOSE_REASON_DROP = 1
     };
 
-#ifdef KFSIO_USE_STDFUNCB
     typedef std::function<void(void)> ConnectionListener;
     typedef std::function<void(unsigned int const& reason)> CloseListener;
     typedef std::function<void(unsigned int, unsigned int)> ReconnectListener;
     typedef std::function<void(const char* nsp)> SocketListener;
-#else
-    typedef void (*ConnectionListener)(void);
-    typedef void (*CloseListener)(unsigned int const& reason);
-    typedef void (*ReconnectListener)(unsigned int, unsigned int);
-    typedef void (*SocketListener)(const char* nsp);
-#endif // KFSIO_USE_STDFUN
 
 public:
     KfSioListener(sio::client* client);

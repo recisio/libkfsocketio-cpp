@@ -28,15 +28,23 @@ SOFTWARE.
 #include <functional>
 #include <string>
 #include <mutex>
+#include <cstdint>
 
 #include "websocketpp/server.hpp"
 #include "websocketpp/connection.hpp"
 #include "websocketpp/config/asio.hpp"
 
-#include "IKfWebSocketServer.h"
 #include "KfWebSocketConnection.h"
+#include "KfWebSocketMessage.h"
 
-class KfWebSocketServer : public IKfWebSocketServer {
+class KfWebSocketServer {
+
+public:
+    typedef std::function<void(KfWebSocketConnectionPtr)> ConnectionListener;
+    typedef std::function<bool(KfWebSocketConnectionPtr)> ValidateListener;
+    typedef std::function<void(KfWebSocketConnectionPtr, KfWebSocketMessagePtr)> MessageListener;
+    typedef std::function<bool(KfWebSocketConnectionPtr, const char*)> PingListener;
+    typedef std::function<void(KfWebSocketConnectionPtr, const char*)> PongListener;
 
 public:
     virtual ~KfWebSocketServer();

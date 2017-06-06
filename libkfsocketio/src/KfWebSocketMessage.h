@@ -26,14 +26,16 @@ SOFTWARE.
 
 #include <string>
 
-#include "IKfWebSocketMessage.h"
-
+#include "KfWebSocketConnection.h"
 #include "websocketpp/connection.hpp"
 #include "websocketpp/config/asio.hpp"
 
-typedef websocketpp::connection<websocketpp::config::asio>::message_ptr WSMessagePtr;
+class KfWebSocketMessage;
 
-class KfWebSocketMessage : public IKfWebSocketMessage {
+typedef websocketpp::connection<websocketpp::config::asio>::message_ptr WSMessagePtr;
+typedef KfWebSocketMessage* KfWebSocketMessagePtr;
+
+class KfWebSocketMessage {
 
 public:
     KfWebSocketMessage(const WSMessagePtr& message);
@@ -42,7 +44,7 @@ public:
     virtual void KF_CALLCONV setCompressed(const bool& isCompressed);
     virtual void KF_CALLCONV setFin(const bool& isFin);
     virtual void KF_CALLCONV setHeader(const char* header);
-    virtual void KF_CALLCONV setOpcode(const IKfWebSocketConnection::OpCode& opcode);
+    virtual void KF_CALLCONV setOpcode(const KfWebSocketConnection::OpCode& opcode);
     virtual void KF_CALLCONV setPayload(const char* payload);
     virtual void KF_CALLCONV appendPayload(const char* payload);
 
@@ -53,7 +55,7 @@ public:
     virtual const char* KF_CALLCONV getHeader() const;
     virtual const char* KF_CALLCONV getPayload() const;
     virtual const char* KF_CALLCONV getRawPayload() const;
-    virtual IKfWebSocketConnection::OpCode KF_CALLCONV getOpcode() const;
+    virtual KfWebSocketConnection::OpCode KF_CALLCONV getOpcode() const;
 
 private:
     WSMessagePtr m_message;

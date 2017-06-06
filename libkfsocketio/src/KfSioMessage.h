@@ -24,8 +24,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "IKfSioMessage.h"
-
 #include <memory>
 #include <string>
 #include <vector>
@@ -36,6 +34,16 @@ class message;
 }
 
 class KfSioClient;
+class KfSioMessage;
+
+typedef KfSioMessage* KfSioMessagePtr;
+
+typedef struct KfSioMessageListItem {
+    KfSioMessagePtr item = nullptr;
+    KfSioMessageListItem* next = nullptr;
+} KfSioMessageListItem;
+
+typedef KfSioMessageListItem* KfSioMessageList;
 
 #define KFSIO_MSGTYPE_INT       0
 #define KFSIO_MSGTYPE_DOUBLE    1
@@ -46,7 +54,7 @@ class KfSioClient;
 #define KFSIO_MSGTYPE_BOOLEAN   6
 #define KFSIO_MSGTYPE_NULL      7
 
-class KfSioMessage : public IKfSioMessage {
+class KfSioMessage {
     friend class KfSioClient;
 
 public:

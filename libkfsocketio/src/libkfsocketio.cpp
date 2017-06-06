@@ -29,296 +29,226 @@ void APICALL KfSioMessageDispose(IKfSioMessage* message)
 
 // Web Socket Server
 
-WebSocketServerPtr APICALL KfWssCreate()
+KfWebSocketServer* APICALL KfWssCreate()
 {
-    return (WebSocketServerPtr) new KfWebSocketServer();
+    return new KfWebSocketServer();
 }
 
-void APICALL KfWssDispose(WebSocketServerPtr srv)
+void APICALL KfWssDispose(KfWebSocketServer* srv)
 {
     if (nullptr != srv) {
-        KfWebSocketServer* server = static_cast<KfWebSocketServer*>(srv);
-        delete server;
+        delete srv;
     }
 }
 
-void APICALL KfWssRun(WebSocketServerPtr srv, uint16_t port)
+void APICALL KfWssRun(KfWebSocketServer* srv, uint16_t port)
 {
     if (nullptr != srv) {
-        KfWebSocketServer* server = static_cast<KfWebSocketServer*>(srv);
-        server->run(port);
+        srv->run(port);
     }
 }
 
-void APICALL KfWssStart(WebSocketServerPtr srv, uint16_t port)
+void APICALL KfWssStart(KfWebSocketServer* srv, uint16_t port)
 {
     if (nullptr != srv) {
-        KfWebSocketServer* server = static_cast<KfWebSocketServer*>(srv);
-        server->start(port);
+        srv->start(port);
     }
 }
 
-size_t APICALL KfWssPoll(WebSocketServerPtr srv)
+size_t APICALL KfWssPoll(KfWebSocketServer* srv)
 {
     if (nullptr != srv) {
-        KfWebSocketServer* server = static_cast<KfWebSocketServer*>(srv);
-        return server->poll();
+        return srv->poll();
     }
     return 0;
 }
 
-size_t APICALL KfWssPollOne(WebSocketServerPtr srv)
+size_t APICALL KfWssPollOne(KfWebSocketServer* srv)
 {
     if (nullptr != srv) {
-        KfWebSocketServer* server = static_cast<KfWebSocketServer*>(srv);
-        return server->pollOne();
+        return srv->pollOne();
     }
     return 0;
 }
 
-void APICALL KfWssStop(WebSocketServerPtr srv)
+void APICALL KfWssStop(KfWebSocketServer* srv)
 {
     if (nullptr != srv) {
-        KfWebSocketServer* server = static_cast<KfWebSocketServer*>(srv);
-        server->stop();
+        srv->stop();
     }
 }
 
-uint8_t APICALL KfWssIsListening(WebSocketServerPtr srv)
+uint8_t APICALL KfWssIsListening(KfWebSocketServer* srv)
 {
     if (nullptr != srv) {
-        KfWebSocketServer* server = static_cast<KfWebSocketServer*>(srv);
-        return server->isListening() ? 1 : 0;
+        return srv->isListening() ? 1 : 0;
     }
     return 0;
 }
 
-void APICALL KfWssUnbindListeners(WebSocketServerPtr srv)
+void APICALL KfWssUnbindListeners(KfWebSocketServer* srv)
 {
     if (nullptr != srv) {
-        KfWebSocketServer* server = static_cast<KfWebSocketServer*>(srv);
-        server->unbindListeners();
+        srv->unbindListeners();
     }
 }
 
-void APICALL KfWssSetOpenListener(WebSocketServerPtr srv, KfWssConnectionListener listener)
+void APICALL KfWssSetOpenListener(KfWebSocketServer* srv, KfWssConnectionListener listener)
 {
     if (nullptr != srv) {
-        KfWebSocketServer* server = static_cast<KfWebSocketServer*>(srv);
-        if (nullptr == listener) {
-            server->setOpenListener(nullptr);
-        } else {
-            server->setOpenListener([listener](KfWebSocketConnectionPtr con) {
-                (listener) (static_cast<WebSocketConnectionPtr>(con));
-            });
-        }
+        srv->setOpenListener(listener);
     }
 }
 
-void APICALL KfWssSetCloseListener(WebSocketServerPtr srv, KfWssConnectionListener listener)
+void APICALL KfWssSetCloseListener(KfWebSocketServer* srv, KfWssConnectionListener listener)
 {
     if (nullptr != srv) {
-        KfWebSocketServer* server = static_cast<KfWebSocketServer*>(srv);
-        if (nullptr == listener) {
-            server->setCloseListener(nullptr);
-        } else {
-            server->setCloseListener([listener](KfWebSocketConnectionPtr con) {
-                (listener) (static_cast<WebSocketConnectionPtr>(con));
-            });
-        }
+        srv->setCloseListener(listener);
     }
 }
 
-void APICALL KfWssSetFailListener(WebSocketServerPtr srv, KfWssConnectionListener listener)
+void APICALL KfWssSetFailListener(KfWebSocketServer* srv, KfWssConnectionListener listener)
 {
     if (nullptr != srv) {
-        KfWebSocketServer* server = static_cast<KfWebSocketServer*>(srv);
-        if (nullptr == listener) {
-            server->setFailListener(nullptr);
-        } else {
-            server->setFailListener([listener](KfWebSocketConnectionPtr con) {
-                (listener) (static_cast<WebSocketConnectionPtr>(con));
-            });
-        }
+        srv->setFailListener(listener);
     }
 }
 
-void APICALL KfWssSetHttpListener(WebSocketServerPtr srv, KfWssConnectionListener listener)
+void APICALL KfWssSetHttpListener(KfWebSocketServer* srv, KfWssConnectionListener listener)
 {
     if (nullptr != srv) {
-        KfWebSocketServer* server = static_cast<KfWebSocketServer*>(srv);
-        if (nullptr == listener) {
-            server->setHttpListener(nullptr);
-        } else {
-            server->setHttpListener([listener](KfWebSocketConnectionPtr con) {
-                (listener) (static_cast<WebSocketConnectionPtr>(con));
-            });
-        }
+        srv->setHttpListener(listener);
     }
 }
 
-void APICALL KfWssSetInterruptListener(WebSocketServerPtr srv, KfWssConnectionListener listener)
+void APICALL KfWssSetInterruptListener(KfWebSocketServer* srv, KfWssConnectionListener listener)
 {
     if (nullptr != srv) {
-        KfWebSocketServer* server = static_cast<KfWebSocketServer*>(srv);
-        if (nullptr == listener) {
-            server->setInterruptListener(nullptr);
-        } else {
-            server->setInterruptListener([listener](KfWebSocketConnectionPtr con) {
-                (listener) (static_cast<WebSocketConnectionPtr>(con));
-            });
-        }
+        srv->setInterruptListener(listener);
     }
 }
 
-void APICALL KfWssSetMessageListener(WebSocketServerPtr srv, KfWssMessageListener listener)
+void APICALL KfWssSetMessageListener(KfWebSocketServer* srv, KfWssMessageListener listener)
 {
     if (nullptr != srv) {
-        KfWebSocketServer* server = static_cast<KfWebSocketServer*>(srv);
-        if (nullptr == listener) {
-            server->setMessageListener(nullptr);
-        } else {
-            server->setMessageListener([listener](KfWebSocketConnectionPtr con, KfWebSocketMessagePtr msg) {
-                (listener) (static_cast<WebSocketConnectionPtr>(con), static_cast<WebSocketMessagePtr>(msg));
-            });
-        }
+        srv->setMessageListener(listener);
     }
 }
 
 // =========== Web Socket Connection
 
-uint8_t APICALL KfWscAreEqual(WebSocketConnectionPtr left, WebSocketConnectionPtr right)
+uint8_t APICALL KfWscAreEqual(KfWebSocketConnection* left, KfWebSocketConnection* right)
 {
-    KfWebSocketConnection* l = static_cast<KfWebSocketConnection*>(left);
-    KfWebSocketConnection* r = static_cast<KfWebSocketConnection*>(right);
-
-    if (nullptr == l && nullptr == r) {
+    if (nullptr == left && nullptr == right) {
         return 1;
     }
 
-    if (nullptr == l || nullptr == r) {
+    if (nullptr == left || nullptr == right) {
         return 0;
     }
 
-    return (*l) == (*r);
+    return (*left) == (*right);
 }
 
-void APICALL KfWscSend(WebSocketConnectionPtr con, const char* payload, uint8_t opcode)
+void APICALL KfWscSend(KfWebSocketConnection* con, const char* payload, uint8_t opcode)
 {
-    KfWebSocketConnection* connection = static_cast<KfWebSocketConnection*>(con);
-    if (nullptr == connection) {
-        return;
+    if (nullptr != con) {
+        con->send(payload, (KfWebSocketConnection::OpCode) opcode);
     }
-
-    connection->send(payload, (KfWebSocketConnection::OpCode) opcode);
 }
 
-void APICALL KfWscClose(WebSocketConnectionPtr con)
+void APICALL KfWscClose(KfWebSocketConnection* con)
 {
-    KfWebSocketConnection* connection = static_cast<KfWebSocketConnection*>(con);
-    if (nullptr == connection) {
-        return;
+    if (nullptr != con) {
+        con->close();
     }
-    connection->close();
 }
 
-void APICALL KfWscCloseWithStatus(WebSocketConnectionPtr con, uint32_t status, const char* reason)
+void APICALL KfWscCloseWithStatus(KfWebSocketConnection* con, uint32_t status, const char* reason)
 {
-    KfWebSocketConnection* connection = static_cast<KfWebSocketConnection*>(con);
-    if (nullptr == connection) {
-        return;
+    if (nullptr != con) {
+        con->close((KfWebSocketConnection::CloseStatus) status, reason);
     }
-    connection->close((KfWebSocketConnection::CloseStatus) status, reason);
 }
 
-const char* APICALL KfWscGetRemoteEndpoint(WebSocketConnectionPtr con)
+const char* APICALL KfWscGetRemoteEndpoint(KfWebSocketConnection* con)
 {
-    KfWebSocketConnection* connection = static_cast<KfWebSocketConnection*>(con);
-    if (nullptr == connection) {
-        return "";
+    if (nullptr != con) {
+        return con->getRemoteEndpoint();
     }
-    return connection->getRemoteEndpoint();
+    return "";
 }
 
-uint8_t APICALL KfWscGetState(WebSocketConnectionPtr con)
+uint8_t APICALL KfWscGetState(KfWebSocketConnection* con)
 {
-    KfWebSocketConnection* connection = static_cast<KfWebSocketConnection*>(con);
-    if (nullptr == connection) {
+    if (nullptr == con) {
         return 0;
     }
-    return (uint8_t) connection->getState();
+    return (uint8_t) con->getState();
 }
 
 // =========== Web Socket Message
 
-uint8_t APICALL KfWsmIsCompressed(WebSocketMessagePtr msg)
+uint8_t APICALL KfWsmIsCompressed(KfWebSocketMessage* msg)
 {
-    KfWebSocketMessage* message = static_cast<KfWebSocketMessage*>(msg);
-    if (nullptr == message) {
+    if (nullptr == msg) {
         return 0;
     }
-    return message->isCompressed() ? 1 : 0;
+    return msg->isCompressed() ? 1 : 0;
 }
 
-uint8_t APICALL KfWsmIsFin(WebSocketMessagePtr msg)
+uint8_t APICALL KfWsmIsFin(KfWebSocketMessage* msg)
 {
-    KfWebSocketMessage* message = static_cast<KfWebSocketMessage*>(msg);
-    if (nullptr == message) {
+    if (nullptr == msg) {
         return 0;
     }
-    return message->isFin() ? 1 : 0;
+    return msg->isFin() ? 1 : 0;
 }
 
-uint8_t APICALL KfWsmIsPrepared(WebSocketMessagePtr msg)
+uint8_t APICALL KfWsmIsPrepared(KfWebSocketMessage* msg)
 {
-    KfWebSocketMessage* message = static_cast<KfWebSocketMessage*>(msg);
-    if (nullptr == message) {
+    if (nullptr == msg) {
         return 0;
     }
-    return message->isPrepared() ? 1 : 0;
+    return msg->isPrepared() ? 1 : 0;
 }
 
-const char* APICALL KfWsmGetExtensionData(WebSocketMessagePtr msg)
+const char* APICALL KfWsmGetExtensionData(KfWebSocketMessage* msg)
 {
-    KfWebSocketMessage* message = static_cast<KfWebSocketMessage*>(msg);
-    if (nullptr == message) {
+    if (nullptr == msg) {
         return "";
     }
-    return message->getExtensionData();
+    return msg->getExtensionData();
 }
 
-const char* APICALL KfWsmGetHeader(WebSocketMessagePtr msg)
+const char* APICALL KfWsmGetHeader(KfWebSocketMessage* msg)
 {
-    KfWebSocketMessage* message = static_cast<KfWebSocketMessage*>(msg);
-    if (nullptr == message) {
+    if (nullptr == msg) {
         return "";
     }
-    return message->getHeader();
+    return msg->getHeader();
 }
 
-const char* APICALL KfWsmGetPayload(WebSocketMessagePtr msg)
+const char* APICALL KfWsmGetPayload(KfWebSocketMessage* msg)
 {
-    KfWebSocketMessage* message = static_cast<KfWebSocketMessage*>(msg);
-    if (nullptr == message) {
+    if (nullptr == msg) {
         return "";
     }
-    return message->getPayload();
+    return msg->getPayload();
 }
 
-const char* APICALL KfWsmGetRawPayload(WebSocketMessagePtr msg)
+const char* APICALL KfWsmGetRawPayload(KfWebSocketMessage* msg)
 {
-    KfWebSocketMessage* message = static_cast<KfWebSocketMessage*>(msg);
-    if (nullptr == message) {
+    if (nullptr == msg) {
         return "";
     }
-    return message->getRawPayload();
+    return msg->getRawPayload();
 }
 
-uint8_t APICALL KfWsmGetOpcode(WebSocketMessagePtr msg)
+uint8_t APICALL KfWsmGetOpcode(KfWebSocketMessage* msg)
 {
-    KfWebSocketMessage* message = static_cast<KfWebSocketMessage*>(msg);
-    if (nullptr == message) {
+    if (nullptr == msg) {
         return 0;
     }
-    return (uint8_t) message->getOpcode();
+    return (uint8_t) msg->getOpcode();
 }

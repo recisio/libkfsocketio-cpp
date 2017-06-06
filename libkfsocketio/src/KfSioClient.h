@@ -30,7 +30,6 @@ SOFTWARE.
 #include <mutex>
 
 #include "KfSioMessage.h"
-#include "IKfSioClient.h"
 #include "sio_client.h"
 
 #define SIO_LISTENER_CLOSE_REASON_NORMAL 0
@@ -38,7 +37,21 @@ SOFTWARE.
 
 class KfSioListener;
 
-class KfSioClient : public IKfSioClient {
+typedef struct {
+    const char* key;
+    const char* value;
+} KfSioClientQueryParam;
+
+class KfSioClient {
+
+public:
+    typedef std::function<void(void)> ConnectionListener;
+    typedef std::function<void(unsigned int const& reason)> CloseListener;
+    typedef std::function<void(unsigned int nAttempts, unsigned int delay)> ReconnectListener;
+    typedef std::function<void(const char* nsp)> SocketListener;
+    typedef std::function<void(const char* name, KfSioMessagePtr message, bool needAck, KfSioMessageList ackMessage)> EventListener;
+    typedef std::function<void(KfSioMessagePtr message)> ErrorListener;
+    typedef std::function<void(KfSioMessageList)> AckListener;
 
 public:
     KfSioClient();

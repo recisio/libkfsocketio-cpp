@@ -30,20 +30,128 @@ SOFTWARE.
 
 #include "websocketpp/connection.hpp"
 #include "websocketpp/config/asio.hpp"
-#include "IKfWebSocketConnection.h"
 
 class KfWebSocketConnection;
+
+typedef KfWebSocketConnection* KfWebSocketConnectionPtr;
 
 typedef std::shared_ptr<websocketpp::connection<websocketpp::config::asio>> WSConPtr;
 typedef std::shared_ptr<KfWebSocketConnection> KfWebSocketConnectionSPtr;
 
-class KfWebSocketConnection : public IKfWebSocketConnection {
+class KfWebSocketConnection {
+
+public:
+    typedef enum : uint8_t {
+        OPCODE_CONTINUATION = 0x0,
+        OPCODE_TEXT = 0x1,
+        OPCODE_BINARY = 0x2,
+        OPCODE_RSV3 = 0x3,
+        OPCODE_RSV4 = 0x4,
+        OPCODE_RSV5 = 0x5,
+        OPCODE_RSV6 = 0x6,
+        OPCODE_RSV7 = 0x7,
+        OPCODE_CLOSE = 0x8,
+        OPCODE_PING = 0x9,
+        OPCODE_PONG = 0xA,
+        OPCODE_CONTROL_RSVB = 0xB,
+        OPCODE_CONTROL_RSVC = 0xC,
+        OPCODE_CONTROL_RSVD = 0xD,
+        OPCODE_CONTROL_RSVE = 0xE,
+        OPCODE_CONTROL_RSVF = 0xF
+    } OpCode;
+
+    typedef enum : uint32_t {
+        CLOSESTATUS_BLANK = 0,
+        CLOSESTATUS_OMIT_HANDSHAKE = 1,
+        CLOSESTATUS_FORCE_TCP_DROP = 2,
+        CLOSESTATUS_NORMAL = 1000,
+        CLOSESTATUS_GOING_AWAY = 1001,
+        CLOSESTATUS_PROTOCOL_ERROR = 1002,
+        CLOSESTATUS_UNSUPPORTED_DATA = 1003,
+        CLOSESTATUS_NO_STATUS = 1005,
+        CLOSESTATUS_ABNORMAL_CLOSE = 1006,
+        CLOSESTATUS_INVALID_PAYLOAD = 1007,
+        CLOSESTATUS_POLICY_VIOLATION = 1008,
+        CLOSESTATUS_MESSAGE_TOO_BIG = 1009,
+        CLOSESTATUS_EXTENSION_REQUIRED = 1010,
+        CLOSESTATUS_INTERNAL_ENDPOINT_ERROR = 1011,
+        CLOSESTATUS_SERVICE_RESTART = 1012,
+        CLOSESTATUS_TRY_AGAIN_LATER = 1013,
+        CLOSESTATUS_TLS_HANDSHAKE = 1015,
+        CLOSESTATUS_SUBPROTOCOL_ERROR = 3000,
+        CLOSESTATUS_INVALID_SUBPROTOCOL_DATA = 3001,
+        CLOSESTATUS_INVALID_LOW = 999,
+        CLOSESTATUS_INVALID_HIGH = 5000
+    } CloseStatus;
+
+    typedef enum : uint32_t {
+        KFHTTP_STATUS_UNINITIALIZED = 0,
+
+        KFHTTP_STATUS_CONTINUE_CODE = 100,
+        KFHTTP_STATUS_SWITCHING_PROTOCOL = 101,
+
+        KFHTTP_STATUS_OK = 200,
+        KFHTTP_STATUS_CREATED = 201,
+        KFHTTP_STATUS_ACCEPTED = 202,
+        KFHTTP_STATUS_NON_AUTHORITATIVE_INFO = 203,
+        KFHTTP_STATUS_NO_CONTENT = 204,
+        KFHTTP_STATUS_RESET_CONTENT = 205,
+        KFHTTP_STATUS_PARTIAL_CONTENT = 206,
+
+        KFHTTP_STATUS_MULTIPLE_CHOICES = 300,
+        KFHTTP_STATUS_MOVED_PERMANENTLY = 301,
+        KFHTTP_STATUS_FOUND = 302,
+        KFHTTP_STATUS_SEE_OTHER = 303,
+        KFHTTP_STATUS_NOT_MODIFIED = 304,
+        KFHTTP_STATUS_USE_PROXY = 305,
+        KFHTTP_STATUS_TEMPORARY_REDIRECT = 307,
+
+        KFHTTP_STATUS_BAD_REQUEST = 400,
+        KFHTTP_STATUS_UNAUTHORIZED = 401,
+        KFHTTP_STATUS_PAYMENT_REQUIRED = 402,
+        KFHTTP_STATUS_FORBIDDEN = 403,
+        KFHTTP_STATUS_NOT_FOUND = 404,
+        KFHTTP_STATUS_METHOD_NOT_ALLOWED = 405,
+        KFHTTP_STATUS_NOT_ACCEPTABLE = 406,
+        KFHTTP_STATUS_PROXY_AUTH_REQUIRED = 407,
+        KFHTTP_STATUS_REQUEST_TIMEOUT = 408,
+        KFHTTP_STATUS_CONFLICT = 409,
+        KFHTTP_STATUS_GONE = 410,
+        KFHTTP_STATUS_LENGTH_REQUIRED = 411,
+        KFHTTP_STATUS_PRECOND_FAILED = 412,
+        KFHTTP_STATUS_REQ_ENTITY_TOO_LARGE = 413,
+        KFHTTP_STATUS_REQ_URI_TOO_LONG = 414,
+        KFHTTP_STATUS_UNSUPPORTED_MEDIA_TYPE = 415,
+        KFHTTP_STATUS_REQ_RANGE_NOT_SATISFIABLE = 416,
+        KFHTTP_STATUS_EXPECTATION_FAILED = 417,
+        KFHTTP_STATUS_IM_A_TEAPOT = 418,
+        KFHTTP_STATUS_UPGRADE_REQUIRED = 426,
+        KFHTTP_STATUS_PRECOND_REQUIRED = 428,
+        KFHTTP_STATUS_TOO_MANY_REQUESTS = 429,
+        KFHTTP_STATUS_REQ_HEADER_FIELDS_TOO_LARGE = 431,
+
+        KFHTTP_STATUS_INTERNAL_SRV_ERROR = 500,
+        KFHTTP_STATUS_NOT_IMPLEMENTED = 501,
+        KFHTTP_STATUS_BAD_GATEWAY = 502,
+        KFHTTP_STATUS_SERVICE_UNAVAILABLE = 503,
+        KFHTTP_STATUS_GATEWAY_TIMEOUT = 504,
+        KFHTTP_STATUS_HTTP_VERSION_NOT_SUPPORTED = 505,
+        KFHTTP_STATUS_NOT_EXTENDED = 510,
+        KFHTTP_STATUS_NETWORK_AUTH_REQUIRED = 511
+    } HttpStatusCode;
+
+    typedef enum : uint8_t {
+        STATE_CONNECTING = 0,
+        STATE_OPEN = 1,
+        STATE_CLOSING = 2,
+        STATE_CLOSED = 3
+    } ConnectionState;
 
 public:
     KfWebSocketConnection(const WSConPtr& wrapper);
     KfWebSocketConnection(const KfWebSocketConnection& copy);
 
-    virtual bool KF_CALLCONV operator==(const IKfWebSocketConnection& con) const;
+    virtual bool KF_CALLCONV operator==(const KfWebSocketConnection& con) const;
     bool KF_CALLCONV operator==(const WSConPtr& con) const;
 
     // General timeouts

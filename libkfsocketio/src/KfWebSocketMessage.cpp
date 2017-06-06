@@ -25,7 +25,7 @@ void KF_CALLCONV KfWebSocketMessage::setHeader(const char* header)
     m_message->set_header(header);
 }
 
-void KF_CALLCONV KfWebSocketMessage::setOpcode(const IKfWebSocketConnection::OpCode& opcode)
+void KF_CALLCONV KfWebSocketMessage::setOpcode(const KfWebSocketConnection::OpCode& opcode)
 {
     m_message->set_opcode((websocketpp::frame::opcode::value) opcode);
 }
@@ -75,7 +75,7 @@ const char* KF_CALLCONV KfWebSocketMessage::getRawPayload() const
     return m_message->get_raw_payload().c_str();
 }
 
-IKfWebSocketConnection::OpCode KF_CALLCONV KfWebSocketMessage::getOpcode() const
+KfWebSocketConnection::OpCode KF_CALLCONV KfWebSocketMessage::getOpcode() const
 {
-    return (IKfWebSocketConnection::OpCode) m_message->get_opcode();
+    return (KfWebSocketConnection::OpCode) m_message->get_opcode();
 }

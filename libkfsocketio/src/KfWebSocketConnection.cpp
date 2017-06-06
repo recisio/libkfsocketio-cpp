@@ -33,7 +33,7 @@ KfWebSocketConnection::KfWebSocketConnection(const KfWebSocketConnection& copy) 
 {
 }
 
-bool KF_CALLCONV KfWebSocketConnection::operator==(const IKfWebSocketConnection& con)  const
+bool KF_CALLCONV KfWebSocketConnection::operator==(const KfWebSocketConnection& con)  const
 {
     return ((const KfWebSocketConnection&) con).m_connection == m_connection;
 }

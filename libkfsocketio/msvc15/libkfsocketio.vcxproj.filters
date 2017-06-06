@@ -89,20 +89,5 @@
     <ClInclude Include="..\..\include\libkfsocketio.h">
       <Filter>Fichiers d%27en-tête\public</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\IKfSioClient.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\IKfSioMessage.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\IKfWebSocketConnection.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\IKfWebSocketMessage.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\IKfWebSocketServer.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>

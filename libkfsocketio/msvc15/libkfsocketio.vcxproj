@@ -232,11 +232,6 @@
     <ClInclude Include="..\..\lib\socket.io-client-cpp\src\sio_client.h" />
     <ClInclude Include="..\..\lib\socket.io-client-cpp\src\sio_message.h" />
     <ClInclude Include="..\..\lib\socket.io-client-cpp\src\sio_socket.h" />
-    <ClInclude Include="..\src\IKfSioClient.h" />
-    <ClInclude Include="..\src\IKfSioMessage.h" />
-    <ClInclude Include="..\src\IKfWebSocketConnection.h" />
-    <ClInclude Include="..\src\IKfWebSocketMessage.h" />
-    <ClInclude Include="..\src\IKfWebSocketServer.h" />
     <ClInclude Include="..\src\KfSioClient.h" />
     <ClInclude Include="..\src\KfSioListener.h" />
     <ClInclude Include="..\src\KfSioMessage.h" />

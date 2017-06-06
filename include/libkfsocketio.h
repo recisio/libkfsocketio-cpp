@@ -87,10 +87,17 @@ SOFTWARE.
 #define KFWSC_STATE_CLOSING 2
 #define KFWSC_STATE_CLOSED 3
 
+/*
 typedef void* SioClientPtr;
 typedef void* WebSocketServerPtr;
-typedef void* WebSocketConnectionPtr;
-typedef void* WebSocketMessagePtr;
+typedef void* KfWebSocketConnection*;
+typedef void* KfWebSocketMessage*;
+*/
+
+class KfWebSocketServer;
+class KfWebSocketConnection;
+class KfWebSocketMessage;
+class KfSioClient;
 
 // =========== Socket.Io Client
 
@@ -104,43 +111,43 @@ typedef void* WebSocketMessagePtr;
 
 // =========== Web Socket Server
 
-typedef void (APICALL *KfWssConnectionListener)(WebSocketConnectionPtr);
-typedef void (APICALL *KfWssMessageListener)(WebSocketConnectionPtr, WebSocketMessagePtr);
+typedef void (APICALL *KfWssConnectionListener)(KfWebSocketConnection*);
+typedef void (APICALL *KfWssMessageListener)(KfWebSocketConnection*, KfWebSocketMessage*);
 
-LIBKFSOCKETIO_ABSTRACT_DLL WebSocketServerPtr APICALL KfWssCreate();
-LIBKFSOCKETIO_ABSTRACT_DLL void APICALL KfWssDispose(WebSocketServerPtr srv);
-LIBKFSOCKETIO_ABSTRACT_DLL void APICALL KfWssRun(WebSocketServerPtr srv, uint16_t port);
-LIBKFSOCKETIO_ABSTRACT_DLL void APICALL KfWssStart(WebSocketServerPtr srv, uint16_t port);
-LIBKFSOCKETIO_ABSTRACT_DLL size_t APICALL KfWssPoll(WebSocketServerPtr srv);
-LIBKFSOCKETIO_ABSTRACT_DLL size_t APICALL KfWssPollOne(WebSocketServerPtr srv);
-LIBKFSOCKETIO_ABSTRACT_DLL void APICALL KfWssStop(WebSocketServerPtr srv);
-LIBKFSOCKETIO_ABSTRACT_DLL uint8_t APICALL KfWssIsListening(WebSocketServerPtr srv);
-LIBKFSOCKETIO_ABSTRACT_DLL void APICALL KfWssUnbindListeners(WebSocketServerPtr srv);
-LIBKFSOCKETIO_ABSTRACT_DLL void APICALL KfWssSetOpenListener(WebSocketServerPtr srv, KfWssConnectionListener listener);
-LIBKFSOCKETIO_ABSTRACT_DLL void APICALL KfWssSetCloseListener(WebSocketServerPtr srv, KfWssConnectionListener listener);
-LIBKFSOCKETIO_ABSTRACT_DLL void APICALL KfWssSetFailListener(WebSocketServerPtr srv, KfWssConnectionListener listener);
-LIBKFSOCKETIO_ABSTRACT_DLL void APICALL KfWssSetHttpListener(WebSocketServerPtr srv, KfWssConnectionListener listener);
-LIBKFSOCKETIO_ABSTRACT_DLL void APICALL KfWssSetInterruptListener(WebSocketServerPtr srv, KfWssConnectionListener listener);
-LIBKFSOCKETIO_ABSTRACT_DLL void APICALL KfWssSetMessageListener(WebSocketServerPtr srv, KfWssMessageListener listener);
+LIBKFSOCKETIO_ABSTRACT_DLL KfWebSocketServer* APICALL KfWssCreate();
+LIBKFSOCKETIO_ABSTRACT_DLL void APICALL KfWssDispose(KfWebSocketServer* srv);
+LIBKFSOCKETIO_ABSTRACT_DLL void APICALL KfWssRun(KfWebSocketServer* srv, uint16_t port);
+LIBKFSOCKETIO_ABSTRACT_DLL void APICALL KfWssStart(KfWebSocketServer* srv, uint16_t port);
+LIBKFSOCKETIO_ABSTRACT_DLL size_t APICALL KfWssPoll(KfWebSocketServer* srv);
+LIBKFSOCKETIO_ABSTRACT_DLL size_t APICALL KfWssPollOne(KfWebSocketServer* srv);
+LIBKFSOCKETIO_ABSTRACT_DLL void APICALL KfWssStop(KfWebSocketServer* srv);
+LIBKFSOCKETIO_ABSTRACT_DLL uint8_t APICALL KfWssIsListening(KfWebSocketServer* srv);
+LIBKFSOCKETIO_ABSTRACT_DLL void APICALL KfWssUnbindListeners(KfWebSocketServer* srv);
+LIBKFSOCKETIO_ABSTRACT_DLL void APICALL KfWssSetOpenListener(KfWebSocketServer* srv, KfWssConnectionListener listener);
+LIBKFSOCKETIO_ABSTRACT_DLL void APICALL KfWssSetCloseListener(KfWebSocketServer* srv, KfWssConnectionListener listener);
+LIBKFSOCKETIO_ABSTRACT_DLL void APICALL KfWssSetFailListener(KfWebSocketServer* srv, KfWssConnectionListener listener);
+LIBKFSOCKETIO_ABSTRACT_DLL void APICALL KfWssSetHttpListener(KfWebSocketServer* srv, KfWssConnectionListener listener);
+LIBKFSOCKETIO_ABSTRACT_DLL void APICALL KfWssSetInterruptListener(KfWebSocketServer* srv, KfWssConnectionListener listener);
+LIBKFSOCKETIO_ABSTRACT_DLL void APICALL KfWssSetMessageListener(KfWebSocketServer* srv, KfWssMessageListener listener);
 
 // =========== Web Socket Connection
 
-LIBKFSOCKETIO_ABSTRACT_DLL uint8_t APICALL KfWscAreEqual(WebSocketConnectionPtr left, WebSocketConnectionPtr right);
-LIBKFSOCKETIO_ABSTRACT_DLL void APICALL KfWscSend(WebSocketConnectionPtr con, const char* payload, uint8_t opcode);
-LIBKFSOCKETIO_ABSTRACT_DLL void APICALL KfWscClose(WebSocketConnectionPtr con);
-LIBKFSOCKETIO_ABSTRACT_DLL void APICALL KfWscCloseWithStatus(WebSocketConnectionPtr con, uint32_t status, const char* reason);
-LIBKFSOCKETIO_ABSTRACT_DLL const char* APICALL KfWscGetRemoteEndpoint(WebSocketConnectionPtr con);
-LIBKFSOCKETIO_ABSTRACT_DLL uint8_t APICALL KfWscGetState(WebSocketConnectionPtr con);
+LIBKFSOCKETIO_ABSTRACT_DLL uint8_t APICALL KfWscAreEqual(KfWebSocketConnection* left, KfWebSocketConnection* right);
+LIBKFSOCKETIO_ABSTRACT_DLL void APICALL KfWscSend(KfWebSocketConnection* con, const char* payload, uint8_t opcode);
+LIBKFSOCKETIO_ABSTRACT_DLL void APICALL KfWscClose(KfWebSocketConnection* con);
+LIBKFSOCKETIO_ABSTRACT_DLL void APICALL KfWscCloseWithStatus(KfWebSocketConnection* con, uint32_t status, const char* reason);
+LIBKFSOCKETIO_ABSTRACT_DLL const char* APICALL KfWscGetRemoteEndpoint(KfWebSocketConnection* con);
+LIBKFSOCKETIO_ABSTRACT_DLL uint8_t APICALL KfWscGetState(KfWebSocketConnection* con);
 
 // =========== Web Socket Message
 
-LIBKFSOCKETIO_ABSTRACT_DLL uint8_t APICALL KfWsmIsCompressed(WebSocketMessagePtr);
-LIBKFSOCKETIO_ABSTRACT_DLL uint8_t APICALL KfWsmIsFin(WebSocketMessagePtr);
-LIBKFSOCKETIO_ABSTRACT_DLL uint8_t APICALL KfWsmIsPrepared(WebSocketMessagePtr);
-LIBKFSOCKETIO_ABSTRACT_DLL const char* APICALL KfWsmGetExtensionData(WebSocketMessagePtr);
-LIBKFSOCKETIO_ABSTRACT_DLL const char* APICALL KfWsmGetHeader(WebSocketMessagePtr);
-LIBKFSOCKETIO_ABSTRACT_DLL const char* APICALL KfWsmGetPayload(WebSocketMessagePtr);
-LIBKFSOCKETIO_ABSTRACT_DLL const char* APICALL KfWsmGetRawPayload(WebSocketMessagePtr);
-LIBKFSOCKETIO_ABSTRACT_DLL uint8_t APICALL KfWsmGetOpcode(WebSocketMessagePtr);
+LIBKFSOCKETIO_ABSTRACT_DLL uint8_t APICALL KfWsmIsCompressed(KfWebSocketMessage*);
+LIBKFSOCKETIO_ABSTRACT_DLL uint8_t APICALL KfWsmIsFin(KfWebSocketMessage*);
+LIBKFSOCKETIO_ABSTRACT_DLL uint8_t APICALL KfWsmIsPrepared(KfWebSocketMessage*);
+LIBKFSOCKETIO_ABSTRACT_DLL const char* APICALL KfWsmGetExtensionData(KfWebSocketMessage*);
+LIBKFSOCKETIO_ABSTRACT_DLL const char* APICALL KfWsmGetHeader(KfWebSocketMessage*);
+LIBKFSOCKETIO_ABSTRACT_DLL const char* APICALL KfWsmGetPayload(KfWebSocketMessage*);
+LIBKFSOCKETIO_ABSTRACT_DLL const char* APICALL KfWsmGetRawPayload(KfWebSocketMessage*);
+LIBKFSOCKETIO_ABSTRACT_DLL uint8_t APICALL KfWsmGetOpcode(KfWebSocketMessage*);
 
 #endif // _LIBKFSOCKETIO_H

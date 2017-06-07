@@ -5,27 +5,443 @@
 #include "KfSioMessage.h"
 #include "KfWebSocketMessage.h"
 
-/*
-IKfSioClient* APICALL KfSioClientFactory()
+// Socket.IO Client
+
+KfSioClient* APICALL KfSioCreate()
 {
-    return new KfSioClient();
+    KfSioClient* client = new KfSioClient();
+    return client;
 }
 
-IKfSioMessage* APICALL KfSioMessageFactory()
+void APICALL KfSioDispose(KfSioClient* client)
 {
-    return new KfSioMessage();
+    if (nullptr != client) {
+        delete client;
+    }
 }
 
-void APICALL KfSioClientDispose(IKfSioClient* client)
+void APICALL KfSioConnect(
+    KfSioClient* client,
+    const char* uri,
+    KfSioClientConnectQueryParam* query,
+    unsigned int queryCount,
+    KfSioClientConnectQueryParam* httpExtraHeaders,
+    unsigned int httpExtraHeadersCount)
 {
-    delete (KfSioClient*) client;
+    if (nullptr != client) {
+        try {
+            client->connect(uri, (KfSioClientQueryParam*) query, queryCount, (KfSioClientQueryParam*) httpExtraHeaders, httpExtraHeadersCount);
+        } catch (...) {}
+    }
 }
 
-void APICALL KfSioMessageDispose(IKfSioMessage* message)
+void APICALL KfSioEmit(
+    KfSioClient* client,
+    const char* name,
+    const char* message,
+    KfSioAckListener ack,
+    const char* socketNs)
 {
-    delete (KfSioMessage*) message;
+    if (nullptr != client) {
+        try {
+            if (nullptr != ack) {
+                client->emit(name, message, nullptr, socketNs);
+            } else {
+                client->emit(name, message, [ack](KfSioMessageList msgList) {
+                    (ack) ((KfSioMsgList) msgList);
+                }, socketNs);
+            }
+        } catch (...) {}
+    }
 }
-*/
+
+void APICALL KfSioClose(KfSioClient* client)
+{
+    if (nullptr != client) {
+        try {
+            client->close();
+        } catch (...) {}
+    }
+}
+
+void APICALL KfSioSyncClose(KfSioClient* client)
+{
+    if (nullptr != client) {
+        try {
+            client->syncClose();
+        } catch (...) {}
+    }
+}
+
+KfBool APICALL KfSioIsOpen(KfSioClient* client)
+{
+    if (nullptr == client) {
+        return (KfBool) false;
+    }
+    try {
+        return (KfBool) client->isOpen();
+    } catch (...) {
+        return (KfBool) false;
+    }
+}
+
+const char* APICALL KfSioGetSessionId(KfSioClient* client)
+{
+    if (nullptr == client) {
+        return "";
+    }
+
+    try {
+        return client->getSessionId();
+    } catch (...) {
+        return "";
+    }
+}
+
+void APICALL KfSioClearListeners(KfSioClient* client)
+{
+    if (nullptr != client) {
+        try {
+            client->clearListeners();
+        } catch (...) {}
+    }
+}
+
+void APICALL KfSioSetClientOpenListener(KfSioClient* client, KfSioConnectionListener listener)
+{
+    if (nullptr != client) {
+        try {
+            if (nullptr == listener) {
+                client->setClientOpenListener(nullptr);
+            } else {
+                client->setClientOpenListener([listener]() {
+                    (listener) ();
+                });
+            }
+        } catch (...) {}
+    }
+}
+
+void APICALL KfSioSetClientCloseListener(KfSioClient* client, KfSioCloseListener listener)
+{
+    if (nullptr != client) {
+        try {
+            if (nullptr == listener) {
+                client->setClientCloseListener(nullptr);
+            } else {
+                client->setClientCloseListener([listener](const unsigned int& reason) {
+                    (listener) (reason);
+                });
+            }
+        } catch (...) {}
+    }
+}
+
+void APICALL KfSioSetClientFailListener(KfSioClient* client, KfSioConnectionListener listener)
+{
+    if (nullptr != client) {
+        try {
+            if (nullptr == listener) {
+                client->setClientFailListener(nullptr);
+            } else {
+                client->setClientFailListener([listener]() {
+                    (listener) ();
+                });
+            }
+        } catch (...) {}
+    }
+}
+
+void APICALL KfSioSetClientReconnectingListener(KfSioClient* client, KfSioConnectionListener listener)
+{
+    if (nullptr != client) {
+        try {
+            if (nullptr == listener) {
+                client->setClientReconnectingListener(nullptr);
+            } else {
+                client->setClientReconnectingListener([listener]() {
+                    (listener) ();
+                });
+            }
+        } catch (...) {}
+    }
+}
+
+void APICALL KfSioSetClientReconnectListener(KfSioClient* client, KfSioReconnectListener listener)
+{
+    if (nullptr != client) {
+        try {
+            if (nullptr == listener) {
+                client->setClientReconnectListener(nullptr);
+            } else {
+                client->setClientReconnectListener([listener](unsigned int nAttempts, unsigned int delay) {
+                    (listener) (nAttempts, delay);
+                });
+            }
+        } catch (...) {}
+    }
+}
+
+void APICALL KfSioSetSocketOpenListener(KfSioClient* client, KfSioSocketListener listener)
+{
+    if (nullptr != client) {
+        try {
+            if (nullptr == listener) {
+                client->setSocketOpenListener(nullptr);
+            } else {
+                client->setSocketOpenListener([listener](const char* nsp) {
+                    (listener) (nsp);
+                });
+            }
+        } catch (...) {}
+    }
+}
+
+void APICALL KfSioSetSocketCloseListener(KfSioClient* client, KfSioSocketListener listener)
+{
+    if (nullptr != client) {
+        try {
+            if (nullptr == listener) {
+                client->setSocketCloseListener(nullptr);
+            } else {
+                client->setSocketCloseListener([listener](const char* nsp) {
+                    (listener) (nsp);
+                });
+            }
+        } catch (...) {}
+    }
+}
+
+void APICALL KfSioSetReconnectAttempts(KfSioClient* client, int attempts)
+{
+    if (nullptr != client) {
+        try {
+            client->setReconnectAttempts(attempts);
+        } catch (...) {}
+    }
+}
+
+void APICALL KfSioSetReconnectDelay(KfSioClient* client, unsigned int millis)
+{
+    if (nullptr != client) {
+        try {
+            client->setReconnectDelay(millis);
+        } catch (...) {}
+    }
+}
+
+void APICALL KfSioSetReconnectDelayMax(KfSioClient* client, unsigned int millis)
+{
+    if (nullptr != client) {
+        try {
+            client->setReconnectDelayMax(millis);
+        } catch (...) {}
+    }
+}
+
+void APICALL KfSioOn(KfSioClient* client, const char* eventName, KfSioEventListener eventListener, const char* socketNs)
+{
+    if (nullptr != client) {
+        try {
+            if (nullptr == eventListener) {
+                client->on(eventName, nullptr, socketNs);
+            } else {
+                client->on(
+                    eventName,
+                    [eventListener](const char* name, KfSioMessagePtr message, bool needAck, KfSioMessageList ackMsg) {
+                    (eventListener) (name, message, needAck, (KfSioMsgList) ackMsg);
+                },
+                    socketNs);
+            }
+        } catch (...) {}
+    }
+}
+
+void APICALL KfSioOff(KfSioClient* client, const char* eventName, const char* socketNs)
+{
+    if (nullptr != client) {
+        try {
+            client->off(eventName, socketNs);
+        } catch (...) {}
+    }
+}
+
+void APICALL KfSioOffAll(KfSioClient* client, const char* socketNs)
+{
+    if (nullptr != client) {
+        try {
+            client->offAll(socketNs);
+        } catch (...) {}
+    }
+}
+
+void APICALL KfSioCloseSocket(KfSioClient* client, const char* socketNs)
+{
+    if (nullptr != client) {
+        try {
+            client->closeSocket(socketNs);
+        } catch (...) {}
+    }
+}
+
+void APICALL KfSioOnError(KfSioClient* client, KfSioErrorListener listener, const char* socketNs)
+{
+    if (nullptr != client) {
+        try {
+            if (nullptr == listener) {
+                client->onError(nullptr, socketNs);
+            } else {
+                client->onError([listener](KfSioMessagePtr message) {
+                    (listener) (message);
+                });
+            }
+        } catch (...) {}
+    }
+}
+
+void APICALL KfSioOffError(KfSioClient* client, const char* socketNs)
+{
+    if (nullptr != client) {
+        try {
+            client->offError(socketNs);
+        } catch (...) {}
+    }
+}
+
+// =========== Socket.Io Message
+
+int APICALL KfSioMsgGetType(KfSioMessage* msg)
+{
+    if (nullptr == msg) {
+        return KFSIOMSG_NULL;
+    }
+    return (KfBool) msg->getMessageType();
+}
+
+KfBool APICALL KfSioMsgIsInt(KfSioMessage* msg)
+{
+    if (nullptr == msg) {
+        return (KfBool) false;
+    }
+    return (KfBool) msg->isInt();
+}
+
+KfBool APICALL KfSioMsgIsDouble(KfSioMessage* msg)
+{
+    if (nullptr == msg) {
+        return (KfBool) false;
+    }
+    return (KfBool) msg->isDouble();
+}
+
+KfBool APICALL KfSioMsgIsString(KfSioMessage* msg)
+{
+    if (nullptr == msg) {
+        return (KfBool) false;
+    }
+    return (KfBool) msg->isString();
+}
+
+KfBool APICALL KfSioMsgIsBinary(KfSioMessage* msg)
+{
+    if (nullptr == msg) {
+        return (KfBool) false;
+    }
+
+    return (KfBool) msg->isBinary();
+}
+
+KfBool APICALL KfSioMsgIsArray(KfSioMessage* msg)
+{
+    if (nullptr == msg) {
+        return (KfBool) false;
+    }
+    return (KfBool) msg->isArray();
+}
+
+KfBool APICALL KfSioMsgIsObject(KfSioMessage* msg)
+{
+    if (nullptr == msg) {
+        return (KfBool) false;
+    }
+    return (KfBool) msg->isObject();
+}
+
+KfBool APICALL KfSioMsgIsBool(KfSioMessage* msg)
+{
+    if (nullptr == msg) {
+        return (KfBool) false;
+    }
+    return (KfBool) msg->isBool();
+}
+
+KfBool APICALL KfSioMsgIsNull(KfSioMessage* msg)
+{
+    if (nullptr == msg) {
+        return (KfBool) true;
+    }
+    return (KfBool) msg->isNull();
+}
+
+int APICALL KfSioMsgGetInt(KfSioMessage* msg)
+{
+    if (nullptr == msg) {
+        return -1;
+    }
+    try {
+        return msg->getInt();
+    } catch (...) {
+        return -1;
+    }
+}
+
+double APICALL KfSioMsgGetDouble(KfSioMessage* msg)
+{
+    if (nullptr == msg) {
+        return -1.0;
+    }
+    try {
+        return msg->getDouble();
+    } catch (...) {
+        return -1.0;
+    }
+}
+
+const char* APICALL KfSioMsgGetString(KfSioMessage* msg)
+{
+    if (nullptr == msg) {
+        return "";
+    }
+    try {
+        return msg->getString();
+    } catch (...) {
+        return "";
+    }
+}
+
+KfSioMsgList APICALL KfSioMsgGetArray(KfSioMessage* msg)
+{
+    if (nullptr == msg) {
+        return nullptr;
+    }
+    try {
+        return (KfSioMsgList) msg->getArray();
+    } catch (...) {
+        return nullptr;
+    }
+}
+
+KfBool APICALL KfSioMsgGetBool(KfSioMessage* msg)
+{
+    if (nullptr == msg) {
+        return (KfBool) false;
+    }
+    try {
+        return (KfBool) msg->getBool();
+    } catch (...) {
+        return false;
+    }
+}
 
 // Web Socket Server
 

@@ -214,7 +214,7 @@ void KF_CALLCONV KfSioClient::offAll(const char* socketNs)
     _KFSIO_CLIENT_UNLOCK;
 }
 
-void KF_CALLCONV KfSioClient::close(const char* socketNs)
+void KF_CALLCONV KfSioClient::closeSocket(const char* socketNs)
 {
     _KFSIO_CLIENT_LOCK;
     m_client.socket(socketNs)->close();

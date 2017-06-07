@@ -87,22 +87,102 @@ SOFTWARE.
 #define KFWSC_STATE_CLOSING 2
 #define KFWSC_STATE_CLOSED 3
 
+#define KFSIOMSG_INT       0
+#define KFSIOMSG_DOUBLE    1
+#define KFSIOMSG_STRING    2
+#define KFSIOMSG_BINARY    3
+#define KFSIOMSG_ARRAY     4
+#define KFSIOMSG_OBJECT    5
+#define KFSIOMSG_BOOLEAN   6
+#define KFSIOMSG_NULL      7
+
 class KfWebSocketServer;
 class KfWebSocketConnection;
 class KfWebSocketMessage;
 class KfSioClient;
+class KfSioMessage;
+
+typedef struct KfSioMsgListItem {
+    KfSioMessage* item = nullptr;
+    KfSioMsgListItem* next = nullptr;
+} KfSioMsgListItem;
+
+typedef KfSioMsgListItem* KfSioMsgList;
 
 typedef uint8_t KfBool;
 
+typedef struct {
+    const char* key;
+    const char* value;
+} KfSioClientConnectQueryParam;
+
 // =========== Socket.Io Client
 
-// LIBKFSOCKETIO_ABSTRACT_DLL SioClientPtr APICALL KfSioClientFactory();
-// LIBKFSOCKETIO_ABSTRACT_DLL void APICALL KfSioClientDispose(KfSioClientPtr);
+typedef void (APICALL *KfSioConnectionListener)(void);
+typedef void (APICALL *KfSioCloseListener)(unsigned int reason);
+typedef void (APICALL *KfSioReconnectListener)(unsigned int nAttempts, unsigned int delay);
+typedef void (APICALL *KfSioSocketListener)(const char* nsp);
+typedef void (APICALL *KfSioEventListener)(const char* name, KfSioMessage* message, bool needAck, KfSioMsgList ackMessage);
+typedef void (APICALL *KfSioErrorListener)(KfSioMessage* message);
+typedef void (APICALL *KfSioAckListener)(KfSioMsgList);
+
+LIBKFSOCKETIO_ABSTRACT_DLL KfSioClient* APICALL KfSioCreate();
+LIBKFSOCKETIO_ABSTRACT_DLL void APICALL KfSioDispose(KfSioClient*);
+LIBKFSOCKETIO_ABSTRACT_DLL void APICALL KfSioConnect(
+    KfSioClient* client,
+    const char* uri,
+    KfSioClientConnectQueryParam* query = nullptr,
+    unsigned int queryCount = 0,
+    KfSioClientConnectQueryParam* httpExtraHeaders = nullptr,
+    unsigned int httpExtraHeadersCount = 0);
+LIBKFSOCKETIO_ABSTRACT_DLL void APICALL KfSioEmit(
+    KfSioClient* client,
+    const char* name,
+    const char* message,
+    KfSioAckListener ack = nullptr,
+    const char* socketNs = "");
+LIBKFSOCKETIO_ABSTRACT_DLL void APICALL KfSioClose(KfSioClient* client);
+LIBKFSOCKETIO_ABSTRACT_DLL void APICALL KfSioSyncClose(KfSioClient* client);
+LIBKFSOCKETIO_ABSTRACT_DLL KfBool APICALL KfSioIsOpen(KfSioClient* client);
+LIBKFSOCKETIO_ABSTRACT_DLL const char* APICALL KfSioGetSessionId(KfSioClient* client);
+
+LIBKFSOCKETIO_ABSTRACT_DLL void APICALL KfSioClearListeners(KfSioClient* client);
+LIBKFSOCKETIO_ABSTRACT_DLL void APICALL KfSioSetClientOpenListener(KfSioClient* client, KfSioConnectionListener listener);
+LIBKFSOCKETIO_ABSTRACT_DLL void APICALL KfSioSetClientCloseListener(KfSioClient* client, KfSioCloseListener listener);
+LIBKFSOCKETIO_ABSTRACT_DLL void APICALL KfSioSetClientFailListener(KfSioClient* client, KfSioConnectionListener listener);
+LIBKFSOCKETIO_ABSTRACT_DLL void APICALL KfSioSetClientReconnectingListener(KfSioClient* client, KfSioConnectionListener listener);
+LIBKFSOCKETIO_ABSTRACT_DLL void APICALL KfSioSetClientReconnectListener(KfSioClient* client, KfSioReconnectListener listener);
+LIBKFSOCKETIO_ABSTRACT_DLL void APICALL KfSioSetSocketOpenListener(KfSioClient* client, KfSioSocketListener listener);
+LIBKFSOCKETIO_ABSTRACT_DLL void APICALL KfSioSetSocketCloseListener(KfSioClient* client, KfSioSocketListener listener);
+
+LIBKFSOCKETIO_ABSTRACT_DLL void APICALL KfSioSetReconnectAttempts(KfSioClient* client, int attempts);
+LIBKFSOCKETIO_ABSTRACT_DLL void APICALL KfSioSetReconnectDelay(KfSioClient* client, unsigned int millis);
+LIBKFSOCKETIO_ABSTRACT_DLL void APICALL KfSioSetReconnectDelayMax(KfSioClient* client, unsigned int millis);
+
+LIBKFSOCKETIO_ABSTRACT_DLL void APICALL KfSioOn(KfSioClient* client, const char* eventName, KfSioEventListener eventListener, const char* socketNs = "");
+LIBKFSOCKETIO_ABSTRACT_DLL void APICALL KfSioOff(KfSioClient* client, const char* eventName, const char* socketNs = "");
+LIBKFSOCKETIO_ABSTRACT_DLL void APICALL KfSioOffAll(KfSioClient* client, const char* socketNs = "");
+LIBKFSOCKETIO_ABSTRACT_DLL void APICALL KfSioCloseSocket(KfSioClient* client, const char* socketNs = "");
+LIBKFSOCKETIO_ABSTRACT_DLL void APICALL KfSioOnError(KfSioClient* client, KfSioErrorListener listener, const char* socketNs = "");
+LIBKFSOCKETIO_ABSTRACT_DLL void APICALL KfSioOffError(KfSioClient* client, const char* socketNs = "");
 
 // =========== Socket.Io Message
 
-// LIBKFSOCKETIO_ABSTRACT_DLL IKfSioMessage* APICALL KfSioMessageFactory();
-// LIBKFSOCKETIO_ABSTRACT_DLL void APICALL KfSioMessageDispose(IKfSioMessage*);
+LIBKFSOCKETIO_ABSTRACT_DLL int APICALL KfSioMsgGetType(KfSioMessage* msg);
+LIBKFSOCKETIO_ABSTRACT_DLL KfBool APICALL KfSioMsgIsInt(KfSioMessage* msg);
+LIBKFSOCKETIO_ABSTRACT_DLL KfBool APICALL KfSioMsgIsDouble(KfSioMessage* msg);
+LIBKFSOCKETIO_ABSTRACT_DLL KfBool APICALL KfSioMsgIsString(KfSioMessage* msg);
+LIBKFSOCKETIO_ABSTRACT_DLL KfBool APICALL KfSioMsgIsBinary(KfSioMessage* msg);
+LIBKFSOCKETIO_ABSTRACT_DLL KfBool APICALL KfSioMsgIsArray(KfSioMessage* msg);
+LIBKFSOCKETIO_ABSTRACT_DLL KfBool APICALL KfSioMsgIsObject(KfSioMessage* msg);
+LIBKFSOCKETIO_ABSTRACT_DLL KfBool APICALL KfSioMsgIsBool(KfSioMessage* msg);
+LIBKFSOCKETIO_ABSTRACT_DLL KfBool APICALL KfSioMsgIsNull(KfSioMessage* msg);
+
+LIBKFSOCKETIO_ABSTRACT_DLL int APICALL KfSioMsgGetInt(KfSioMessage* msg);
+LIBKFSOCKETIO_ABSTRACT_DLL double APICALL KfSioMsgGetDouble(KfSioMessage* msg);
+LIBKFSOCKETIO_ABSTRACT_DLL const char* APICALL KfSioMsgGetString(KfSioMessage* msg);
+LIBKFSOCKETIO_ABSTRACT_DLL KfSioMsgList APICALL KfSioMsgGetArray(KfSioMessage* msg);
+LIBKFSOCKETIO_ABSTRACT_DLL KfBool APICALL KfSioMsgGetBool(KfSioMessage* msg);
 
 // =========== Web Socket Server
 

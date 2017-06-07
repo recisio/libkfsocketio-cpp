@@ -89,7 +89,7 @@ public:
     virtual void KF_CALLCONV on(const char* eventName, EventListener eventListener, const char* socketNs = "");
     virtual void KF_CALLCONV off(const char* eventName, const char* socketNs = "");
     virtual void KF_CALLCONV offAll(const char* socketNs = "");
-    virtual void KF_CALLCONV close(const char* socketNs = "");
+    virtual void KF_CALLCONV closeSocket(const char* socketNs = "");
     virtual void KF_CALLCONV onError(ErrorListener listener, const char* socketNs = "");
     virtual void KF_CALLCONV offError(const char* socketNs = "");
 

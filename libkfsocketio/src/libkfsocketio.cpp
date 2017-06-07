@@ -31,7 +31,8 @@ void APICALL KfSioMessageDispose(IKfSioMessage* message)
 
 KfWebSocketServer* APICALL KfWssCreate()
 {
-    return new KfWebSocketServer();
+    KfWebSocketServer* server = new KfWebSocketServer();
+    return server;
 }
 
 void APICALL KfWssDispose(KfWebSocketServer* srv)
@@ -41,24 +42,37 @@ void APICALL KfWssDispose(KfWebSocketServer* srv)
     }
 }
 
-void APICALL KfWssRun(KfWebSocketServer* srv, uint16_t port)
+KfBool APICALL KfWssRun(KfWebSocketServer* srv, uint16_t port)
 {
     if (nullptr != srv) {
-        srv->run(port);
+        try {
+            srv->run(port);
+            return (KfBool) 1;
+        } catch (...) {
+        }
     }
+    return (KfBool) 0;
 }
 
-void APICALL KfWssStart(KfWebSocketServer* srv, uint16_t port)
+KfBool APICALL KfWssStart(KfWebSocketServer* srv, uint16_t port)
 {
     if (nullptr != srv) {
-        srv->start(port);
+        try {
+            srv->start(port);
+            return (KfBool) 1;
+        } catch (...) {
+        }
     }
+    return (KfBool) 0;
 }
 
 size_t APICALL KfWssPoll(KfWebSocketServer* srv)
 {
     if (nullptr != srv) {
-        return srv->poll();
+        try {
+            return srv->poll();
+        } catch (...) {
+        }
     }
     return 0;
 }
@@ -66,7 +80,10 @@ size_t APICALL KfWssPoll(KfWebSocketServer* srv)
 size_t APICALL KfWssPollOne(KfWebSocketServer* srv)
 {
     if (nullptr != srv) {
-        return srv->pollOne();
+        try {
+            return srv->pollOne();
+        } catch (...) {
+        }
     }
     return 0;
 }
@@ -74,14 +91,20 @@ size_t APICALL KfWssPollOne(KfWebSocketServer* srv)
 void APICALL KfWssStop(KfWebSocketServer* srv)
 {
     if (nullptr != srv) {
-        srv->stop();
+        try {
+            srv->stop();
+        } catch (...) {
+        }
     }
 }
 
 uint8_t APICALL KfWssIsListening(KfWebSocketServer* srv)
 {
     if (nullptr != srv) {
-        return srv->isListening() ? 1 : 0;
+        try {
+            return srv->isListening() ? 1 : 0;
+        } catch (...) {
+        }
     }
     return 0;
 }
@@ -89,49 +112,70 @@ uint8_t APICALL KfWssIsListening(KfWebSocketServer* srv)
 void APICALL KfWssUnbindListeners(KfWebSocketServer* srv)
 {
     if (nullptr != srv) {
-        srv->unbindListeners();
+        try {
+            srv->unbindListeners();
+        } catch (...) {
+        }
     }
 }
 
 void APICALL KfWssSetOpenListener(KfWebSocketServer* srv, KfWssConnectionListener listener)
 {
     if (nullptr != srv) {
-        srv->setOpenListener(listener);
+        try {
+            srv->setOpenListener(listener);
+        } catch (...) {
+        }
     }
 }
 
 void APICALL KfWssSetCloseListener(KfWebSocketServer* srv, KfWssConnectionListener listener)
 {
     if (nullptr != srv) {
-        srv->setCloseListener(listener);
+        try {
+            srv->setCloseListener(listener);
+        } catch (...) {
+        }
     }
 }
 
 void APICALL KfWssSetFailListener(KfWebSocketServer* srv, KfWssConnectionListener listener)
 {
     if (nullptr != srv) {
-        srv->setFailListener(listener);
+        try {
+            srv->setFailListener(listener);
+        } catch (...) {
+        }
     }
 }
 
 void APICALL KfWssSetHttpListener(KfWebSocketServer* srv, KfWssConnectionListener listener)
 {
     if (nullptr != srv) {
-        srv->setHttpListener(listener);
+        try {
+            srv->setHttpListener(listener);
+        } catch (...) {
+        }
     }
 }
 
 void APICALL KfWssSetInterruptListener(KfWebSocketServer* srv, KfWssConnectionListener listener)
 {
     if (nullptr != srv) {
-        srv->setInterruptListener(listener);
+        try {
+            srv->setInterruptListener(listener);
+        } catch (...) {
+        }
     }
 }
 
 void APICALL KfWssSetMessageListener(KfWebSocketServer* srv, KfWssMessageListener listener)
 {
     if (nullptr != srv) {
-        srv->setMessageListener(listener);
+        try {
+            srv->setMessageListener(listener);
+        } catch (...) {
+        }
     }
 }
 
@@ -153,28 +197,40 @@ uint8_t APICALL KfWscAreEqual(KfWebSocketConnection* left, KfWebSocketConnection
 void APICALL KfWscSend(KfWebSocketConnection* con, const char* payload, uint8_t opcode)
 {
     if (nullptr != con) {
-        con->send(payload, (KfWebSocketConnection::OpCode) opcode);
+        try {
+            con->send(payload, (KfWebSocketConnection::OpCode) opcode);
+        } catch (...) {
+        }
     }
 }
 
 void APICALL KfWscClose(KfWebSocketConnection* con)
 {
     if (nullptr != con) {
-        con->close();
+        try {
+            con->close();
+        } catch (...) {
+        }
     }
 }
 
 void APICALL KfWscCloseWithStatus(KfWebSocketConnection* con, uint32_t status, const char* reason)
 {
     if (nullptr != con) {
-        con->close((KfWebSocketConnection::CloseStatus) status, reason);
+        try {
+            con->close((KfWebSocketConnection::CloseStatus) status, reason);
+        } catch (...) {
+        }
     }
 }
 
 const char* APICALL KfWscGetRemoteEndpoint(KfWebSocketConnection* con)
 {
     if (nullptr != con) {
-        return con->getRemoteEndpoint();
+        try {
+            return con->getRemoteEndpoint();
+        } catch (...) {
+        }
     }
     return "";
 }

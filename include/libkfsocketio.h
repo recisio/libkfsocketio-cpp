@@ -87,17 +87,12 @@ SOFTWARE.
 #define KFWSC_STATE_CLOSING 2
 #define KFWSC_STATE_CLOSED 3
 
-/*
-typedef void* SioClientPtr;
-typedef void* WebSocketServerPtr;
-typedef void* KfWebSocketConnection*;
-typedef void* KfWebSocketMessage*;
-*/
-
 class KfWebSocketServer;
 class KfWebSocketConnection;
 class KfWebSocketMessage;
 class KfSioClient;
+
+typedef uint8_t KfBool;
 
 // =========== Socket.Io Client
 
@@ -116,8 +111,8 @@ typedef void (APICALL *KfWssMessageListener)(KfWebSocketConnection*, KfWebSocket
 
 LIBKFSOCKETIO_ABSTRACT_DLL KfWebSocketServer* APICALL KfWssCreate();
 LIBKFSOCKETIO_ABSTRACT_DLL void APICALL KfWssDispose(KfWebSocketServer* srv);
-LIBKFSOCKETIO_ABSTRACT_DLL void APICALL KfWssRun(KfWebSocketServer* srv, uint16_t port);
-LIBKFSOCKETIO_ABSTRACT_DLL void APICALL KfWssStart(KfWebSocketServer* srv, uint16_t port);
+LIBKFSOCKETIO_ABSTRACT_DLL KfBool APICALL KfWssRun(KfWebSocketServer* srv, uint16_t port);
+LIBKFSOCKETIO_ABSTRACT_DLL KfBool APICALL KfWssStart(KfWebSocketServer* srv, uint16_t port);
 LIBKFSOCKETIO_ABSTRACT_DLL size_t APICALL KfWssPoll(KfWebSocketServer* srv);
 LIBKFSOCKETIO_ABSTRACT_DLL size_t APICALL KfWssPollOne(KfWebSocketServer* srv);
 LIBKFSOCKETIO_ABSTRACT_DLL void APICALL KfWssStop(KfWebSocketServer* srv);

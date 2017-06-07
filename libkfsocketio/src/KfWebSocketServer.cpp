@@ -84,8 +84,8 @@ KfWebSocketServer::KfWebSocketServer() :
 
 KfWebSocketServer::~KfWebSocketServer()
 {
-    unbindListeners();
     try {
+        unbindListeners();
         stop();
     } catch (...) {
     }

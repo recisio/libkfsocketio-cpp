@@ -107,7 +107,7 @@ private:
     KfWebSocketConnectionSPtr KF_CALLCONV findConnection(websocketpp::server<websocketpp::config::asio>::connection_ptr con);
 
 private:
-    std::mutex m_mutex;
+    std::recursive_mutex m_mutex;
     websocketpp::server<websocketpp::config::asio>* m_server;
     std::vector<KfWebSocketConnectionSPtr> m_connections;
 

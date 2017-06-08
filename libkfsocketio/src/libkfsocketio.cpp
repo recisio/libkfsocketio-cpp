@@ -44,7 +44,7 @@ void APICALL KfSioEmit(
 {
     if (nullptr != client) {
         try {
-            if (nullptr != ack) {
+            if (nullptr == ack) {
                 client->emit(name, message, nullptr, socketNs);
             } else {
                 client->emit(name, message, [ack](KfSioMessageList msgList) {
@@ -129,8 +129,8 @@ void APICALL KfSioSetClientCloseListener(KfSioClient* client, KfSioCloseListener
             if (nullptr == listener) {
                 client->setClientCloseListener(nullptr);
             } else {
-                client->setClientCloseListener([listener](const unsigned int& reason) {
-                    (listener) (reason);
+                client->setClientCloseListener([listener](const sio::client::close_reason& reason) {
+                    (listener) ((unsigned int) reason);
                 });
             }
         } catch (...) {}
@@ -189,8 +189,8 @@ void APICALL KfSioSetSocketOpenListener(KfSioClient* client, KfSioSocketListener
             if (nullptr == listener) {
                 client->setSocketOpenListener(nullptr);
             } else {
-                client->setSocketOpenListener([listener](const char* nsp) {
-                    (listener) (nsp);
+                client->setSocketOpenListener([listener](const std::string& nsp) {
+                    (listener) (nsp.c_str());
                 });
             }
         } catch (...) {}
@@ -204,8 +204,8 @@ void APICALL KfSioSetSocketCloseListener(KfSioClient* client, KfSioSocketListene
             if (nullptr == listener) {
                 client->setSocketCloseListener(nullptr);
             } else {
-                client->setSocketCloseListener([listener](const char* nsp) {
-                    (listener) (nsp);
+                client->setSocketCloseListener([listener](const std::string& nsp) {
+                    (listener) (nsp.c_str());
                 });
             }
         } catch (...) {}

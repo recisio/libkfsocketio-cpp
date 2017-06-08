@@ -36,7 +36,7 @@
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <WholeProgramOptimization>false</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
@@ -49,7 +49,7 @@
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <WholeProgramOptimization>false</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
@@ -101,7 +101,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level2</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>SIO_TLS;KF_CALLCONV=__cdecl;_WEBSOCKETPP_CPP11_STL_;_WEBSOCKETPP_CPP11_REGEX_;_WEBSOCKETPP_NOEXCEPT_TOKEN_=noexcept;WIN32;_DEBUG;_WINDOWS;_USRDLL;LIBKFSOCKETIO_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>KF_CALLCONV=__cdecl;_WEBSOCKETPP_CPP11_STL_;_WEBSOCKETPP_CPP11_REGEX_;_WEBSOCKETPP_NOEXCEPT_TOKEN_=noexcept;WIN32;_DEBUG;_WINDOWS;_USRDLL;LIBKFSOCKETIO_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(SolutionDir)..\..\lib\openssl\build\include;$(SolutionDir)..\..\lib\socket.io-client-cpp\src;$(SolutionDir)..\..\include;$(SolutionDir)..\..\lib\boost_1_64_0\build\include\boost-1_64;$(SolutionDir)..\..\lib\socket.io-client-cpp\lib\websocketpp;$(SolutionDir)..\..\lib\socket.io-client-cpp\lib\rapidjson\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp14</LanguageStandard>
       <AssemblerOutput>NoListing</AssemblerOutput>
@@ -109,6 +109,9 @@
       <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
       <MultiProcessorCompilation>false</MultiProcessorCompilation>
       <RemoveUnreferencedCodeData>false</RemoveUnreferencedCodeData>
+      <CompileAsManaged>false</CompileAsManaged>
+      <CompileAsWinRT>false</CompileAsWinRT>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -120,7 +123,8 @@
       </IgnoreAllDefaultLibraries>
       <ShowProgress>NotSet</ShowProgress>
       <OptimizeReferences>false</OptimizeReferences>
-      <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
+      <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
+      <EnableCOMDATFolding>false</EnableCOMDATFolding>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -128,7 +132,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level2</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>SIO_TLS;KF_CALLCONV=__cdecl;_WEBSOCKETPP_CPP11_STL_;_WEBSOCKETPP_CPP11_REGEX_;_WEBSOCKETPP_NOEXCEPT_TOKEN_=noexcept;_DEBUG;_WINDOWS;_USRDLL;LIBKFSOCKETIO_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>KF_CALLCONV=__cdecl;_WEBSOCKETPP_CPP11_STL_;_WEBSOCKETPP_CPP11_REGEX_;_WEBSOCKETPP_NOEXCEPT_TOKEN_=noexcept;_DEBUG;_WINDOWS;_USRDLL;LIBKFSOCKETIO_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(SolutionDir)..\..\lib\openssl\build\include;$(SolutionDir)..\..\lib\socket.io-client-cpp\src;$(SolutionDir)..\..\include;$(SolutionDir)..\..\lib\boost_1_64_0\build\include\boost-1_64;$(SolutionDir)..\..\lib\socket.io-client-cpp\lib\websocketpp;$(SolutionDir)..\..\lib\socket.io-client-cpp\lib\rapidjson\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp14</LanguageStandard>
       <AssemblerOutput>NoListing</AssemblerOutput>
@@ -136,6 +140,9 @@
       <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
       <MultiProcessorCompilation>false</MultiProcessorCompilation>
       <RemoveUnreferencedCodeData>false</RemoveUnreferencedCodeData>
+      <CompileAsManaged>false</CompileAsManaged>
+      <CompileAsWinRT>false</CompileAsWinRT>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -147,7 +154,8 @@
       </IgnoreAllDefaultLibraries>
       <ShowProgress>NotSet</ShowProgress>
       <OptimizeReferences>false</OptimizeReferences>
-      <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
+      <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
+      <EnableCOMDATFolding>false</EnableCOMDATFolding>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -155,9 +163,8 @@
       <WarningLevel>Level2</WarningLevel>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <Optimization>Disabled</Optimization>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>false</IntrinsicFunctions>
-      <PreprocessorDefinitions>SIO_TLS;KF_CALLCONV=__cdecl;_WEBSOCKETPP_CPP11_STL_;_WEBSOCKETPP_CPP11_REGEX_;_WEBSOCKETPP_NOEXCEPT_TOKEN_=noexcept;WIN32;NDEBUG;_WINDOWS;_USRDLL;LIBKFSOCKETIO_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>KF_CALLCONV=__cdecl;_WEBSOCKETPP_CPP11_STL_;_WEBSOCKETPP_CPP11_REGEX_;_WEBSOCKETPP_NOEXCEPT_TOKEN_=noexcept;WIN32;NDEBUG;_WINDOWS;_USRDLL;LIBKFSOCKETIO_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(SolutionDir)..\..\lib\openssl\build\include;$(SolutionDir)..\..\lib\socket.io-client-cpp\src;$(SolutionDir)..\..\include;$(SolutionDir)..\..\lib\boost_1_64_0\build\include\boost-1_64;$(SolutionDir)..\..\lib\socket.io-client-cpp\lib\websocketpp;$(SolutionDir)..\..\lib\socket.io-client-cpp\lib\rapidjson\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp14</LanguageStandard>
       <AssemblerOutput>NoListing</AssemblerOutput>
@@ -166,10 +173,13 @@
       <MultiProcessorCompilation>false</MultiProcessorCompilation>
       <WholeProgramOptimization>false</WholeProgramOptimization>
       <RemoveUnreferencedCodeData>false</RemoveUnreferencedCodeData>
+      <CompileAsManaged>false</CompileAsManaged>
+      <CompileAsWinRT>false</CompileAsWinRT>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <EnableCOMDATFolding>false</EnableCOMDATFolding>
       <OptimizeReferences>false</OptimizeReferences>
       <AdditionalLibraryDirectories>$(SolutionDir)..\..\lib\boost_1_64_0\build\lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>crypt32.lib;$(SolutionDir)..\..\lib\openssl\build\lib\libssl.lib;$(SolutionDir)..\..\lib\openssl\build\lib\libcrypto.lib;boost.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -178,7 +188,7 @@
       <IgnoreAllDefaultLibraries>
       </IgnoreAllDefaultLibraries>
       <ShowProgress>NotSet</ShowProgress>
-      <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
+      <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -186,9 +196,8 @@
       <WarningLevel>Level2</WarningLevel>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <Optimization>Disabled</Optimization>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>false</IntrinsicFunctions>
-      <PreprocessorDefinitions>SIO_TLS;KF_CALLCONV=__cdecl;_WEBSOCKETPP_CPP11_STL_;_WEBSOCKETPP_CPP11_REGEX_;_WEBSOCKETPP_NOEXCEPT_TOKEN_=noexcept;NDEBUG;_WINDOWS;_USRDLL;LIBKFSOCKETIO_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>KF_CALLCONV=__cdecl;_WEBSOCKETPP_CPP11_STL_;_WEBSOCKETPP_CPP11_REGEX_;_WEBSOCKETPP_NOEXCEPT_TOKEN_=noexcept;NDEBUG;_WINDOWS;_USRDLL;LIBKFSOCKETIO_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(SolutionDir)..\..\lib\openssl\build\include;$(SolutionDir)..\..\lib\socket.io-client-cpp\src;$(SolutionDir)..\..\include;$(SolutionDir)..\..\lib\boost_1_64_0\build\include\boost-1_64;$(SolutionDir)..\..\lib\socket.io-client-cpp\lib\websocketpp;$(SolutionDir)..\..\lib\socket.io-client-cpp\lib\rapidjson\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp14</LanguageStandard>
       <AssemblerOutput>NoListing</AssemblerOutput>
@@ -197,10 +206,13 @@
       <MultiProcessorCompilation>false</MultiProcessorCompilation>
       <WholeProgramOptimization>false</WholeProgramOptimization>
       <RemoveUnreferencedCodeData>false</RemoveUnreferencedCodeData>
+      <CompileAsManaged>false</CompileAsManaged>
+      <CompileAsWinRT>false</CompileAsWinRT>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <EnableCOMDATFolding>false</EnableCOMDATFolding>
       <OptimizeReferences>false</OptimizeReferences>
       <AdditionalLibraryDirectories>$(SolutionDir)..\..\lib\boost_1_64_0\build\lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>crypt32.lib;$(SolutionDir)..\..\lib\openssl\build\lib\libssl.lib;$(SolutionDir)..\..\lib\openssl\build\lib\libcrypto.lib;boost.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -209,7 +221,7 @@
       <IgnoreAllDefaultLibraries>
       </IgnoreAllDefaultLibraries>
       <ShowProgress>NotSet</ShowProgress>
-      <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
+      <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -218,7 +230,6 @@
     <ClCompile Include="..\..\lib\socket.io-client-cpp\src\sio_client.cpp" />
     <ClCompile Include="..\..\lib\socket.io-client-cpp\src\sio_socket.cpp" />
     <ClCompile Include="..\src\KfSioClient.cpp" />
-    <ClCompile Include="..\src\KfSioListener.cpp" />
     <ClCompile Include="..\src\KfSioMessage.cpp" />
     <ClCompile Include="..\src\KfWebSocketConnection.cpp" />
     <ClCompile Include="..\src\KfWebSocketMessage.cpp" />
@@ -233,7 +244,6 @@
     <ClInclude Include="..\..\lib\socket.io-client-cpp\src\sio_message.h" />
     <ClInclude Include="..\..\lib\socket.io-client-cpp\src\sio_socket.h" />
     <ClInclude Include="..\src\KfSioClient.h" />
-    <ClInclude Include="..\src\KfSioListener.h" />
     <ClInclude Include="..\src\KfSioMessage.h" />
     <ClInclude Include="..\src\KfWebSocketConnection.h" />
     <ClInclude Include="..\src\KfWebSocketMessage.h" />

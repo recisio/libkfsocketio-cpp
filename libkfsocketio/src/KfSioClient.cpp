@@ -23,61 +23,70 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "KfSioListener.h"
-
 #define _KFSIO_CLIENT_LOCK m_mutex.lock()
 #define _KFSIO_CLIENT_UNLOCK m_mutex.unlock()
 
 KfSioClient::KfSioClient() :
     m_mutex(),
-    m_client(),
-    m_listener(new KfSioListener(&m_client))
+    m_client()
 {
 }
 
-KfSioClient::~KfSioClient()
+void KF_CALLCONV KfSioClient::setClientOpenListener(const sio::client::con_listener& listener)
 {
-    delete m_listener;
+    _KFSIO_CLIENT_LOCK;
+    m_client.set_open_listener(listener);
+    _KFSIO_CLIENT_UNLOCK;
 }
 
-void KF_CALLCONV KfSioClient::setClientOpenListener(const ConnectionListener& listener)
+void KF_CALLCONV KfSioClient::setClientCloseListener(const sio::client::close_listener& listener)
 {
-    m_listener->setClientOpenListener(listener);
+    _KFSIO_CLIENT_LOCK;
+    m_client.set_close_listener(listener);
+    _KFSIO_CLIENT_UNLOCK;
 }
 
-void KF_CALLCONV KfSioClient::setClientCloseListener(const CloseListener& listener)
+void KF_CALLCONV KfSioClient::setClientFailListener(const sio::client::con_listener& listener)
 {
-    m_listener->setClientCloseListener(listener);
+    _KFSIO_CLIENT_LOCK;
+    m_client.set_fail_listener(listener);
+    _KFSIO_CLIENT_UNLOCK;
 }
 
-void KF_CALLCONV KfSioClient::setClientFailListener(const ConnectionListener& listener)
+void KF_CALLCONV KfSioClient::setClientReconnectingListener(const sio::client::con_listener& listener)
 {
-    m_listener->setClientFailListener(listener);
+    _KFSIO_CLIENT_LOCK;
+    m_client.set_reconnecting_listener(listener);
+    _KFSIO_CLIENT_UNLOCK;
 }
 
-void KF_CALLCONV KfSioClient::setClientReconnectingListener(const ConnectionListener& listener)
+void KF_CALLCONV KfSioClient::setClientReconnectListener(const sio::client::reconnect_listener& listener)
 {
-    m_listener->setClientReconnectingListener(listener);
+    _KFSIO_CLIENT_LOCK;
+    m_client.set_reconnect_listener(listener);
+    _KFSIO_CLIENT_UNLOCK;
 }
 
-void KF_CALLCONV KfSioClient::setClientReconnectListener(const ReconnectListener& listener)
+void KF_CALLCONV KfSioClient::setSocketOpenListener(const sio::client::socket_listener& listener)
 {
-    m_listener->setClientReconnectListener(listener);
+    _KFSIO_CLIENT_LOCK;
+    m_client.set_socket_open_listener(listener);
+    _KFSIO_CLIENT_UNLOCK;
 }
 
-void KF_CALLCONV KfSioClient::setSocketOpenListener(const SocketListener& listener)
+void KF_CALLCONV KfSioClient::setSocketCloseListener(const sio::client::socket_listener& listener)
 {
-    m_listener->setSocketOpenListener(listener);
-}
-
-void KF_CALLCONV KfSioClient::setSocketCloseListener(const SocketListener& listener)
-{
-    m_listener->setSocketCloseListener(listener);
+    _KFSIO_CLIENT_LOCK;
+    m_client.set_socket_close_listener(listener);
+    _KFSIO_CLIENT_UNLOCK;
 }
 
 void KF_CALLCONV KfSioClient::clearListeners()
 {
-    m_listener->clearListeners();
+    _KFSIO_CLIENT_LOCK;
+    m_client.clear_con_listeners();
+    m_client.clear_socket_listeners();
+    _KFSIO_CLIENT_UNLOCK;
 }
 
 void KF_CALLCONV KfSioClient::connect(const char* uri)
@@ -89,7 +98,7 @@ void KF_CALLCONV KfSioClient::connect(const char* uri, const KfSioClientQueryPar
 {
     std::map<std::string, std::string> stlQuery;
     for (int i = 0; i < queryCount; ++i) {
-        stlQuery[query[i].key] = query[i].value;
+        stlQuery[std::string(query[i].key)] = std::string(query[i].value);
     }
 
     m_client.connect(uri, stlQuery);
@@ -104,12 +113,12 @@ void KF_CALLCONV KfSioClient::connect(
 {
     std::map<std::string, std::string> stlQuery;
     for (int i = 0; i < queryCount; ++i) {
-        stlQuery[query[i].key] = query[i].value;
+        stlQuery[std::string(query[i].key)] = std::string(query[i].value);
     }
 
     std::map<std::string, std::string> stlExtraHeaders;
     for (int i = 0; i < extraHeaderCount; ++i) {
-        stlExtraHeaders[http_extra_headers[i].key] = http_extra_headers[i].value;
+        stlExtraHeaders[std::string(http_extra_headers[i].key)] = std::string(http_extra_headers[i].value);
     }
 
     m_client.connect(uri, stlQuery, stlExtraHeaders);

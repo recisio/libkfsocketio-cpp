@@ -102,29 +102,27 @@ class KfWebSocketMessage;
 class KfSioClient;
 class KfSioMessage;
 
-typedef struct KfSioMsgListItem {
-    KfSioMessage* item = nullptr;
-    KfSioMsgListItem* next = nullptr;
-} KfSioMsgListItem;
+struct KfSioMsgListItem;
 
-typedef KfSioMsgListItem* KfSioMsgList;
+CEXT typedef KfSioMsgListItem* KfSioMsgList;
+CEXT typedef uint8_t KfBool;
 
-typedef uint8_t KfBool;
-
-typedef struct {
+#pragma pack(push, 1)
+CEXT typedef struct {
     const char* key;
     const char* value;
 } KfSioClientConnectQueryParam;
+#pragma pack(pop)
 
 // =========== Socket.Io Client
 
-typedef void (APICALL *KfSioConnectionListener)(void);
-typedef void (APICALL *KfSioCloseListener)(unsigned int reason);
-typedef void (APICALL *KfSioReconnectListener)(unsigned int nAttempts, unsigned int delay);
-typedef void (APICALL *KfSioSocketListener)(const char* nsp);
-typedef void (APICALL *KfSioEventListener)(const char* name, KfSioMessage* message, bool needAck, KfSioMsgList ackMessage);
-typedef void (APICALL *KfSioErrorListener)(KfSioMessage* message);
-typedef void (APICALL *KfSioAckListener)(KfSioMsgList);
+CEXT typedef void (APICALL *KfSioConnectionListener)(void);
+CEXT typedef void (APICALL *KfSioCloseListener)(unsigned int reason);
+CEXT typedef void (APICALL *KfSioReconnectListener)(unsigned int nAttempts, unsigned int delay);
+CEXT typedef void (APICALL *KfSioSocketListener)(const char* nsp);
+CEXT typedef void (APICALL *KfSioEventListener)(const char* name, KfSioMessage* message, bool needAck, KfSioMsgList ackMessage);
+CEXT typedef void (APICALL *KfSioErrorListener)(KfSioMessage* message);
+CEXT typedef void (APICALL *KfSioAckListener)(KfSioMsgList);
 
 LIBKFSOCKETIO_ABSTRACT_DLL KfSioClient* APICALL KfSioCreate();
 LIBKFSOCKETIO_ABSTRACT_DLL void APICALL KfSioDispose(KfSioClient*);
@@ -186,8 +184,8 @@ LIBKFSOCKETIO_ABSTRACT_DLL KfBool APICALL KfSioMsgGetBool(KfSioMessage* msg);
 
 // =========== Web Socket Server
 
-typedef void (APICALL *KfWssConnectionListener)(KfWebSocketConnection*);
-typedef void (APICALL *KfWssMessageListener)(KfWebSocketConnection*, KfWebSocketMessage*);
+CEXT typedef void (APICALL *KfWssConnectionListener)(KfWebSocketConnection*);
+CEXT typedef void (APICALL *KfWssMessageListener)(KfWebSocketConnection*, KfWebSocketMessage*);
 
 LIBKFSOCKETIO_ABSTRACT_DLL KfWebSocketServer* APICALL KfWssCreate();
 LIBKFSOCKETIO_ABSTRACT_DLL void APICALL KfWssDispose(KfWebSocketServer* srv);

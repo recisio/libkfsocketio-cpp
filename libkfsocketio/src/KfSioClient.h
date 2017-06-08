@@ -35,8 +35,6 @@ SOFTWARE.
 #define SIO_LISTENER_CLOSE_REASON_NORMAL 0
 #define SIO_LISTENER_CLOSE_REASON_DROP 1
 
-class KfSioListener;
-
 typedef struct {
     const char* key;
     const char* value;
@@ -45,17 +43,12 @@ typedef struct {
 class KfSioClient {
 
 public:
-    typedef std::function<void(void)> ConnectionListener;
-    typedef std::function<void(unsigned int const& reason)> CloseListener;
-    typedef std::function<void(unsigned int nAttempts, unsigned int delay)> ReconnectListener;
-    typedef std::function<void(const char* nsp)> SocketListener;
     typedef std::function<void(const char* name, KfSioMessagePtr message, bool needAck, KfSioMessageList ackMessage)> EventListener;
     typedef std::function<void(KfSioMessagePtr message)> ErrorListener;
     typedef std::function<void(KfSioMessageList)> AckListener;
 
 public:
     KfSioClient();
-    virtual ~KfSioClient();
 
     // Client calls
     virtual void KF_CALLCONV connect(const char* uri);
@@ -72,13 +65,13 @@ public:
     virtual bool KF_CALLCONV isOpen() const;
     virtual const char* KF_CALLCONV getSessionId() const;
 
-    virtual void KF_CALLCONV setClientOpenListener(const ConnectionListener& listener);
-    virtual void KF_CALLCONV setClientCloseListener(const CloseListener& listener);
-    virtual void KF_CALLCONV setClientFailListener(const ConnectionListener& listener);
-    virtual void KF_CALLCONV setClientReconnectingListener(const ConnectionListener& listener);
-    virtual void KF_CALLCONV setClientReconnectListener(const ReconnectListener& listener);
-    virtual void KF_CALLCONV setSocketOpenListener(const SocketListener& listener);
-    virtual void KF_CALLCONV setSocketCloseListener(const SocketListener& listener);
+    virtual void KF_CALLCONV setClientOpenListener(const sio::client::con_listener& listener);
+    virtual void KF_CALLCONV setClientCloseListener(const sio::client::close_listener& listener);
+    virtual void KF_CALLCONV setClientFailListener(const sio::client::con_listener& listener);
+    virtual void KF_CALLCONV setClientReconnectingListener(const sio::client::con_listener& listener);
+    virtual void KF_CALLCONV setClientReconnectListener(const sio::client::reconnect_listener& listener);
+    virtual void KF_CALLCONV setSocketOpenListener(const sio::client::socket_listener& listener);
+    virtual void KF_CALLCONV setSocketCloseListener(const sio::client::socket_listener& listener);
     virtual void KF_CALLCONV clearListeners();
 
     virtual void KF_CALLCONV setReconnectAttempts(int attempts);
@@ -107,9 +100,8 @@ public:
 
 
 private:
-    std::mutex m_mutex;
+    std::recursive_mutex m_mutex;
     sio::client m_client;
-    KfSioListener* m_listener;
 
 };
 

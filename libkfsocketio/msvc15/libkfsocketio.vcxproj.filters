@@ -36,9 +36,6 @@
     <ClCompile Include="..\src\KfSioMessage.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\KfSioListener.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\KfWebSocketServer.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
@@ -53,9 +50,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\src\KfSioListener.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\lib\socket.io-client-cpp\src\sio_client.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>

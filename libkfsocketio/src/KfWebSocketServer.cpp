@@ -137,8 +137,8 @@ size_t KF_CALLCONV KfWebSocketServer::pollOne()
 void KF_CALLCONV KfWebSocketServer::stop()
 {
     m_mutex.lock();
-    m_server->stop_listening();
     m_server->stop();
+    m_server->stop_listening();
     m_connections.clear();
     m_mutex.unlock();
 }

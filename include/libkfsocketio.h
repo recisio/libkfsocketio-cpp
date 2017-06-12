@@ -154,7 +154,7 @@ LIBKFSOCKETIO_ABSTRACT_DLL void APICALL KfSioEmitJson(
 LIBKFSOCKETIO_ABSTRACT_DLL void APICALL KfSioClose(KfSioClient* client);
 LIBKFSOCKETIO_ABSTRACT_DLL void APICALL KfSioSyncClose(KfSioClient* client);
 LIBKFSOCKETIO_ABSTRACT_DLL KfBool APICALL KfSioIsOpen(KfSioClient* client);
-LIBKFSOCKETIO_ABSTRACT_DLL const char* APICALL KfSioGetSessionId(KfSioClient* client);
+LIBKFSOCKETIO_ABSTRACT_DLL uint32_t APICALL KfSioGetSessionId(KfSioClient* client, char** str);
 
 LIBKFSOCKETIO_ABSTRACT_DLL void APICALL KfSioClearListeners(KfSioClient* client);
 LIBKFSOCKETIO_ABSTRACT_DLL void APICALL KfSioSetClientOpenListener(KfSioClient* client, KfSioConnectionListener listener);

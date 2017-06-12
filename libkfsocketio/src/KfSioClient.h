@@ -53,10 +53,10 @@ public:
     KfSioClient();
 
     // Client calls
-    virtual void KF_CALLCONV connect(const char* uri);
-    virtual void KF_CALLCONV connect(const char* uri, const KfSioClientQueryParam* query, const unsigned int& queryCount);
+    virtual void KF_CALLCONV connect(const std::string& uri);
+    virtual void KF_CALLCONV connect(const std::string& uri, const KfSioClientQueryParam* query, const unsigned int& queryCount);
     virtual void KF_CALLCONV connect(
-        const char* uri,
+        const std::string& uri,
         const KfSioClientQueryParam* query,
         const unsigned int& queryCount,
         const KfSioClientQueryParam* http_extra_headers,
@@ -65,7 +65,7 @@ public:
     virtual void KF_CALLCONV syncClose();
 
     virtual bool KF_CALLCONV isOpen() const;
-    virtual const char* KF_CALLCONV getSessionId() const;
+    virtual std::string KF_CALLCONV getSessionId() const;
 
     virtual void KF_CALLCONV setClientOpenListener(const sio::client::con_listener& listener);
     virtual void KF_CALLCONV setClientCloseListener(const sio::client::close_listener& listener);
@@ -81,34 +81,34 @@ public:
     virtual void KF_CALLCONV setReconnectDelayMax(unsigned int millis);
 
     // Socket calls
-    virtual void KF_CALLCONV on(const char* eventName, EventListener eventListener, const char* socketNs = "");
-    virtual void KF_CALLCONV off(const char* eventName, const char* socketNs = "");
-    virtual void KF_CALLCONV offAll(const char* socketNs = "");
-    virtual void KF_CALLCONV closeSocket(const char* socketNs = "");
-    virtual void KF_CALLCONV onError(ErrorListener listener, const char* socketNs = "");
-    virtual void KF_CALLCONV offError(const char* socketNs = "");
+    virtual void KF_CALLCONV on(const std::string& eventName, EventListener eventListener, const std::string& socketNs = "");
+    virtual void KF_CALLCONV off(const std::string& eventName, const std::string& socketNs = "");
+    virtual void KF_CALLCONV offAll(const std::string& socketNs = "");
+    virtual void KF_CALLCONV closeSocket(const std::string& socketNs = "");
+    virtual void KF_CALLCONV onError(ErrorListener listener, const std::string& socketNs = "");
+    virtual void KF_CALLCONV offError(const std::string& socketNs = "");
 
     virtual void KF_CALLCONV emit(
-        const char* name,
+        const std::string& name,
         sio::message::list sioMsgList = nullptr,
         const AckListener& ack = nullptr,
-        const char* socketNs = "");
+        const std::string& socketNs = "");
 
     virtual void KF_CALLCONV emit(
-        const char* name,
-        const char* message,
+        const std::string& name,
+        const std::string& message,
         const AckListener& ack = nullptr,
-        const char* socketNs = "");
+        const std::string& socketNs = "");
 
     virtual void KF_CALLCONV emitJson(
-        const char* name,
-        const char* message,
+        const std::string& name,
+        const std::string& message,
         const AckListener& ack = nullptr,
-        const char* socketNs = "");
+        const std::string& socketNs = "");
 
 private:
     sio::message::ptr KF_CALLCONV getObjectFromJsonTree(boost::property_tree::ptree root);
-    sio::message::ptr KF_CALLCONV createSioObjectMessage(const char* json);
+    sio::message::ptr KF_CALLCONV createSioObjectMessage(const std::string& json);
 
 private:
     std::recursive_mutex m_mutex;

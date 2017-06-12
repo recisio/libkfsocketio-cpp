@@ -93,12 +93,12 @@ void KF_CALLCONV KfSioClient::clearListeners()
     _KFSIO_CLIENT_UNLOCK;
 }
 
-void KF_CALLCONV KfSioClient::connect(const char* uri)
+void KF_CALLCONV KfSioClient::connect(const std::string& uri)
 {
     m_client.connect(uri);
 }
 
-void KF_CALLCONV KfSioClient::connect(const char* uri, const KfSioClientQueryParam* query, const unsigned int& queryCount)
+void KF_CALLCONV KfSioClient::connect(const std::string& uri, const KfSioClientQueryParam* query, const unsigned int& queryCount)
 {
     std::map<std::string, std::string> stlQuery;
     for (int i = 0; i < queryCount; ++i) {
@@ -109,7 +109,7 @@ void KF_CALLCONV KfSioClient::connect(const char* uri, const KfSioClientQueryPar
 }
 
 void KF_CALLCONV KfSioClient::connect(
-    const char* uri,
+    const std::string& uri,
     const KfSioClientQueryParam* query,
     const unsigned int& queryCount,
     const KfSioClientQueryParam* http_extra_headers,
@@ -158,12 +158,12 @@ bool KF_CALLCONV KfSioClient::isOpen() const
     return m_client.opened();
 }
 
-const char* KF_CALLCONV KfSioClient::getSessionId() const
+std::string KF_CALLCONV KfSioClient::getSessionId() const
 {
-    return m_client.get_sessionid().c_str();
+    return m_client.get_sessionid();
 }
 
-void KF_CALLCONV KfSioClient::on(const char* eventName, EventListener eventListener, const char* socketNs)
+void KF_CALLCONV KfSioClient::on(const std::string& eventName, EventListener eventListener, const std::string& socketNs)
 {
     sio::socket::event_listener_aux fnc = [eventListener](const std::string& name, sio::message::ptr const& message, bool needAck, sio::message::list& ackMessage) {
         int msgSize = (int) ackMessage.size();
@@ -213,28 +213,28 @@ void KF_CALLCONV KfSioClient::on(const char* eventName, EventListener eventListe
     _KFSIO_CLIENT_UNLOCK;
 }
 
-void KF_CALLCONV KfSioClient::off(const char* eventName, const char* socketNs)
+void KF_CALLCONV KfSioClient::off(const std::string& eventName, const std::string& socketNs)
 {
     _KFSIO_CLIENT_LOCK;
     m_client.socket(socketNs)->off(eventName);
     _KFSIO_CLIENT_UNLOCK;
 }
 
-void KF_CALLCONV KfSioClient::offAll(const char* socketNs)
+void KF_CALLCONV KfSioClient::offAll(const std::string& socketNs)
 {
     _KFSIO_CLIENT_LOCK;
     m_client.socket(socketNs)->off_all();
     _KFSIO_CLIENT_UNLOCK;
 }
 
-void KF_CALLCONV KfSioClient::closeSocket(const char* socketNs)
+void KF_CALLCONV KfSioClient::closeSocket(const std::string& socketNs)
 {
     _KFSIO_CLIENT_LOCK;
     m_client.socket(socketNs)->close();
     _KFSIO_CLIENT_UNLOCK;
 }
 
-void KF_CALLCONV KfSioClient::onError(ErrorListener listener, const char* socketNs)
+void KF_CALLCONV KfSioClient::onError(ErrorListener listener, const std::string& socketNs)
 {
     _KFSIO_CLIENT_LOCK;
     m_client.socket(socketNs)->on_error([listener](const std::shared_ptr<sio::message>& message) {
@@ -245,28 +245,28 @@ void KF_CALLCONV KfSioClient::onError(ErrorListener listener, const char* socket
     _KFSIO_CLIENT_UNLOCK;
 }
 
-void KF_CALLCONV KfSioClient::offError(const char* socketNs)
+void KF_CALLCONV KfSioClient::offError(const std::string& socketNs)
 {
     _KFSIO_CLIENT_LOCK;
     m_client.socket(socketNs)->off_error();
     _KFSIO_CLIENT_UNLOCK;
 }
 
-void KF_CALLCONV KfSioClient::emit(const char* name, const char* message, const AckListener& ack, const char* socketNs)
+void KF_CALLCONV KfSioClient::emit(const std::string& name, const std::string& message, const AckListener& ack, const std::string& socketNs)
 {
     sio::message::list msglist;
-    msglist.push(std::string(message));
+    msglist.push(message);
     emit(name, msglist, ack, socketNs);
 }
 
-void KF_CALLCONV KfSioClient::emitJson(const char* name, const char* message, const AckListener& ack, const char* socketNs)
+void KF_CALLCONV KfSioClient::emitJson(const std::string& name, const std::string& message, const AckListener& ack, const std::string& socketNs)
 {
     sio::message::list msglist;
     msglist.push(createSioObjectMessage(message));
     emit(name, msglist, ack, socketNs);
 }
 
-void KF_CALLCONV KfSioClient::emit(const char* name, sio::message::list msglist, const AckListener& ack, const char* socketNs)
+void KF_CALLCONV KfSioClient::emit(const std::string& name, sio::message::list msglist, const AckListener& ack, const std::string& socketNs)
 {
     std::function<void(sio::message::list const&)> ackFun = nullptr;
     if (nullptr != ack) {
@@ -306,12 +306,11 @@ void KF_CALLCONV KfSioClient::emit(const char* name, sio::message::list msglist,
     _KFSIO_CLIENT_UNLOCK;
 }
 
-sio::message::ptr KF_CALLCONV KfSioClient::createSioObjectMessage(const char* json)
+sio::message::ptr KF_CALLCONV KfSioClient::createSioObjectMessage(const std::string& json)
 {
     sio::object_message::ptr obj = nullptr;
 
-    std::stringstream sstr;
-    sstr << json;
+    std::stringstream sstr(json);
     try {
         boost::property_tree::ptree root;
         boost::property_tree::read_json(sstr, root);

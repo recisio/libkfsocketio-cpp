@@ -50,7 +50,7 @@ void APICALL KfSioConnect(
 {
     if (nullptr != client) {
         try {
-            client->connect(uri, (KfSioClientQueryParam*) query, queryCount, (KfSioClientQueryParam*) httpExtraHeaders, httpExtraHeadersCount);
+            client->connect(std::string(uri), (KfSioClientQueryParam*) query, queryCount, (KfSioClientQueryParam*) httpExtraHeaders, httpExtraHeadersCount);
         } catch (...) {}
     }
 }
@@ -65,11 +65,11 @@ void APICALL KfSioEmit(
     if (nullptr != client) {
         try {
             if (nullptr == ack) {
-                client->emit(name, message, nullptr, socketNs);
+                client->emit(std::string(name), std::string(message), nullptr, std::string(socketNs));
             } else {
-                client->emit(name, message, [ack](KfSioMessageList msgList) {
+                client->emit(std::string(name), std::string(message), [ack](KfSioMessageList msgList) {
                     (ack) ((KfSioMsgList) msgList);
-                }, socketNs);
+                }, std::string(socketNs));
             }
         } catch (...) {}
     }
@@ -86,11 +86,11 @@ LIBKFSOCKETIO_ABSTRACT_DLL void APICALL KfSioEmitJson(
     if (nullptr != client) {
         try {
             if (nullptr == ack) {
-                client->emitJson(name, message, nullptr, socketNs);
+                client->emitJson(std::string(name), std::string(message), nullptr, std::string(socketNs));
             } else {
-                client->emitJson(name, message, [ack](KfSioMessageList msgList) {
+                client->emitJson(std::string(name), std::string(message), [ack](KfSioMessageList msgList) {
                     (ack) ((KfSioMsgList) msgList);
-                }, socketNs);
+                }, std::string(socketNs));
             }
         } catch (...) {}
     }
@@ -126,16 +126,16 @@ KfBool APICALL KfSioIsOpen(KfSioClient* client)
     }
 }
 
-const char* APICALL KfSioGetSessionId(KfSioClient* client)
+uint32_t APICALL KfSioGetSessionId(KfSioClient* client, char** str)
 {
     if (nullptr == client) {
-        return "";
+        return 0;
     }
 
     try {
-        return client->getSessionId();
+        return createKfString(client->getSessionId(), str);
     } catch (...) {
-        return "";
+        return 0;
     }
 }
 
@@ -285,14 +285,14 @@ void APICALL KfSioOn(KfSioClient* client, const char* eventName, KfSioEventListe
     if (nullptr != client) {
         try {
             if (nullptr == eventListener) {
-                client->on(eventName, nullptr, socketNs);
+                client->on(std::string(eventName), nullptr, std::string(socketNs));
             } else {
                 client->on(
-                    eventName,
+                    std::string(eventName),
                     [eventListener](const char* name, KfSioMessagePtr message, bool needAck, KfSioMessageList ackMsg) {
                     (eventListener) (name, message, needAck, (KfSioMsgList) ackMsg);
                 },
-                    socketNs);
+                    std::string(socketNs));
             }
         } catch (...) {}
     }
@@ -302,7 +302,7 @@ void APICALL KfSioOff(KfSioClient* client, const char* eventName, const char* so
 {
     if (nullptr != client) {
         try {
-            client->off(eventName, socketNs);
+            client->off(std::string(eventName), std::string(socketNs));
         } catch (...) {}
     }
 }
@@ -311,7 +311,7 @@ void APICALL KfSioOffAll(KfSioClient* client, const char* socketNs)
 {
     if (nullptr != client) {
         try {
-            client->offAll(socketNs);
+            client->offAll(std::string(socketNs));
         } catch (...) {}
     }
 }
@@ -320,7 +320,7 @@ void APICALL KfSioCloseSocket(KfSioClient* client, const char* socketNs)
 {
     if (nullptr != client) {
         try {
-            client->closeSocket(socketNs);
+            client->closeSocket(std::string(socketNs));
         } catch (...) {}
     }
 }
@@ -330,11 +330,11 @@ void APICALL KfSioOnError(KfSioClient* client, KfSioErrorListener listener, cons
     if (nullptr != client) {
         try {
             if (nullptr == listener) {
-                client->onError(nullptr, socketNs);
+                client->onError(nullptr, std::string(socketNs));
             } else {
                 client->onError([listener](KfSioMessagePtr message) {
                     (listener) (message);
-                });
+                }, std::string(socketNs));
             }
         } catch (...) {}
     }
@@ -344,7 +344,7 @@ void APICALL KfSioOffError(KfSioClient* client, const char* socketNs)
 {
     if (nullptr != client) {
         try {
-            client->offError(socketNs);
+            client->offError(std::string(socketNs));
         } catch (...) {}
     }
 }

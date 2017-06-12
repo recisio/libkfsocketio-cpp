@@ -81,11 +81,7 @@ KfWebSocketServer::KfWebSocketServer() :
 
 KfWebSocketServer::~KfWebSocketServer()
 {
-    try {
-        unbindListeners();
-        stop();
-    } catch (...) {
-    }
+    m_mutex.lock();
     delete m_server;
 }
 

@@ -23,7 +23,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "sio_message.h"
+#include <boost/lexical_cast.hpp>
 
 KfSioMessage::KfSioMessage() :
     m_message(nullptr)
@@ -72,42 +72,10 @@ KfSioMessage::KfSioMessage(const KfSioMessage& copy) :
 {
 }
 
-KfSioMessage::KfSioMessage(sio::message* internal) :
+KfSioMessage::KfSioMessage(const std::shared_ptr<sio::message>& sptr) :
     KfSioMessage()
 {
-    switch (internal->get_flag()) {
-        case sio::message::flag_integer:
-            create((int) internal->get_int());
-            break;
-        case sio::message::flag_double:
-            create(internal->get_double());
-            break;
-        case sio::message::flag_string:
-            create(internal->get_string().c_str());
-            break;
-        case sio::message::flag_binary:
-            create(internal->get_binary());
-            break;
-        case sio::message::flag_array:
-        {
-            sio::array_message::ptr apiMessage = sio::array_message::create();
-            sio::array_message* apiMessagePtr = (sio::array_message*) apiMessage.get();
-
-            std::vector<std::shared_ptr<sio::message> > vec = internal->get_vector();
-            for (std::shared_ptr<sio::message> message : vec) {
-                apiMessagePtr->push(message);
-            }
-
-            m_message = apiMessage;
-        }
-        break;
-        case sio::message::flag_boolean:
-            create(internal->get_bool());
-            break;
-        case sio::message::flag_null:
-        default:
-            m_message = nullptr;
-    }
+    m_message = sptr;
 }
 
 KfSioMessage::~KfSioMessage()
@@ -243,13 +211,88 @@ double KF_CALLCONV KfSioMessage::getDouble() const
     return m_message->get_double();
 }
 
-const char* KF_CALLCONV KfSioMessage::getString() const
+std::string KF_CALLCONV KfSioMessage::getString() const
 {
-    if (!isString()) {
+    if (!isString() && !isObject()) {
         throw std::bad_typeid();
     }
 
-    return m_message->get_string().c_str();
+    if (isString()) {
+        return m_message->get_string();
+    }
+
+    return getObjectJson(m_message->get_map());
+}
+
+std::string KF_CALLCONV KfSioMessage::getJsonValue(sio::message::ptr pt) const
+{
+    std::string json;
+    switch (pt->get_flag()) {
+        case sio::message::flag_array:
+            json += getArrayJson(pt->get_vector());
+            break;
+        case sio::message::flag_boolean:
+            json += pt->get_bool() ? "true" : "false";
+            break;
+        case sio::message::flag_double:
+            json += boost::lexical_cast<std::string>(pt->get_double());
+            break;
+        case sio::message::flag_integer:
+            json += boost::lexical_cast<std::string>(pt->get_int());
+            break;
+        case sio::message::flag_null:
+            json += "null";
+            break;
+        case sio::message::flag_object:
+            json += getObjectJson(pt->get_map());
+            break;
+        case sio::message::flag_string:
+            json += "\"" + pt->get_string() + "\"";
+            break;
+    }
+    return json;
+}
+
+std::string KF_CALLCONV KfSioMessage::getArrayJson(std::vector<sio::message::ptr> vec) const
+{
+    std::string json;
+    for (auto it = vec.begin(); it != vec.end(); ++it) {
+        if (json.empty()) {
+            json += '[';
+        } else {
+            json += ", ";
+        }
+
+        json += getJsonValue(*it);
+    }
+
+    if (!json.empty()) {
+        json += ']';
+    }
+
+    return json;
+}
+
+std::string KF_CALLCONV KfSioMessage::getObjectJson(std::map<std::string, sio::message::ptr> msgMap) const
+{
+    std::string json;
+    for (auto it = msgMap.begin(); it != msgMap.end(); ++it) {
+        if (json.empty()) {
+            json += '{';
+        } else {
+            json += ", ";
+        }
+
+        json += "\"" + it->first + "\" : ";
+
+        json += getJsonValue(it->second);
+    }
+
+    if (!json.empty()) {
+        json += '}';
+    }
+
+    return json;
 }
 
 const std::shared_ptr<const std::string>& KF_CALLCONV KfSioMessage::getBinary() const
@@ -279,7 +322,7 @@ KfSioMessageList KF_CALLCONV KfSioMessage::getArray() const
             previous->next = current;
         }
 
-        current->item = new KfSioMessage(ptr.get());
+        current->item = new KfSioMessage(ptr);
         previous = current;
     }
 

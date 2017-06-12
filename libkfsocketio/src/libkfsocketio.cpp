@@ -5,6 +5,26 @@
 #include "KfSioMessage.h"
 #include "KfWebSocketMessage.h"
 
+// General 
+
+static uint32_t createKfString(const std::string& str, char** dest)
+{
+    uint32_t strSize = (uint32_t) str.size();
+
+    (*dest) = new char[strSize + 1];
+    memset(*dest, 0, strSize + 1);
+    memcpy(*dest, str.c_str(), strSize);
+
+    return strSize;
+}
+
+void APICALL KfReleaseString(char* str)
+{
+    if (nullptr != str) {
+        delete[] str;
+    }
+}
+
 // Socket.IO Client
 
 KfSioClient* APICALL KfSioCreate()
@@ -428,15 +448,16 @@ double APICALL KfSioMsgGetDouble(KfSioMessage* msg)
     }
 }
 
-const char* APICALL KfSioMsgGetString(KfSioMessage* msg)
+uint32_t APICALL KfSioMsgGetString(KfSioMessage* msg, char** str)
 {
     if (nullptr == msg) {
-        return "";
+        return 0;
     }
+
     try {
-        return msg->getString();
+        return createKfString(msg->getString(), str);
     } catch (...) {
-        return "";
+        return 0;
     }
 }
 
@@ -706,36 +727,38 @@ uint8_t APICALL KfWsmIsPrepared(KfWebSocketMessage* msg)
     return msg->isPrepared() ? 1 : 0;
 }
 
-const char* APICALL KfWsmGetExtensionData(KfWebSocketMessage* msg)
+uint32_t APICALL KfWsmGetExtensionData(KfWebSocketMessage* msg, char** str)
 {
     if (nullptr == msg) {
-        return "";
+        return 0;
     }
-    return msg->getExtensionData();
+
+    return createKfString(msg->getExtensionData(), str);
 }
 
-const char* APICALL KfWsmGetHeader(KfWebSocketMessage* msg)
+uint32_t APICALL KfWsmGetHeader(KfWebSocketMessage* msg, char** str)
 {
     if (nullptr == msg) {
-        return "";
+        return 0;
     }
-    return msg->getHeader();
+
+    return createKfString(msg->getHeader(), str);
 }
 
-const char* APICALL KfWsmGetPayload(KfWebSocketMessage* msg)
+uint32_t APICALL KfWsmGetPayload(KfWebSocketMessage* msg, char** str)
 {
     if (nullptr == msg) {
-        return "";
+        return 0;
     }
-    return msg->getPayload();
+    return createKfString(msg->getPayload(), str);
 }
 
-const char* APICALL KfWsmGetRawPayload(KfWebSocketMessage* msg)
+uint32_t APICALL KfWsmGetRawPayload(KfWebSocketMessage* msg, char** str)
 {
     if (nullptr == msg) {
-        return "";
+        return 0;
     }
-    return msg->getRawPayload();
+    return createKfString(msg->getRawPayload(), str);
 }
 
 uint8_t APICALL KfWsmGetOpcode(KfWebSocketMessage* msg)

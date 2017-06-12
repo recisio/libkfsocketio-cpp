@@ -29,9 +29,7 @@ SOFTWARE.
 #include <vector>
 #include <map>
 
-namespace sio {
-class message;
-}
+#include "sio_message.h"
 
 class KfSioClient;
 class KfSioMessage;
@@ -74,7 +72,7 @@ public:
     KfSioMessage(const bool& msg);
 
     KfSioMessage(const KfSioMessage& copy);
-    KfSioMessage(sio::message* internal);
+    KfSioMessage(const std::shared_ptr<sio::message>& sptr);
 
     ~KfSioMessage();
 
@@ -103,12 +101,17 @@ public:
 
     virtual int KF_CALLCONV getInt() const;
     virtual double KF_CALLCONV getDouble() const;
-    virtual const char* KF_CALLCONV getString() const;
+    virtual std::string KF_CALLCONV getString() const;
     virtual const std::shared_ptr<const std::string>& KF_CALLCONV getBinary() const;
     virtual KfSioMessageList KF_CALLCONV getArray() const;
     virtual bool KF_CALLCONV getBool() const;
 
     virtual void KF_CALLCONV releaseArray(KfSioMessageList) const;
+
+private:
+    std::string KF_CALLCONV getObjectJson(std::map<std::string, sio::message::ptr> msgMap) const;
+    std::string KF_CALLCONV getArrayJson(std::vector<sio::message::ptr> vec) const;
+    std::string KF_CALLCONV getJsonValue(sio::message::ptr pt) const;
 
 private:
     std::shared_ptr<sio::message> m_message;

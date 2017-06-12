@@ -55,24 +55,24 @@ bool KF_CALLCONV KfWebSocketMessage::isPrepared() const
     return m_message->get_prepared();
 }
 
-const char* KF_CALLCONV KfWebSocketMessage::getExtensionData() const
+std::string KF_CALLCONV KfWebSocketMessage::getExtensionData() const
 {
-    return m_message->get_extension_data().c_str();
+    return m_message->get_extension_data();
 }
 
-const char* KF_CALLCONV KfWebSocketMessage::getHeader() const
+std::string KF_CALLCONV KfWebSocketMessage::getHeader() const
 {
-    return m_message->get_header().c_str();
+    return m_message->get_header();
 }
 
-const char* KF_CALLCONV KfWebSocketMessage::getPayload() const
+std::string KF_CALLCONV KfWebSocketMessage::getPayload() const
 {
-    return m_message->get_payload().c_str();
+    return m_message->get_payload();
 }
 
-const char* KF_CALLCONV KfWebSocketMessage::getRawPayload() const
+std::string KF_CALLCONV KfWebSocketMessage::getRawPayload() const
 {
-    return m_message->get_raw_payload().c_str();
+    return m_message->get_raw_payload();
 }
 
 KfWebSocketConnection::OpCode KF_CALLCONV KfWebSocketMessage::getOpcode() const

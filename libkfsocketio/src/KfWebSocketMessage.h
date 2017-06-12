@@ -51,10 +51,10 @@ public:
     virtual bool KF_CALLCONV isCompressed() const;
     virtual bool KF_CALLCONV isFin() const;
     virtual bool KF_CALLCONV isPrepared() const;
-    virtual const char* KF_CALLCONV getExtensionData() const;
-    virtual const char* KF_CALLCONV getHeader() const;
-    virtual const char* KF_CALLCONV getPayload() const;
-    virtual const char* KF_CALLCONV getRawPayload() const;
+    virtual std::string KF_CALLCONV getExtensionData() const;
+    virtual std::string KF_CALLCONV getHeader() const;
+    virtual std::string KF_CALLCONV getPayload() const;
+    virtual std::string KF_CALLCONV getRawPayload() const;
     virtual KfWebSocketConnection::OpCode KF_CALLCONV getOpcode() const;
 
 private:

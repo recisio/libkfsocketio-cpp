@@ -114,6 +114,11 @@ CEXT typedef struct {
 } KfSioClientConnectQueryParam;
 #pragma pack(pop)
 
+// =========== General
+
+/// Release string created by the dll
+LIBKFSOCKETIO_ABSTRACT_DLL void APICALL KfReleaseString(char* str);
+
 // =========== Socket.Io Client
 
 CEXT typedef void (APICALL *KfSioConnectionListener)(void);
@@ -186,7 +191,7 @@ LIBKFSOCKETIO_ABSTRACT_DLL KfBool APICALL KfSioMsgIsNull(KfSioMessage* msg);
 
 LIBKFSOCKETIO_ABSTRACT_DLL int APICALL KfSioMsgGetInt(KfSioMessage* msg);
 LIBKFSOCKETIO_ABSTRACT_DLL double APICALL KfSioMsgGetDouble(KfSioMessage* msg);
-LIBKFSOCKETIO_ABSTRACT_DLL const char* APICALL KfSioMsgGetString(KfSioMessage* msg);
+LIBKFSOCKETIO_ABSTRACT_DLL uint32_t APICALL KfSioMsgGetString(KfSioMessage* msg, char** str);
 LIBKFSOCKETIO_ABSTRACT_DLL KfSioMsgList APICALL KfSioMsgGetArray(KfSioMessage* msg);
 LIBKFSOCKETIO_ABSTRACT_DLL KfBool APICALL KfSioMsgGetBool(KfSioMessage* msg);
 
@@ -225,10 +230,10 @@ LIBKFSOCKETIO_ABSTRACT_DLL uint8_t APICALL KfWscGetState(KfWebSocketConnection* 
 LIBKFSOCKETIO_ABSTRACT_DLL uint8_t APICALL KfWsmIsCompressed(KfWebSocketMessage*);
 LIBKFSOCKETIO_ABSTRACT_DLL uint8_t APICALL KfWsmIsFin(KfWebSocketMessage*);
 LIBKFSOCKETIO_ABSTRACT_DLL uint8_t APICALL KfWsmIsPrepared(KfWebSocketMessage*);
-LIBKFSOCKETIO_ABSTRACT_DLL const char* APICALL KfWsmGetExtensionData(KfWebSocketMessage*);
-LIBKFSOCKETIO_ABSTRACT_DLL const char* APICALL KfWsmGetHeader(KfWebSocketMessage*);
-LIBKFSOCKETIO_ABSTRACT_DLL const char* APICALL KfWsmGetPayload(KfWebSocketMessage*);
-LIBKFSOCKETIO_ABSTRACT_DLL const char* APICALL KfWsmGetRawPayload(KfWebSocketMessage*);
+LIBKFSOCKETIO_ABSTRACT_DLL uint32_t APICALL KfWsmGetExtensionData(KfWebSocketMessage*, char**);
+LIBKFSOCKETIO_ABSTRACT_DLL uint32_t APICALL KfWsmGetHeader(KfWebSocketMessage*, char**);
+LIBKFSOCKETIO_ABSTRACT_DLL uint32_t APICALL KfWsmGetPayload(KfWebSocketMessage*, char**);
+LIBKFSOCKETIO_ABSTRACT_DLL uint32_t APICALL KfWsmGetRawPayload(KfWebSocketMessage*, char**);
 LIBKFSOCKETIO_ABSTRACT_DLL uint8_t APICALL KfWsmGetOpcode(KfWebSocketMessage*);
 
 #endif // _LIBKFSOCKETIO_H

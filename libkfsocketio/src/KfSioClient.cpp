@@ -179,7 +179,7 @@ void KF_CALLCONV KfSioClient::on(const char* eventName, EventListener eventListe
                     ackList = current;
                 }
 
-                current->item = new KfSioMessage(ackMessage.at(i).get());
+                current->item = new KfSioMessage(ackMessage.at(i));
 
                 if (nullptr != previous) {
                     previous->next = current;
@@ -189,7 +189,7 @@ void KF_CALLCONV KfSioClient::on(const char* eventName, EventListener eventListe
             }
         }
 
-        KfSioMessagePtr kfmessage = new KfSioMessage(message.get());
+        KfSioMessagePtr kfmessage = new KfSioMessage(message);
         eventListener(name.c_str(), kfmessage, needAck, ackList);
 
         while (nullptr != ackList) {
@@ -238,7 +238,7 @@ void KF_CALLCONV KfSioClient::onError(ErrorListener listener, const char* socket
 {
     _KFSIO_CLIENT_LOCK;
     m_client.socket(socketNs)->on_error([listener](const std::shared_ptr<sio::message>& message) {
-        KfSioMessagePtr kfmsg = new KfSioMessage(message.get());
+        KfSioMessagePtr kfmsg = new KfSioMessage(message);
         listener(kfmsg);
         delete kfmsg;
     });
@@ -281,7 +281,7 @@ void KF_CALLCONV KfSioClient::emit(const char* name, sio::message::list msglist,
                 KfSioMessageListItem* current = ackList;
 
                 for (int i = 0; i < msgSize; ++i) {
-                    current->item = new KfSioMessage(ackMsgList.at(i).get());
+                    current->item = new KfSioMessage(ackMsgList.at(i));
                     if (nullptr != previous) {
                         previous->next = current;
                     }

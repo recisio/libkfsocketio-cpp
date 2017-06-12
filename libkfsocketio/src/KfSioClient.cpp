@@ -23,7 +23,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/json_parser.hpp>
 
 #include <sstream>
@@ -307,9 +306,9 @@ void KF_CALLCONV KfSioClient::emit(const char* name, sio::message::list msglist,
     _KFSIO_CLIENT_UNLOCK;
 }
 
-sio::object_message::ptr KF_CALLCONV KfSioClient::createSioObjectMessage(const char* json)
+sio::message::ptr KF_CALLCONV KfSioClient::createSioObjectMessage(const char* json)
 {
-    sio::object_message::ptr obj = sio::object_message::create();
+    sio::object_message::ptr obj = nullptr;
 
     std::stringstream sstr;
     sstr << json;
@@ -317,20 +316,51 @@ sio::object_message::ptr KF_CALLCONV KfSioClient::createSioObjectMessage(const c
         boost::property_tree::ptree root;
         boost::property_tree::read_json(sstr, root);
 
+        obj = getObjectFromJsonTree(root);
+    } catch (...) {
+    }
+
+    return obj;
+}
+
+sio::message::ptr KF_CALLCONV KfSioClient::getObjectFromJsonTree(boost::property_tree::ptree root)
+{
+    sio::message::ptr message = nullptr;
+    try {
+        bool isArray = false;
         for (boost::property_tree::ptree::iterator it = root.begin(); it != root.end(); ++it) {
 
             std::string key = it->first;
             std::string value = it->second.get_value<std::string>("");
 
-            try {
+            if (nullptr == message) {
+                if (key.empty()) {
+                    isArray = true;
+                    message = sio::array_message::create();
+                } else {
+                    isArray = false;
+                    message = sio::object_message::create();
+                }
+            }
 
-            } catch (...) {
-                ((sio::object_message*) (obj.get()))->insert(key, value);
+            if (value.empty()) {
+                if (isArray) {
+                    ((sio::array_message*) (message.get()))->push(getObjectFromJsonTree(root.get_child(key)));
+                } else {
+                    ((sio::object_message*) (message.get()))->insert(key, getObjectFromJsonTree(root.get_child(key)));
+                }
+            } else {
+                if (isArray) {
+                    ((sio::array_message*) (message.get()))->push(value);
+                } else {
+                    ((sio::object_message*) (message.get()))->insert(key, value);
+                }
             }
 
         }
     } catch (...) {
+
     }
 
-    return obj;
+    return message;
 }

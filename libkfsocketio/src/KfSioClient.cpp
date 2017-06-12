@@ -23,6 +23,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/json_parser.hpp>
+
+#include <sstream>
+
 #define _KFSIO_CLIENT_LOCK m_mutex.lock()
 #define _KFSIO_CLIENT_UNLOCK m_mutex.unlock()
 
@@ -250,31 +255,20 @@ void KF_CALLCONV KfSioClient::offError(const char* socketNs)
 
 void KF_CALLCONV KfSioClient::emit(const char* name, const char* message, const AckListener& ack, const char* socketNs)
 {
-    KfSioMessageList msgList = new KfSioMessageListItem();
-    msgList->item = new KfSioMessage(message);
-    emit(name, msgList, ack, socketNs);
-
-    delete msgList->item;
-    delete msgList;
+    sio::message::list msglist;
+    msglist.push(std::string(message));
+    emit(name, msglist, ack, socketNs);
 }
 
-void KF_CALLCONV KfSioClient::emit(const char* name, KfSioMessageList msglist, const AckListener& ack, const char* socketNs)
+void KF_CALLCONV KfSioClient::emitJson(const char* name, const char* message, const AckListener& ack, const char* socketNs)
 {
-    sio::message::list sioMsgList = nullptr;
-    if (nullptr != msglist) {
-        while (nullptr != msglist) {
-            KfSioMessageListItem* item = msglist;
-            msglist = item->next;
+    sio::message::list msglist;
+    msglist.push(createSioObjectMessage(message));
+    emit(name, msglist, ack, socketNs);
+}
 
-            KfSioMessage* cMsg = dynamic_cast<KfSioMessage*>(item->item);
-            if (nullptr == cMsg) {
-                continue;
-            }
-
-            sioMsgList.push(cMsg->m_message);
-        }
-    }
-
+void KF_CALLCONV KfSioClient::emit(const char* name, sio::message::list msglist, const AckListener& ack, const char* socketNs)
+{
     std::function<void(sio::message::list const&)> ackFun = nullptr;
     if (nullptr != ack) {
         ackFun = [ack](sio::message::list const& ackMsgList) {
@@ -309,10 +303,34 @@ void KF_CALLCONV KfSioClient::emit(const char* name, KfSioMessageList msglist, c
     }
 
     _KFSIO_CLIENT_LOCK;
-    m_client.socket(socketNs)->emit(
-        name,
-        sioMsgList,
-        ackFun
-    );
+    m_client.socket(socketNs)->emit(name, msglist, ackFun);
     _KFSIO_CLIENT_UNLOCK;
+}
+
+sio::object_message::ptr KF_CALLCONV KfSioClient::createSioObjectMessage(const char* json)
+{
+    sio::object_message::ptr obj = sio::object_message::create();
+
+    std::stringstream sstr;
+    sstr << json;
+    try {
+        boost::property_tree::ptree root;
+        boost::property_tree::read_json(sstr, root);
+
+        for (boost::property_tree::ptree::iterator it = root.begin(); it != root.end(); ++it) {
+
+            std::string key = it->first;
+            std::string value = it->second.get_value<std::string>("");
+
+            try {
+
+            } catch (...) {
+                ((sio::object_message*) (obj.get()))->insert(key, value);
+            }
+
+        }
+    } catch (...) {
+    }
+
+    return obj;
 }

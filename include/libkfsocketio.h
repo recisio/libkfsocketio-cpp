@@ -139,6 +139,13 @@ LIBKFSOCKETIO_ABSTRACT_DLL void APICALL KfSioEmit(
     const char* message,
     KfSioAckListener ack = nullptr,
     const char* socketNs = "");
+
+LIBKFSOCKETIO_ABSTRACT_DLL void APICALL KfSioEmitJson(
+    KfSioClient* client,
+    const char* name,
+    const char* message,
+    KfSioAckListener ack = nullptr,
+    const char* socketNs = "");
 LIBKFSOCKETIO_ABSTRACT_DLL void APICALL KfSioClose(KfSioClient* client);
 LIBKFSOCKETIO_ABSTRACT_DLL void APICALL KfSioSyncClose(KfSioClient* client);
 LIBKFSOCKETIO_ABSTRACT_DLL KfBool APICALL KfSioIsOpen(KfSioClient* client);
@@ -174,6 +181,7 @@ LIBKFSOCKETIO_ABSTRACT_DLL KfBool APICALL KfSioMsgIsBinary(KfSioMessage* msg);
 LIBKFSOCKETIO_ABSTRACT_DLL KfBool APICALL KfSioMsgIsArray(KfSioMessage* msg);
 LIBKFSOCKETIO_ABSTRACT_DLL KfBool APICALL KfSioMsgIsObject(KfSioMessage* msg);
 LIBKFSOCKETIO_ABSTRACT_DLL KfBool APICALL KfSioMsgIsBool(KfSioMessage* msg);
+LIBKFSOCKETIO_ABSTRACT_DLL KfBool APICALL KfSioMsgIsObject(KfSioMessage* msg);
 LIBKFSOCKETIO_ABSTRACT_DLL KfBool APICALL KfSioMsgIsNull(KfSioMessage* msg);
 
 LIBKFSOCKETIO_ABSTRACT_DLL int APICALL KfSioMsgGetInt(KfSioMessage* msg);

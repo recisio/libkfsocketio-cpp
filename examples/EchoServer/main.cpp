@@ -1,3 +1,4 @@
+#include <string>
 #include <iostream>
 #include <Windows.h>
 
@@ -5,30 +6,42 @@
 
 #pragma comment (lib, "libkfsocketio.lib")
 
+KfWebSocketServer* server = nullptr;
+
+void OnWssOpen(KfWebSocketConnection* con)
+{
+    std::cout << "New connection!" << std::endl;
+    KfWscSend(con, "Welcome to the KfWebSocket echo server test!", KFWSC_OPCODE_TEXT);
+}
+
+void OnWssClose(KfWebSocketConnection*)
+{
+    std::cout << "Connection lost" << std::endl;
+}
+
+void OnWssMessage(KfWebSocketConnection* con, KfWebSocketMessage* msg)
+{
+    std::string message(KfWsmGetPayload(msg));
+    std::cout << message << std::endl;
+
+    KfWscSend(con, message.c_str(), KfWsmGetOpcode(msg));
+
+    if ("exit" == message && nullptr != server) {
+        KfWssStop(server);
+    }
+}
+
 int main()
 {
-    IKfWebSocketServer* server = KfWebSocketServerFactory();
+    server = KfWssCreate();
 
-    server->setOpenListener([](KfWebSocketConnectionPtr con) {
-        std::cout << "New connection!" << std::endl;
-        con->send("Welcome to the KfWebSocket echo server test!", IKfWebSocketConnection::OpCode::OPCODE_TEXT);
-    });
+    KfWssSetOpenListener(server, OnWssOpen);
+    KfWssSetMessageListener(server, OnWssMessage);
+    KfWssSetCloseListener(server, OnWssClose);
 
-    server->setMessageListener([](KfWebSocketConnectionPtr con, KfWebSocketMessagePtr message) {
-        std::cout << message->getPayload() << std::endl;
-        con->send(message->getPayload(), message->getOpcode());
-    });
+    KfWssRun(server, 9191);
 
-    server->setCloseListener([](KfWebSocketConnectionPtr con) {
-        std::cout << "Connection lost" << std::endl;
-    });
-
-    try {
-        server->run(9191);
-    } catch (...) {
-    }
-
-    delete server;
+    KfWssDispose(server);
 
     return 0;
 }

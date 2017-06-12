@@ -55,6 +55,27 @@ void APICALL KfSioEmit(
     }
 }
 
+
+LIBKFSOCKETIO_ABSTRACT_DLL void APICALL KfSioEmitJson(
+    KfSioClient* client,
+    const char* name,
+    const char* message,
+    KfSioAckListener ack,
+    const char* socketNs)
+{
+    if (nullptr != client) {
+        try {
+            if (nullptr == ack) {
+                client->emitJson(name, message, nullptr, socketNs);
+            } else {
+                client->emitJson(name, message, [ack](KfSioMessageList msgList) {
+                    (ack) ((KfSioMsgList) msgList);
+                }, socketNs);
+            }
+        } catch (...) {}
+    }
+}
+
 void APICALL KfSioClose(KfSioClient* client)
 {
     if (nullptr != client) {

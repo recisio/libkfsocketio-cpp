@@ -88,7 +88,7 @@ public:
 
     virtual void KF_CALLCONV emit(
         const char* name,
-        KfSioMessageList msglist = nullptr,
+        sio::message::list sioMsgList = nullptr,
         const AckListener& ack = nullptr,
         const char* socketNs = "");
 
@@ -98,6 +98,14 @@ public:
         const AckListener& ack = nullptr,
         const char* socketNs = "");
 
+    virtual void KF_CALLCONV emitJson(
+        const char* name,
+        const char* message,
+        const AckListener& ack = nullptr,
+        const char* socketNs = "");
+
+private:
+    sio::object_message::ptr KF_CALLCONV createSioObjectMessage(const char* json);
 
 private:
     std::recursive_mutex m_mutex;

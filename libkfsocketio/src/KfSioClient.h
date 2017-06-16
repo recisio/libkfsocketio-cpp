@@ -29,7 +29,7 @@ SOFTWARE.
 #include <map>
 #include <mutex>
 
-#include <boost/property_tree/ptree.hpp>
+#include <nlohmann/json.hpp>
 
 #include "KfSioMessage.h"
 #include "sio_client.h"
@@ -107,8 +107,9 @@ public:
         const std::string& socketNs = "");
 
 private:
-    sio::message::ptr KF_CALLCONV getObjectFromJsonTree(boost::property_tree::ptree root);
+    sio::message::ptr KF_CALLCONV getObjectFromJsonTree(nlohmann::json& root);
     sio::message::ptr KF_CALLCONV createSioObjectMessage(const std::string& json);
+    sio::message::ptr KF_CALLCONV createMessageFromJsonNode(nlohmann::json& value);
 
 private:
     std::recursive_mutex m_mutex;

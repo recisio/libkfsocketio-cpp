@@ -23,8 +23,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include <boost/property_tree/json_parser.hpp>
-
 #include <sstream>
 
 #define _KFSIO_CLIENT_LOCK m_mutex.lock()
@@ -312,54 +310,75 @@ sio::message::ptr KF_CALLCONV KfSioClient::createSioObjectMessage(const std::str
 
     std::stringstream sstr(json);
     try {
-        boost::property_tree::ptree root;
-        boost::property_tree::read_json(sstr, root);
+        nlohmann::json root = nlohmann::json::parse(sstr);
 
-        obj = getObjectFromJsonTree(root);
+        if (root.is_object()) {
+            obj = getObjectFromJsonTree(root);
+        }
+
     } catch (...) {
     }
 
     return obj;
 }
 
-sio::message::ptr KF_CALLCONV KfSioClient::getObjectFromJsonTree(boost::property_tree::ptree root)
+sio::message::ptr KF_CALLCONV KfSioClient::getObjectFromJsonTree(nlohmann::json& root)
 {
     sio::message::ptr message = nullptr;
     try {
-        bool isArray = false;
-        for (boost::property_tree::ptree::iterator it = root.begin(); it != root.end(); ++it) {
+        if (root.is_array()) {
+            message = sio::array_message::create();
 
-            std::string key = it->first;
-            std::string value = it->second.get_value<std::string>("");
-
-            if (nullptr == message) {
-                if (key.empty()) {
-                    isArray = true;
-                    message = sio::array_message::create();
-                } else {
-                    isArray = false;
-                    message = sio::object_message::create();
-                }
+            for (nlohmann::json::iterator it = root.begin(); it != root.end(); ++it) {
+                sio::message::ptr messageValue = createMessageFromJsonNode(it.value());
+                ((sio::array_message*) message.get())->push(messageValue);
             }
 
-            if (value.empty()) {
-                if (isArray) {
-                    ((sio::array_message*) (message.get()))->push(getObjectFromJsonTree(root.get_child(key)));
-                } else {
-                    ((sio::object_message*) (message.get()))->insert(key, getObjectFromJsonTree(root.get_child(key)));
-                }
-            } else {
-                if (isArray) {
-                    ((sio::array_message*) (message.get()))->push(value);
-                } else {
-                    ((sio::object_message*) (message.get()))->insert(key, value);
-                }
+        } else if (root.is_object()) {
+
+            message = sio::object_message::create();
+
+            for (nlohmann::json::iterator it = root.begin(); it != root.end(); ++it) {
+                sio::message::ptr messageValue = createMessageFromJsonNode(it.value());
+                ((sio::object_message*) message.get())->insert(it.key(), messageValue);
             }
 
+        } else {
+            message = createMessageFromJsonNode(root);
         }
+
     } catch (...) {
 
     }
 
     return message;
+}
+
+sio::message::ptr KF_CALLCONV KfSioClient::createMessageFromJsonNode(nlohmann::json& value)
+{
+    sio::message::ptr messageValue = nullptr;
+
+    switch (value.type()) {
+        case nlohmann::json::value_t::array:
+        case nlohmann::json::value_t::object:
+            messageValue = getObjectFromJsonTree(value);
+            break;
+        case nlohmann::json::value_t::boolean:
+            messageValue = sio::bool_message::create(value.get<bool>());
+            break;
+        case nlohmann::json::value_t::number_float:
+            messageValue = sio::double_message::create(value.get<double>());
+            break;
+        case nlohmann::json::value_t::number_integer:
+            messageValue = sio::int_message::create(value.get<int>());
+            break;
+        case nlohmann::json::value_t::number_unsigned:
+            messageValue = sio::int_message::create(value.get<unsigned int>());
+            break;
+        case nlohmann::json::value_t::string:
+            messageValue = sio::string_message::create(value.get<std::string>());
+            break;
+    }
+
+    return messageValue;
 }

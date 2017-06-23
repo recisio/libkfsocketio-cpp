@@ -64,12 +64,6 @@ KfWebSocketServer::KfWebSocketServer() :
     m_closeListener(nullptr),
     m_failListener(nullptr),
     m_httpListener(nullptr),
-    m_interruptListener(nullptr),
-    m_socketInitListener(nullptr),
-    m_tcpInitListener(nullptr),
-    m_tcpPostInitListener(nullptr),
-    m_tcpPreInitListener(nullptr),
-    m_validateListener(nullptr),
     m_messageListener(nullptr),
     m_pingListener(nullptr),
     m_pongListener(nullptr),
@@ -159,28 +153,16 @@ void KF_CALLCONV KfWebSocketServer::unbindListeners()
     m_server->set_close_handler(nullptr);
     m_server->set_fail_handler(nullptr);
     m_server->set_http_handler(nullptr);
-    m_server->set_interrupt_handler(nullptr);
     m_server->set_message_handler(nullptr);
     m_server->set_ping_handler(nullptr);
     m_server->set_pong_handler(nullptr);
     m_server->set_pong_timeout_handler(nullptr);
-    m_server->set_socket_init_handler(nullptr);
-    m_server->set_tcp_init_handler(nullptr);
-    m_server->set_tcp_post_init_handler(nullptr);
-    m_server->set_tcp_pre_init_handler(nullptr);
-    m_server->set_validate_handler(nullptr);
 
     m_mutex.lock();
     m_openListener = nullptr;
     m_closeListener = nullptr;
     m_failListener = nullptr;
     m_httpListener = nullptr;
-    m_interruptListener = nullptr;
-    m_socketInitListener = nullptr;
-    m_tcpInitListener = nullptr;
-    m_tcpPostInitListener = nullptr;
-    m_tcpPreInitListener = nullptr;
-    m_validateListener = nullptr;
     m_messageListener = nullptr;
     m_pingListener = nullptr;
     m_pongListener = nullptr;
@@ -232,78 +214,6 @@ void KF_CALLCONV KfWebSocketServer::setHttpListener(ConnectionListener listener)
         m_server->set_http_handler(std::bind(&KfWebSocketServer::onServerHttp, this, std::placeholders::_1));
     } else {
         m_server->set_http_handler(nullptr);
-    }
-    m_mutex.unlock();
-}
-
-void KF_CALLCONV KfWebSocketServer::setInterruptListener(ConnectionListener listener)
-{
-    m_mutex.lock();
-    m_interruptListener = listener;
-    if (nullptr != m_interruptListener) {
-        m_server->set_interrupt_handler(std::bind(&KfWebSocketServer::onServerInterrupt, this, std::placeholders::_1));
-    } else {
-        m_server->set_interrupt_handler(nullptr);
-    }
-    m_mutex.unlock();
-}
-
-void KF_CALLCONV KfWebSocketServer::setSocketInitListener(ConnectionListener listener)
-{
-    m_mutex.lock();
-    m_socketInitListener = listener;
-    if (nullptr != m_socketInitListener) {
-        m_server->set_socket_init_handler(std::bind(&KfWebSocketServer::onServerSocketInit, this, std::placeholders::_1, std::placeholders::_2));
-    } else {
-        m_server->set_socket_init_handler(nullptr);
-    }
-    m_mutex.unlock();
-}
-
-void KF_CALLCONV KfWebSocketServer::setTcpInitListener(ConnectionListener listener)
-{
-    m_mutex.lock();
-    m_tcpInitListener = listener;
-    if (nullptr != m_tcpInitListener) {
-        m_server->set_tcp_init_handler(std::bind(&KfWebSocketServer::onServerTcpInit, this, std::placeholders::_1));
-    } else {
-        m_server->set_tcp_init_handler(nullptr);
-    }
-    m_mutex.unlock();
-}
-
-void KF_CALLCONV KfWebSocketServer::setTcpPostInitListener(ConnectionListener listener)
-{
-    m_mutex.lock();
-    m_tcpPostInitListener = listener;
-    if (nullptr != m_tcpPostInitListener) {
-        m_server->set_tcp_post_init_handler(std::bind(&KfWebSocketServer::onServerTcpPostInit, this, std::placeholders::_1));
-    } else {
-        m_server->set_tcp_post_init_handler(nullptr);
-    }
-    m_mutex.unlock();
-}
-
-void KF_CALLCONV KfWebSocketServer::setTcpPreInitListener(ConnectionListener listener)
-{
-    m_mutex.lock();
-    m_tcpPreInitListener = listener;
-    if (nullptr != m_tcpPreInitListener) {
-        m_server->set_tcp_pre_init_handler(std::bind(&KfWebSocketServer::onServerTcpPreInit, this, std::placeholders::_1));
-    } else {
-        m_server->set_tcp_pre_init_handler(nullptr);
-    }
-    m_mutex.unlock();
-}
-
-void KF_CALLCONV KfWebSocketServer::setValidateListener(ValidateListener listener)
-{
-    m_mutex.lock();
-    m_validateListener = listener;
-    if (nullptr != m_validateListener) {
-        m_server->set_validate_handler(std::bind(&KfWebSocketServer::onServerValidate, this, std::placeholders::_1));
-    } else {
-        m_server->set_validate_handler(nullptr);
     }
     m_mutex.unlock();
 }
@@ -412,11 +322,6 @@ void KF_CALLCONV KfWebSocketServer::onServerHttp(websocketpp::connection_hdl con
     _KFWEBSOCKET_SIMPLE_CONCB(m_httpListener, connection);
 }
 
-void KF_CALLCONV KfWebSocketServer::onServerInterrupt(websocketpp::connection_hdl con)
-{
-    _KFWEBSOCKET_CAST_CONNECTION_CBRETVOID(con);
-    _KFWEBSOCKET_SIMPLE_CONCB(m_interruptListener, connection);
-}
 
 void KF_CALLCONV KfWebSocketServer::onServerMessage(websocketpp::connection_hdl con, websocketpp::connection<websocketpp::config::asio>::message_ptr msgPtr)
 {
@@ -473,44 +378,3 @@ void KF_CALLCONV KfWebSocketServer::onServerPongTimeout(websocketpp::connection_
     }
     m_mutex.unlock();
 }
-
-void KF_CALLCONV KfWebSocketServer::onServerSocketInit(websocketpp::connection_hdl con, boost::asio::ip::tcp::socket&)
-{
-    /// @todo Check if passing the socket is useful
-    _KFWEBSOCKET_CAST_CONNECTION_CBRETVOID(con);
-    _KFWEBSOCKET_SIMPLE_CONCB(m_socketInitListener, connection);
-}
-
-void KF_CALLCONV KfWebSocketServer::onServerTcpInit(websocketpp::connection_hdl con)
-{
-    _KFWEBSOCKET_CAST_CONNECTION_CBRETVOID(con);
-    _KFWEBSOCKET_SIMPLE_CONCB(m_tcpInitListener, connection);
-}
-
-void KF_CALLCONV KfWebSocketServer::onServerTcpPostInit(websocketpp::connection_hdl con)
-{
-    _KFWEBSOCKET_CAST_CONNECTION_CBRETVOID(con);
-    _KFWEBSOCKET_SIMPLE_CONCB(m_tcpPostInitListener, connection);
-}
-
-void KF_CALLCONV KfWebSocketServer::onServerTcpPreInit(websocketpp::connection_hdl con)
-{
-    _KFWEBSOCKET_CAST_CONNECTION_CBRETVOID(con);
-    _KFWEBSOCKET_SIMPLE_CONCB(m_tcpPreInitListener, connection);
-}
-
-bool KF_CALLCONV KfWebSocketServer::onServerValidate(websocketpp::connection_hdl con)
-{
-    _KFWEBSOCKET_CAST_CONNECTION_CBRETBOOL(con);
-    bool ret = true;
-    m_mutex.lock();
-    if (nullptr != m_validateListener) {
-        KfWebSocketConnectionSPtr ptr = findConnection(connection);
-        if (nullptr != ptr) {
-            ret = m_validateListener(ptr.get());
-        }
-    }
-    m_mutex.unlock();
-    return ret;
-}
-

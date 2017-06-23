@@ -213,7 +213,6 @@ LIBKFSOCKETIO_ABSTRACT_DLL void APICALL KfWssSetOpenListener(KfWebSocketServer* 
 LIBKFSOCKETIO_ABSTRACT_DLL void APICALL KfWssSetCloseListener(KfWebSocketServer* srv, KfWssConnectionListener listener);
 LIBKFSOCKETIO_ABSTRACT_DLL void APICALL KfWssSetFailListener(KfWebSocketServer* srv, KfWssConnectionListener listener);
 LIBKFSOCKETIO_ABSTRACT_DLL void APICALL KfWssSetHttpListener(KfWebSocketServer* srv, KfWssConnectionListener listener);
-LIBKFSOCKETIO_ABSTRACT_DLL void APICALL KfWssSetInterruptListener(KfWebSocketServer* srv, KfWssConnectionListener listener);
 LIBKFSOCKETIO_ABSTRACT_DLL void APICALL KfWssSetMessageListener(KfWebSocketServer* srv, KfWssMessageListener listener);
 
 // =========== Web Socket Connection

@@ -55,6 +55,12 @@ If the fix for [websocketpp#599](https://github.com/zaphoyd/websocketpp/issues/5
 +#endif
 ```
 
+## Read access violation in websocketpp
+
+If you happen to have an access violation when a new connection is made on a WebSocket Server, apply this patch in websocketpp/transport/asio/security/none.hpp :
+* include <functional>
+* Change socket_init_handler type from lib::function to std::function 
+
 ## FAQ
 
 * Why headers located in the include/ directory contain an include guard while those contained in src/ use #pragme once ?

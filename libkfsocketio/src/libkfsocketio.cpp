@@ -581,7 +581,15 @@ void APICALL KfWssSetOpenListener(KfWebSocketServer* srv, KfWssConnectionListene
 {
     if (nullptr != srv) {
         try {
-            srv->setOpenListener(listener);
+            if (nullptr == listener) {
+                srv->setOpenListener(nullptr);
+            } else {
+                srv->setOpenListener([listener](KfWebSocketConnectionPtr con) {
+                    if (nullptr != listener) {
+                        (listener) (con);
+                    }
+                });
+            }
         } catch (...) {
         }
     }
@@ -591,7 +599,15 @@ void APICALL KfWssSetCloseListener(KfWebSocketServer* srv, KfWssConnectionListen
 {
     if (nullptr != srv) {
         try {
-            srv->setCloseListener(listener);
+            if (nullptr == listener) {
+                srv->setCloseListener(nullptr);
+            } else {
+                srv->setCloseListener([listener](KfWebSocketConnectionPtr con) {
+                    if (nullptr != listener) {
+                        (listener) (con);
+                    }
+                });
+            }
         } catch (...) {
         }
     }
@@ -601,7 +617,15 @@ void APICALL KfWssSetFailListener(KfWebSocketServer* srv, KfWssConnectionListene
 {
     if (nullptr != srv) {
         try {
-            srv->setFailListener(listener);
+            if (nullptr == listener) {
+                srv->setFailListener(nullptr);
+            } else {
+                srv->setFailListener([listener](KfWebSocketConnectionPtr con) {
+                    if (nullptr != listener) {
+                        (listener) (con);
+                    }
+                });
+            }
         } catch (...) {
         }
     }
@@ -611,17 +635,15 @@ void APICALL KfWssSetHttpListener(KfWebSocketServer* srv, KfWssConnectionListene
 {
     if (nullptr != srv) {
         try {
-            srv->setHttpListener(listener);
-        } catch (...) {
-        }
-    }
-}
-
-void APICALL KfWssSetInterruptListener(KfWebSocketServer* srv, KfWssConnectionListener listener)
-{
-    if (nullptr != srv) {
-        try {
-            srv->setInterruptListener(listener);
+            if (nullptr == listener) {
+                srv->setHttpListener(nullptr);
+            } else {
+                srv->setHttpListener([listener](KfWebSocketConnectionPtr con) {
+                    if (nullptr != listener) {
+                        (listener) (con);
+                    }
+                });
+            }
         } catch (...) {
         }
     }
@@ -631,7 +653,15 @@ void APICALL KfWssSetMessageListener(KfWebSocketServer* srv, KfWssMessageListene
 {
     if (nullptr != srv) {
         try {
-            srv->setMessageListener(listener);
+            if (nullptr == listener) {
+                srv->setMessageListener(nullptr);
+            } else {
+                srv->setMessageListener([listener](KfWebSocketConnectionPtr con, KfWebSocketMessagePtr msg) {
+                    if (nullptr != listener) {
+                        (listener) (con, msg);
+                    }
+                });
+            }
         } catch (...) {
         }
     }

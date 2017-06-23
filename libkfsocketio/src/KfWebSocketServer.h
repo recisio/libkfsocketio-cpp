@@ -74,12 +74,6 @@ public:
     virtual void KF_CALLCONV setCloseListener(ConnectionListener listener);
     virtual void KF_CALLCONV setFailListener(ConnectionListener listener);
     virtual void KF_CALLCONV setHttpListener(ConnectionListener listener);
-    virtual void KF_CALLCONV setInterruptListener(ConnectionListener listener);
-    virtual void KF_CALLCONV setSocketInitListener(ConnectionListener listener);
-    virtual void KF_CALLCONV setTcpInitListener(ConnectionListener listener);
-    virtual void KF_CALLCONV setTcpPostInitListener(ConnectionListener listener);
-    virtual void KF_CALLCONV setTcpPreInitListener(ConnectionListener listener);
-    virtual void KF_CALLCONV setValidateListener(ValidateListener listener);
     virtual void KF_CALLCONV setMessageListener(MessageListener listener);
     virtual void KF_CALLCONV setPingListener(PingListener listener);
     virtual void KF_CALLCONV setPongListener(PongListener listener);
@@ -93,16 +87,10 @@ private:
     void KF_CALLCONV onServerClose(websocketpp::connection_hdl con);
     void KF_CALLCONV onServerFail(websocketpp::connection_hdl con);
     void KF_CALLCONV onServerHttp(websocketpp::connection_hdl con);
-    void KF_CALLCONV onServerInterrupt(websocketpp::connection_hdl con);
     void KF_CALLCONV onServerMessage(websocketpp::connection_hdl con, websocketpp::connection<websocketpp::config::asio>::message_ptr msgPtr);
     bool KF_CALLCONV onServerPing(websocketpp::connection_hdl con, std::string msg);
     void KF_CALLCONV onServerPong(websocketpp::connection_hdl con, std::string msg);
     void KF_CALLCONV onServerPongTimeout(websocketpp::connection_hdl con, std::string msg);
-    void KF_CALLCONV onServerSocketInit(websocketpp::connection_hdl con, boost::asio::ip::tcp::socket& sock);
-    void KF_CALLCONV onServerTcpInit(websocketpp::connection_hdl con);
-    void KF_CALLCONV onServerTcpPostInit(websocketpp::connection_hdl con);
-    void KF_CALLCONV onServerTcpPreInit(websocketpp::connection_hdl con);
-    bool KF_CALLCONV onServerValidate(websocketpp::connection_hdl con);
 
     KfWebSocketConnectionSPtr KF_CALLCONV findConnection(websocketpp::server<websocketpp::config::asio>::connection_ptr con);
 
@@ -115,12 +103,6 @@ private:
     ConnectionListener m_closeListener;
     ConnectionListener m_failListener;
     ConnectionListener m_httpListener;
-    ConnectionListener m_interruptListener;
-    ConnectionListener m_socketInitListener;
-    ConnectionListener m_tcpInitListener;
-    ConnectionListener m_tcpPostInitListener;
-    ConnectionListener m_tcpPreInitListener;
-    ValidateListener m_validateListener;
     MessageListener m_messageListener;
     PingListener m_pingListener;
     PongListener m_pongListener;

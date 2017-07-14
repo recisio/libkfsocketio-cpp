@@ -15,10 +15,10 @@ This project is made as an internal DLL binding for our own needs, it may or may
     * Unpack boost into lib/
     * Open a Visual Studio Developer command prompt
     * Run either .\bootstrap.bat (on Windows), or ./bootstrap.sh (on other operating systems) under boost folder.
-    * bjam install address-model=32 architecture=x86 --prefix="build" --with-system --with-date_time --with-random --with-regex link=static runtime-link=shared threading=multi
+    * bjam install address-model=32 architecture=x86 --prefix="build" --with-system --with-date_time --with-random --with-regex link=static runtime-link=static threading=multi
     * Go to the lib output folder (build/lib)
-    * lib.exe /OUT:boost.lib *-mt-1_64.lib
-    * lib.exe /OUT:boost-dbg.lib *-mt-gd-1_64.lib
+    * lib.exe /OUT:boost.lib *-mt-s-1_64.lib
+    * lib.exe /OUT:boost-dbg.lib *-mt-sgd-1_64.lib
 * socket.io C++ client
     * Into the main lib folder (<your_libkfsocketio_path>/lib) git clone --recurse-submodules https://github.com/socketio/socket.io-client-cpp.git
     * Go to the the socketio lib path and in websocketpp make sure head is at least at a99cccc17b1dac6c7dfa3f30cd9902f211463bfc

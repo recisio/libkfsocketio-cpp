@@ -23,8 +23,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include <boost/lexical_cast.hpp>
-
 KfSioMessage::KfSioMessage() :
     m_message(nullptr)
 {
@@ -235,10 +233,10 @@ std::string KF_CALLCONV KfSioMessage::getJsonValue(sio::message::ptr pt) const
             json += pt->get_bool() ? "true" : "false";
             break;
         case sio::message::flag_double:
-            json += boost::lexical_cast<std::string>(pt->get_double());
+            json += std::to_string(pt->get_double());
             break;
         case sio::message::flag_integer:
-            json += boost::lexical_cast<std::string>(pt->get_int());
+            json += std::to_string(pt->get_int());
             break;
         case sio::message::flag_null:
             json += "null";

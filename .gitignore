@@ -1,6 +1,4 @@
 build/
-lib/*
-!lib/json
 .vs
 *.user
 *.local

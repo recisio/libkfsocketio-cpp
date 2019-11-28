@@ -1,0 +1,3 @@
+[submodule "lib/socket.io-client-cpp11-non-boost"]
+	path = lib/socket.io-client-cpp11-non-boost
+	url = git@github.com:thedebian/socket.io-client-cpp11-non-boost.git

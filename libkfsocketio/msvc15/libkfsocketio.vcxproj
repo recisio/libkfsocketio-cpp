@@ -151,7 +151,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>crypt32.lib;C:\OpenSSL-Win64\lib\VC\libssl64MT.lib;C:\OpenSSL-Win64\lib\VC\libcrypto64MT.lib;Advapi32.lib;User32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>crypt32.lib;C:\OpenSSL-Win64\lib\libssl.lib;C:\OpenSSL-Win64\lib\libcrypto.lib;Advapi32.lib;User32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>
       </IgnoreSpecificDefaultLibraries>
       <IgnoreAllDefaultLibraries>
@@ -207,7 +207,7 @@
       <AssemblerOutput>NoListing</AssemblerOutput>
       <CallingConvention>Cdecl</CallingConvention>
       <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
-      <MultiProcessorCompilation>false</MultiProcessorCompilation>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <WholeProgramOptimization>false</WholeProgramOptimization>
       <RemoveUnreferencedCodeData>false</RemoveUnreferencedCodeData>
       <CompileAsManaged>false</CompileAsManaged>
@@ -219,7 +219,7 @@
       <EnableCOMDATFolding>false</EnableCOMDATFolding>
       <OptimizeReferences>false</OptimizeReferences>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>crypt32.lib;C:\OpenSSL-Win64\lib\VC\libssl64MT.lib;C:\OpenSSL-Win64\lib\VC\libcrypto64MT.lib;Advapi32.lib;User32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>crypt32.lib;C:\OpenSSL-Win64\lib\libssl.lib;C:\OpenSSL-Win64\lib\libcrypto.lib;Advapi32.lib;User32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>
       </IgnoreSpecificDefaultLibraries>
       <IgnoreAllDefaultLibraries>

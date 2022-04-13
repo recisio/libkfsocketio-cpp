@@ -27,15 +27,20 @@ SOFTWARE.
 #ifdef __cplusplus
 #define CEXT extern "C"
 #include <cstdint>
+#include <cstddef>
 #else
 #define CEXT
 #endif // __cplusplus
 
+#ifdef __APPLE__
+#define LIBKFSOCKETIO_ABSTRACT_DLL
+#else
 #ifdef LIBKFSOCKETIO_EXPORTS
 #define LIBKFSOCKETIO_ABSTRACT_DLL CEXT __declspec(dllexport) 
 #else
 #define LIBKFSOCKETIO_ABSTRACT_DLL CEXT __declspec(dllimport) 
 #endif // LIBKFSOCKETIO_EXPORTS
+#endif
 
 #ifndef KF_CALLCONV
 #define KF_CALLCONV __cdecl

@@ -524,7 +524,7 @@ KfBool APICALL KfWssStart(KfWebSocketServer* srv, uint16_t port)
     return (KfBool) 0;
 }
 
-size_t APICALL KfWssPoll(KfWebSocketServer* srv)
+std::size_t APICALL KfWssPoll(KfWebSocketServer* srv)
 {
     if (nullptr != srv) {
         try {
@@ -535,7 +535,7 @@ size_t APICALL KfWssPoll(KfWebSocketServer* srv)
     return 0;
 }
 
-size_t APICALL KfWssPollOne(KfWebSocketServer* srv)
+std::size_t APICALL KfWssPollOne(KfWebSocketServer* srv)
 {
     if (nullptr != srv) {
         try {

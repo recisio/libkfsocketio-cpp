@@ -57,8 +57,8 @@ public:
 
     /// Non-blocking mode
     virtual void KF_CALLCONV start(const uint16_t& port);
-    virtual size_t KF_CALLCONV poll();
-    virtual size_t KF_CALLCONV pollOne();
+    virtual std::size_t KF_CALLCONV poll();
+    virtual std::size_t KF_CALLCONV pollOne();
 
     /// Stop either one of blocking or non-blocking connections
     virtual void KF_CALLCONV stop();

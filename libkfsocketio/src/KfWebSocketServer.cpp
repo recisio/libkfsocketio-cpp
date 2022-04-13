@@ -114,12 +114,12 @@ void KF_CALLCONV KfWebSocketServer::start(const uint16_t& port)
     m_mutex.unlock();
 }
 
-size_t KF_CALLCONV KfWebSocketServer::poll()
+std::size_t KF_CALLCONV KfWebSocketServer::poll()
 {
     return m_server->poll();
 }
 
-size_t KF_CALLCONV KfWebSocketServer::pollOne()
+std::size_t KF_CALLCONV KfWebSocketServer::pollOne()
 {
     return m_server->poll_one();
 }

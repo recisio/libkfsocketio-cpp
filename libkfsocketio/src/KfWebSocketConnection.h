@@ -169,7 +169,7 @@ public:
 
     // Http
 
-    virtual void KF_CALLCONV setMaxHttpBodySize(const size_t& size);
+    virtual void KF_CALLCONV setMaxHttpBodySize(const std::size_t& size);
     virtual void KF_CALLCONV setHttpBody(const char* body);
     virtual void KF_CALLCONV setHttpStatus(const HttpStatusCode& status, const char* message);
     virtual void KF_CALLCONV appendHttpHeader(const char* key, const char* value);
@@ -195,10 +195,10 @@ public:
 
     // Misc. 
 
-    virtual void KF_CALLCONV setMaxMessageSize(const size_t& size);
+    virtual void KF_CALLCONV setMaxMessageSize(const std::size_t& size);
     virtual void KF_CALLCONV addSubProtocol(const char* protocol);
 
-    virtual size_t KF_CALLCONV getBufferedAmount() const;
+    virtual std::size_t KF_CALLCONV getBufferedAmount() const;
 
     virtual void KF_CALLCONV readFrame();
     virtual void KF_CALLCONV writeFrame();

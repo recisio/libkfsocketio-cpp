@@ -47,6 +47,9 @@ target_compile_definitions(KaraFunSocketIO
         ASIO_STANDALONE
         _USRDLL
 )
+if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+    target_compile_options(KaraFunSocketIO PRIVATE -fdeclspec)
+endif()
 target_link_libraries(KaraFunSocketIO PRIVATE
     nlohmann_json::nlohmann_json
     sioclient_tls

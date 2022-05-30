@@ -52,7 +52,7 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 endif()
 target_link_libraries(KaraFunSocketIO PRIVATE
     nlohmann_json::nlohmann_json
-    sioclient_tls
+    sioclient
 )
 target_include_directories(KaraFunSocketIO
     PUBLIC

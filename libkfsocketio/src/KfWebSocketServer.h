@@ -32,7 +32,7 @@ SOFTWARE.
 
 #include "websocketpp/server.hpp"
 #include "websocketpp/connection.hpp"
-#include "websocketpp/config/asio.hpp"
+#include "websocketpp/config/asio_no_tls.hpp"
 
 #include "KfWebSocketConnection.h"
 #include "KfWebSocketMessage.h"

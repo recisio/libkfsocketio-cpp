@@ -28,7 +28,7 @@ SOFTWARE.
 
 #include "websocketpp/server.hpp"
 #include "websocketpp/connection.hpp"
-#include "websocketpp/config/asio.hpp"
+#include "websocketpp/config/asio_no_tls.hpp"
 
 #define _KFWEBSOCKET_CAST_CONNECTION_CB(con) \
 websocketpp::server<websocketpp::config::asio>::connection_ptr connection; \
@@ -69,7 +69,7 @@ KfWebSocketServer::KfWebSocketServer() :
     m_pongListener(nullptr),
     m_pongTimeoutListener(nullptr)
 {
-    disableWebSocketOutputLog();
+    enableWebSocketOutputLog();
     m_server->init_asio();
 }
 

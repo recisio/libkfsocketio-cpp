@@ -29,7 +29,7 @@ SOFTWARE.
 #include <memory>
 
 #include "websocketpp/connection.hpp"
-#include "websocketpp/config/asio.hpp"
+#include "websocketpp/config/asio_no_tls.hpp"
 
 class KfWebSocketConnection;
 

@@ -61,31 +61,3 @@ target_include_directories(KaraFunSocketIO
     PRIVATE
         ${KFSIO_SOURCE_DIR}
 )
-
-# ----------------------- INSTALL
-
-# Install target(s)
-install(TARGETS KaraFunSocketIO EXPORT KaraFunSocketIOTargets)
-install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include
-    DESTINATION include/KaraFunSocketIO
-    FILES_MATCHING PATTERN "*.h"
-)
-install(EXPORT KaraFunSocketIOTargets
-    DESTINATION lib/KaraFunSocketIO/cmake
-    NAMESPACE KaraFun::)
-
-# Prepare install configuration
-include(CMakePackageConfigHelpers)
-configure_file(
-    ${CMAKE_CURRENT_SOURCE_DIR}/cmake/KaraFunSocketIOConfig.cmake.in
-    ${CMAKE_CURRENT_BINARY_DIR}/KaraFunSocketIOConfig.cmake
-        @ONLY)
-write_basic_package_version_file(
-	${CMAKE_CURRENT_BINARY_DIR}/KaraFunSocketIOConfigVersion.cmake
-	COMPATIBILITY SameMinorVersion
-)
-install(FILES
-        ${CMAKE_CURRENT_BINARY_DIR}/KaraFunSocketIOConfig.cmake
-        ${CMAKE_CURRENT_BINARY_DIR}/KaraFunSocketIOConfigVersion.cmake
-    DESTINATION
-        lib/KaraFunSocketIO/cmake)
